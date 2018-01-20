@@ -4,18 +4,22 @@
  */
 package gui;
 
+import javax.swing.UIManager;
+
 /**
  *
  * @author Jeremy
  */
-public class GUI extends javax.swing.JFrame {
+public final class GUI extends javax.swing.JFrame {
 
     /**
      * Creates new form GUI
      */
-    public GUI() {
+    private GUI() {
         initComponents();
     }
+    
+    private static GUI gui;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,26 +30,59 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        canvas1 = new gui.Canvas();
+        canvas2 = new gui.Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool");
+        setBounds(new java.awt.Rectangle(100, 100, 550, 900));
 
-        javax.swing.GroupLayout canvas1Layout = new javax.swing.GroupLayout(canvas1);
-        canvas1.setLayout(canvas1Layout);
-        canvas1Layout.setHorizontalGroup(
-            canvas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        canvas2.setBackground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout canvas2Layout = new javax.swing.GroupLayout(canvas2);
+        canvas2.setLayout(canvas2Layout);
+        canvas2Layout.setHorizontalGroup(
+            canvas2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 993, Short.MAX_VALUE)
         );
-        canvas1Layout.setVerticalGroup(
-            canvas1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+        canvas2Layout.setVerticalGroup(
+            canvas2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 605, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
+
+        jMenuItem2.setText("New world...");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem5.setText("Open existing world...");
+        jMenu1.add(jMenuItem5);
+
+        jMenuItem6.setText("Preferences");
+        jMenu1.add(jMenuItem6);
+
+        jMenuItem1.setText("Exit");
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("World");
+
+        jMenuItem3.setText("Choose tile spritesheet...");
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Resize world...");
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -53,11 +90,11 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(canvas2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(canvas2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -73,33 +110,33 @@ public class GUI extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI().setVisible(true);
+                gui = new GUI();
+                gui.setVisible(true);
             }
         });
     }
+    
+    protected static Canvas getCanvas() { return gui == null ? null : gui.canvas2; }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.Canvas canvas1;
+    private gui.Canvas canvas2;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     // End of variables declaration//GEN-END:variables
 }
