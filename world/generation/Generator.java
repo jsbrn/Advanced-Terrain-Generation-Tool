@@ -29,24 +29,24 @@ public abstract class Generator {
      */
     public abstract void generate(World w);
 
-    private HashMap<String, Object> parameters 
-            = new HashMap<String, Object>();
+    private HashMap<String, String> parameters 
+            = new HashMap<String, String>();
     
     /**
      * Set this Generator's parameter. Stores parameters in a HashMap.
      * @param param The name of the parameter, as a String.
-     * @param value The value (of any type).
+     * @param value The value (as a String), i.e. "0.4".
      */
-    public final void setParameter(String param, Object value) {
+    public final void setParameter(String param, String value) {
         parameters.put(param, value);
     }
     
     /**
      * Get the specified parameter from the generator.
      * @param param The parameter name.
-     * @return The object set by setParameter; cast it to whatever type you expect it to be.
+     * @return The String set by setParameter; convert it to whatever type you expect it to be.
      */
-    public final Object getParameter(String param) {
+    public final String getParameter(String param) {
         return parameters.get(param);
     }
 }
