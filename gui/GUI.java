@@ -5,6 +5,7 @@
 package gui;
 
 import javax.swing.UIManager;
+import world.World;
 
 /**
  *
@@ -46,6 +47,11 @@ public final class GUI extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
 
         canvas2.setBackground(new java.awt.Color(0, 0, 0));
+        canvas2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                canvas2MouseMoved(evt);
+            }
+        });
 
         javax.swing.GroupLayout canvas2Layout = new javax.swing.GroupLayout(canvas2);
         canvas2.setLayout(canvas2Layout);
@@ -59,6 +65,11 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         jMenu1.setText("File");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
 
         jMenuItem2.setText("New world...");
         jMenu1.add(jMenuItem2);
@@ -99,6 +110,14 @@ public final class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        World.newWorld(32, 16);
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void canvas2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvas2MouseMoved
+        Canvas.refresh();
+    }//GEN-LAST:event_canvas2MouseMoved
 
     /**
      * @param args the command line arguments

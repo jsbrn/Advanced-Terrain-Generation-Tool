@@ -4,6 +4,8 @@ import world.World;
 
 public class FlatGenerator extends Generator {
 
+    protected FlatGenerator() {}
+    
     @Override
     public void generate(World w) {
         for (int i = 0; i < w.width(); i++) {
