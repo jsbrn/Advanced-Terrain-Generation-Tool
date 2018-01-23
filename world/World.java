@@ -8,8 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.imageio.ImageIO;
-import world.generation.Generator;
+import misc.MiscMath;
+import world.terrain.Generator;
 
 public class World {
 
@@ -17,21 +19,36 @@ public class World {
     private int[][] terrain;
     private int[] tile_dims;
     private BufferedImage spritesheet;
-    private static ArrayList<Image> textures;
+    private ArrayList<Image> textures;
+    
+    private Random rng;
+    private long seed;
     
     public static void newWorld(int w, int h) { world = new World(w, h); }
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
         this.terrain = new int[w][h];
+        this.rng = new Random();
+        setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
-        this.clearTiles();
+        clearTiles();
+        this.textures = new ArrayList<Image>();
     }
     
-    public void generate(Generator g) { g.generate(this); }
+    private World(int w, int h, long seed) {
+        this(w, h);
+        setSeed(seed);
+    }
+    
+    public Random rng() { return rng; }
+    public final void setSeed(long seed) { rng.setSeed(seed); this.seed = seed; }
+    public long getSeed() { return seed; }
+    
+    public void generate(Generator g) { setSeed(seed); g.generate(this); }
     public void setTile(int tile, int x, int y) { terrain[x][y] = tile; }
     public int getTile(int x, int y) { return terrain[x][y]; }
-    public void clearTiles() {
+    public final void clearTiles() {
         for (int x = 0; x < columns(); x++) {
             for (int y = 0; y < rows(); y++) {
                 terrain[x][y] = -1;
@@ -72,15 +89,27 @@ public class World {
     }
     
     public void draw(Graphics g) {
-        g.setColor(Color.white);
-        if (spritesheet == null) { g.drawString("No tile spritesheet found!", 15, 25); return; }
+        g.setColor(Color.red);
+        boolean found_null = false;
         for (int x = 0; x < terrain.length; x++) {
             for (int y = 0; y < terrain[0].length; y++) {
-                if (terrain[x][y] < 0) continue;
+                //get the onscreen coordinates of the tile
                 int osc[] = getOnscreenCoordinates(x, y);
-                g.drawImage(textures.get(terrain[x][y]), osc[0], osc[1], null);
+                //if tile is offscreen, don't render
+                if (!MiscMath.pointIntersectsRect(osc[0], osc[1], 
+                        -tile_dims[0], -tile_dims[1], 
+                        Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
+                //if tile ID is valid, draw. otherwise, indicate.
+                if (terrain[x][y] < getTileCount()) {
+                    if (terrain[x][y] > -1) g.drawImage(textures.get(terrain[x][y]), osc[0], osc[1], null);
+                } else {
+                    found_null = true;
+                    g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
+                }
+                    
             }
         }
+        if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 25);
     }
     
 }
