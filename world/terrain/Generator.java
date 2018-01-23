@@ -1,5 +1,6 @@
-package world.generation;
+package world.terrain;
 
+import world.terrain.generators.FlatGenerator;
 import java.util.HashMap;
 import world.World;
 
