@@ -1,11 +1,17 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import world.World;
-import world.generation.Generator;
+import world.terrain.Generator;
 
 public final class GUI extends javax.swing.JFrame {
 
@@ -32,7 +38,6 @@ public final class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         worldMenu = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -43,6 +48,7 @@ public final class GUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool - Untitled World");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
+        setIconImage(getIconImage());
 
         canvas2.setBackground(new java.awt.Color(0, 0, 0));
         canvas2.setDoubleBuffered(false);
@@ -77,10 +83,6 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem5.setText("Open existing world...");
         jMenuItem5.setEnabled(false);
         jMenu1.add(jMenuItem5);
-
-        jMenuItem6.setText("Preferences");
-        jMenuItem6.setEnabled(false);
-        jMenu1.add(jMenuItem6);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Exit");
@@ -135,10 +137,21 @@ public final class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
-        World.newWorld(64, 32);
+        World.newWorld(512, 256);
         worldMenu.setEnabled(true);
     }//GEN-LAST:event_newWorld
 
+    @Override
+    public Image getIconImage() {
+        try {
+            return ImageIO.read(GUI.class.getResourceAsStream("/resources/favicon.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         String s = JOptionPane.showInputDialog(gui, "Parameters:", "Generate terrain", JOptionPane.QUESTION_MESSAGE);
         if (s == null) return; 
@@ -196,7 +209,7 @@ public final class GUI extends javax.swing.JFrame {
             public void run() {
                 gui = new GUI();
                 gui.setVisible(true);
-                World.newWorld(64, 32);
+                World.newWorld(1024, 512);
             }
         });
     }
@@ -212,7 +225,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu worldMenu;
