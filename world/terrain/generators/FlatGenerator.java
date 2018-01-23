@@ -12,13 +12,12 @@ public class FlatGenerator extends Generator {
     
     @Override
     public void generate(World w) {
-        
         for (int i = 0; i < w.columns(); i++) {
             for (int j = 0; j < w.rows(); j++) {
                 if (j < w.rows() - Integer.parseInt(getParameter("height"))) continue;
                 String t = getParameter("tile");
-                int tcouny = w.getTileCount();
-                w.setTile("random".equals(t) ? (tcouny == 0 ? 0 : r.nextInt() % tcouny) : Integer.parseInt(t), i, j);
+                int tcount = w.getTileCount();
+                w.setTile("random".equals(t) ? (tcount == 0 ? 0 : r.nextInt() % tcount) : Integer.parseInt(t), i, j);
             }
         }
     }

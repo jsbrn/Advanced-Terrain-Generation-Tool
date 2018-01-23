@@ -33,7 +33,7 @@ public final class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        canvas2 = new gui.Canvas();
+        canvas = new gui.Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -50,22 +50,22 @@ public final class GUI extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
         setIconImage(getIconImage());
 
-        canvas2.setBackground(new java.awt.Color(0, 0, 0));
-        canvas2.setDoubleBuffered(false);
-        canvas2.addMouseListener(new java.awt.event.MouseAdapter() {
+        canvas.setBackground(new java.awt.Color(0, 0, 0));
+        canvas.setDoubleBuffered(false);
+        canvas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                canvas2MouseClicked(evt);
+                canvasMouseClicked(evt);
             }
         });
 
-        javax.swing.GroupLayout canvas2Layout = new javax.swing.GroupLayout(canvas2);
-        canvas2.setLayout(canvas2Layout);
-        canvas2Layout.setHorizontalGroup(
-            canvas2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
+        canvas.setLayout(canvasLayout);
+        canvasLayout.setHorizontalGroup(
+            canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 993, Short.MAX_VALUE)
         );
-        canvas2Layout.setVerticalGroup(
-            canvas2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        canvasLayout.setVerticalGroup(
+            canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 605, Short.MAX_VALUE)
         );
 
@@ -100,7 +100,7 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem7.setText("Generate terrain...");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                generateTerrainFromText(evt);
             }
         });
         worldMenu.add(jMenuItem7);
@@ -126,11 +126,11 @@ public final class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(canvas2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -139,6 +139,7 @@ public final class GUI extends javax.swing.JFrame {
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
         World.newWorld(512, 256);
         worldMenu.setEnabled(true);
+        canvas.repaint();
     }//GEN-LAST:event_newWorld
 
     @Override
@@ -152,23 +153,33 @@ public final class GUI extends javax.swing.JFrame {
     }
 
     
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        String s = JOptionPane.showInputDialog(gui, "Parameters:", "Generate terrain", JOptionPane.QUESTION_MESSAGE);
-        if (s == null) return; 
-        s = s.trim();
-        String params[] = s.split("\\s*,\\s*");
-        if (params.length == 0) { System.out.println("No parameters found!"); return; }
-        Generator g = Generator.getGenerator(params[0]);
-        if (g == null) { System.err.println("Generator '"+params[0]+"' not found!"); return; }
-        for (int i = 1; i < params.length; i++) {
-            String spl[] = params[i].split("\\s*=\\s*");
+    private String last_terrain_string = "";
+    private void generateTerrainFromText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTerrainFromText
+        String s = JOptionPane.showInputDialog(gui, "Parameters:", last_terrain_string);
+        if (s == null) return; s = s.trim();
+        last_terrain_string = s;
+        //split by colon
+        String split[] = s.split("\\s*:\\s*");
+        if (split.length < 2) { System.err.println("Invalid input!"); return; }
+        //find generator type
+        String gname = split[0].trim(); String params = split[1].trim();
+        System.out.println(gname);
+        //find parameters
+        String[] params_spl = params.split("\\s*,\\s*");
+        Generator g = Generator.getGenerator(gname);
+        if (g == null) { System.err.println("Generator '"+gname+"' not found!"); return; }
+        for (int i = 0; i < params_spl.length; i++) {
+            String spl[] = params_spl[i].split("\\s*=\\s*");
             String name = spl[0]; String val = spl[1];
             g.setParameter(name, val);
-            System.out.println(params[0]+" parameter: "+name+" = "+val);
+            System.out.println(gname+" parameter: "+name+" = "+val);
         }
+        //clear and generate
+        World.getWorld().clearTiles();
         g.generate(World.getWorld());
-        canvas2.repaint();
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+        //repaint
+        canvas.repaint();
+    }//GEN-LAST:event_generateTerrainFromText
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         System.exit(0);
@@ -184,9 +195,9 @@ public final class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void canvas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvas2MouseClicked
-        canvas2.repaint();
-    }//GEN-LAST:event_canvas2MouseClicked
+    private void canvasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseClicked
+        canvas.repaint();
+    }//GEN-LAST:event_canvasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -214,10 +225,10 @@ public final class GUI extends javax.swing.JFrame {
         });
     }
     
-    protected static Canvas getCanvas() { return gui == null ? null : gui.canvas2; }
+    protected static Canvas getCanvas() { return gui == null ? null : gui.canvas; }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.Canvas canvas2;
+    private gui.Canvas canvas;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
