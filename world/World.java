@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import misc.MiscMath;
 import world.terrain.Generator;
@@ -20,20 +21,34 @@ public class World {
     private BufferedImage spritesheet;
     private ArrayList<Image> textures;
     
+    private Random rng;
+    private long seed;
+    
     public static void newWorld(int w, int h) { world = new World(w, h); }
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
         this.terrain = new int[w][h];
+        this.rng = new Random();
+        setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
-        this.clearTiles();
+        clearTiles();
         this.textures = new ArrayList<Image>();
     }
     
-    public void generate(Generator g) { g.generate(this); }
+    private World(int w, int h, long seed) {
+        this(w, h);
+        setSeed(seed);
+    }
+    
+    public Random rng() { return rng; }
+    public final void setSeed(long seed) { rng.setSeed(seed); this.seed = seed; }
+    public long getSeed() { return seed; }
+    
+    public void generate(Generator g) { setSeed(seed); g.generate(this); }
     public void setTile(int tile, int x, int y) { terrain[x][y] = tile; }
     public int getTile(int x, int y) { return terrain[x][y]; }
-    public void clearTiles() {
+    public final void clearTiles() {
         for (int x = 0; x < columns(); x++) {
             for (int y = 0; y < rows(); y++) {
                 terrain[x][y] = -1;
