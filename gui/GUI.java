@@ -39,6 +39,8 @@ public final class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         mapView = new javax.swing.JDialog();
+        miniMap1 = new gui.MiniMap();
+        jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         canvas = new gui.Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -52,18 +54,43 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
 
         mapView.setBounds(new java.awt.Rectangle(100, 100, 500, 500));
+
+        javax.swing.GroupLayout miniMap1Layout = new javax.swing.GroupLayout(miniMap1);
+        miniMap1.setLayout(miniMap1Layout);
+        miniMap1Layout.setHorizontalGroup(
+            miniMap1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        miniMap1Layout.setVerticalGroup(
+            miniMap1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 444, Short.MAX_VALUE)
+        );
+
+        jButton1.setText("Close");
 
         javax.swing.GroupLayout mapViewLayout = new javax.swing.GroupLayout(mapView.getContentPane());
         mapView.getContentPane().setLayout(mapViewLayout);
         mapViewLayout.setHorizontalGroup(
             mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGroup(mapViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(miniMap1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
+                .addContainerGap())
         );
         mapViewLayout.setVerticalGroup(
             mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGroup(mapViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(miniMap1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -156,6 +183,19 @@ public final class GUI extends javax.swing.JFrame {
 
         jMenuBar1.add(worldMenu);
 
+        jMenu2.setText("Canvas");
+
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem8.setText("Navigator...");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem8);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,6 +281,10 @@ public final class GUI extends javax.swing.JFrame {
         World.getWorld().setSeed(Long.parseLong(JOptionPane.showInputDialog(gui, "Seed (integer):")));
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        showDialog(mapView);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
     public static void showDialog(JDialog d) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -280,10 +324,13 @@ public final class GUI extends javax.swing.JFrame {
     }
     
     protected static Canvas getCanvas() { return gui == null ? null : gui.canvas; }
+    protected static MiniMap getMiniMap() { return gui == null ? null : gui.miniMap1; }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.Canvas canvas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
@@ -292,9 +339,11 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JDialog mapView;
+    private gui.MiniMap miniMap1;
     private javax.swing.JMenu worldMenu;
     // End of variables declaration//GEN-END:variables
 }
