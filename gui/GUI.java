@@ -213,7 +213,7 @@ public final class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
-        World.newWorld(512, 256);
+        World.newWorld(64, 64);
         worldMenu.setEnabled(true);
         canvas.repaint();
     }//GEN-LAST:event_newWorld
@@ -318,7 +318,7 @@ public final class GUI extends javax.swing.JFrame {
             public void run() {
                 gui = new GUI();
                 gui.setVisible(true);
-                World.newWorld(1024, 512);
+                World.newWorld(64, 64);
             }
         });
     }
