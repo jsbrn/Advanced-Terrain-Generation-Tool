@@ -174,6 +174,7 @@ public final class GUI extends javax.swing.JFrame {
 
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
         World.newWorld(512, 256);
+        World.getWorld().setSpritesheet(new File("src/resources/terrain.png"));
         worldMenu.setEnabled(true);
         canvas.repaint();
     }//GEN-LAST:event_newWorld
@@ -213,7 +214,8 @@ public final class GUI extends javax.swing.JFrame {
             System.out.println(gname+" parameter: "+name+" = "+val);
         }
         //clear and generate
-        World.getWorld().clearTiles();
+        //commented this out, allows for multiple passes of algorithms
+        //World.getWorld().clearTiles();
         g.generate(World.getWorld());
         //repaint
         canvas.repaint();
@@ -275,6 +277,7 @@ public final class GUI extends javax.swing.JFrame {
                 gui = new GUI();
                 gui.setVisible(true);
                 World.newWorld(1024, 512);
+                World.getWorld().setSpritesheet(new File("src/resources/terrain.png"));
             }
         });
     }
