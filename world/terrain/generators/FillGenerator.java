@@ -12,7 +12,7 @@ import world.terrain.Generator;
  *
  * @author Joseph
  */
-public class TestGenerator1 extends Generator{
+public class FillGenerator extends Generator{
     
     //simple generator that just fills the world with tiles of set attribute "tile"
     @Override

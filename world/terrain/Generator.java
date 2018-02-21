@@ -11,7 +11,7 @@ public abstract class Generator {
      * Put all Generator instances in this list and use getGenerator(name) to access them.
      */
     private static final Object[][] generators = new Object[][]{
-        {"FlatGenerator", new FlatGenerator()},{"TestGenerator1", new TestGenerator1()}
+        {"FlatGenerator", new FlatGenerator()},{"FillGenerator", new FillGenerator()}
     };
     
     /**
