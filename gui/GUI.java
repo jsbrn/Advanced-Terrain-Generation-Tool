@@ -216,7 +216,6 @@ public final class GUI extends javax.swing.JFrame {
         World.newWorld(64, 64);
         worldMenu.setEnabled(true);
         canvas.repaint();
-        World.getWorld().setSpritesheet(new File("src/resources/terrain.png"));
     }//GEN-LAST:event_newWorld
 
     @Override
@@ -320,7 +319,7 @@ public final class GUI extends javax.swing.JFrame {
             public void run() {
                 gui = new GUI();
                 gui.setVisible(true);
-                World.newWorld(1024, 512);
+                World.newWorld(64, 64);
                 
             }
         });
