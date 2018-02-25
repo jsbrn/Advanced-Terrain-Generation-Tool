@@ -152,20 +152,4 @@ public class DiamondSquare {
 		return output;
 	}
 
-	public static void main(String[] args) {
-		DiamondSquare ds = new DiamondSquare(10);
-/*		
-		System.out.println(ds.toString());
-/*/
-		try {
-			ImageIO.write(ds.toBufferedImage(), "png", new File("C:/Users/dykst/Desktop/DiamondSquareHeightMap1.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//*/
-		System.out.println("All done.");
-		
-	}
-
 }
