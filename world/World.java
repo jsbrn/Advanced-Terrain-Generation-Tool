@@ -34,6 +34,7 @@ public class World {
         this.tile_dims = new int[]{16, 16};
         clearTiles();
         this.textures = new ArrayList<Image>();
+        this.setSpritesheet(new File("src/resources/terrain.png"));
     }
     
     private World(int w, int h, long seed) {
