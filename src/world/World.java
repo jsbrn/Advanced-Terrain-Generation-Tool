@@ -121,7 +121,7 @@ public class World {
     public void setResize(int w, int h){
         for(int r=0; r<h; r++){
             for(int c=0; c<w; c++){
-                terrain[r][c]= terrain[h][w];
+                terrain[r][c]= temp[h][w];
             }
         }
     }
