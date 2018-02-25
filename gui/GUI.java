@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -46,11 +47,18 @@ public final class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
         worldMenu = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -136,6 +144,16 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem5.setText("Open existing world...");
         jMenuItem5.setEnabled(false);
         jMenu1.add(jMenuItem5);
+        jMenu1.add(jSeparator3);
+
+        jMenuItem11.setText("Export terrain...");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem11);
+        jMenu1.add(jSeparator4);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Exit");
@@ -162,6 +180,7 @@ public final class GUI extends javax.swing.JFrame {
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         jMenuItem6.setText("Set seed...");
+        jMenuItem6.setEnabled(false);
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
@@ -169,14 +188,35 @@ public final class GUI extends javax.swing.JFrame {
         });
         worldMenu.add(jMenuItem6);
 
+        jMenu3.setText("Choose tile spritesheet...");
+
+        jMenuItem9.setText("Earth");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem9);
+
+        jMenuItem10.setText("Mars");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem10);
+        jMenu3.add(jSeparator2);
+
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
-        jMenuItem3.setText("Choose tile spritesheet...");
+        jMenuItem3.setText("Pick a file...");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        worldMenu.add(jMenuItem3);
+        jMenu3.add(jMenuItem3);
+
+        worldMenu.add(jMenu3);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Resize world...");
@@ -204,7 +244,7 @@ public final class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,6 +336,28 @@ public final class GUI extends javax.swing.JFrame {
         mapView.setVisible(false);
     }//GEN-LAST:event_miniMap1FocusLost
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/mars.png"));
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            boolean saved = World.getWorld().exportTerrain(saver.getSelectedFile());
+            JOptionPane.showMessageDialog(gui, 
+                    saved ? "Terrain data has been exported!" : "Error exporting terrain data!", 
+                    saved ? "Success" : "Error",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage()));
+        }
+        
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -303,7 +365,7 @@ public final class GUI extends javax.swing.JFrame {
         d.setLocation(gui.getX() + (int) (gui.getWidth() / 2) - (d.getWidth() / 2),
                 gui.getY() + (int) (gui.getHeight() / 2) - ((d.getHeight() / 2)));
         d.setModal(modal);
-        if (modal) d.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        d.setModalityType(modal ? Dialog.ModalityType.APPLICATION_MODAL : Dialog.ModalityType.MODELESS);
         d.setVisible(true);
         System.out.println("Showing " + d.getTitle());
     }
@@ -342,8 +404,11 @@ public final class GUI extends javax.swing.JFrame {
     private gui.Canvas canvas;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
@@ -351,7 +416,11 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JDialog mapView;
     private gui.MiniMap miniMap1;
