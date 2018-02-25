@@ -114,7 +114,7 @@ public class WaterGenerator extends Generator {
                  * and finding a new direction
                 */
                 if(i==0){
-                    sectionLength = rheight+rwidth;
+                    sectionLength = max+1;
                 }else{
                     sectionLength = 5 + rand.nextInt(15);
                     
@@ -124,7 +124,8 @@ public class WaterGenerator extends Generator {
                     * The while loop keeps going forever until we find a new direction
                     * that isn't backwards so we don't draw a length of river onto
                     * itself, and also does not cross paths with another body of
-                    * water or river. If it is determined that there will be collision,
+                    * water or river. If it is determined that there will be collision
+                    * using the for loops within the switch statements,
                     * the section length is reduced
                    */
 
@@ -133,7 +134,7 @@ public class WaterGenerator extends Generator {
                        /* If sectionLength has been widdled down to 0 then just
                         * give up trying to make a river :(
                         */
-                       if(sectionLength==0)break riverloop;
+                       if(sectionLength<=0){System.out.println("Can't make that river!"); break riverloop;}
                        
                        newDir = rand.nextInt(4);
                        if(newDir!=(direction-2)%4||newDir!=(direction+2)%4){
@@ -145,52 +146,52 @@ public class WaterGenerator extends Generator {
                                        if(w.getTile(next[0], next[1]+chk)==t){
                                             //Set the section length to chk-1 and try again
                                             sectionLength = chk-1;
-                                            break riverswitch;
+                                            continue rivercheck;
                                         }
                                    }catch(java.lang.ArrayIndexOutOfBoundsException exception){
                                        break riverloop;
                                    }
                                }
-                               break rivercheck;
+                               break rivercheck;//we went through without issues
                            case 1://check east
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
                                        if(w.getTile(next[0]+chk, next[1])==t){
                                        //Set the section length to chk-1 and try again
                                        sectionLength = chk-1;
-                                       break riverswitch;
+                                       continue rivercheck;
                                        }
                                    //catch if we go outside the world and break riverloop
                                    }catch(java.lang.ArrayIndexOutOfBoundsException exception){
                                        break riverloop;
                                    }
                                }
-                               break rivercheck;
+                               break rivercheck;//we went through without issues
                            case 2://check south
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
                                        if(w.getTile(next[0], next[1]-chk)==t){
                                             //Set the section length to chk-1 and try again
                                             sectionLength = chk-1;
-                                            break riverswitch;
+                                            continue rivercheck;
                                         }
                                    }catch(java.lang.ArrayIndexOutOfBoundsException exception){
                                        break riverloop;
                                    }
                                }
-                               break rivercheck;
+                               break rivercheck;//we went through without issues
                            case 3://check west
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
                                         if(w.getTile(next[0]-chk, next[1])==t){
                                             //Set the section length to chk-1 and try again
                                             sectionLength = chk-1;
-                                            break riverswitch;
+                                            continue rivercheck;
                                         }
                                    }catch(java.lang.ArrayIndexOutOfBoundsException exception){
                                        break riverloop;
                                    }
-                               break rivercheck;
+                               break rivercheck;//we went through without issues
                                }
                            }
                        }
