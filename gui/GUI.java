@@ -253,7 +253,8 @@ public final class GUI extends javax.swing.JFrame {
             System.out.println(gname+" parameter: "+name+" = "+val);
         }
         //clear and generate
-        World.getWorld().clearTiles();
+        //commented this out, allows for multiple passes of algorithms
+        //World.getWorld().clearTiles();
         g.generate(World.getWorld());
         //repaint
         canvas.repaint();
@@ -318,7 +319,7 @@ public final class GUI extends javax.swing.JFrame {
             public void run() {
                 gui = new GUI();
                 gui.setVisible(true);
-                World.newWorld(64, 64);
+                World.newWorld(1024, 512);
             }
         });
     }
