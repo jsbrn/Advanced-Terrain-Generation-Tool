@@ -40,7 +40,6 @@ public final class GUI extends javax.swing.JFrame {
 
         mapView = new javax.swing.JDialog();
         miniMap1 = new gui.MiniMap();
-        jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         canvas = new gui.Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -57,40 +56,43 @@ public final class GUI extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
 
+        mapView.setTitle("Navigator");
+        mapView.setAlwaysOnTop(true);
         mapView.setBounds(new java.awt.Rectangle(100, 100, 500, 500));
+        mapView.setIconImage(getIconImage());
+        mapView.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                mapViewFocusLost(evt);
+            }
+        });
+
+        miniMap1.setBackground(new java.awt.Color(0, 0, 0));
+        miniMap1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                miniMap1FocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout miniMap1Layout = new javax.swing.GroupLayout(miniMap1);
         miniMap1.setLayout(miniMap1Layout);
         miniMap1Layout.setHorizontalGroup(
             miniMap1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         miniMap1Layout.setVerticalGroup(
             miniMap1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 444, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
-
-        jButton1.setText("Close");
 
         javax.swing.GroupLayout mapViewLayout = new javax.swing.GroupLayout(mapView.getContentPane());
         mapView.getContentPane().setLayout(mapViewLayout);
         mapViewLayout.setHorizontalGroup(
             mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mapViewLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(miniMap1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(miniMap1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mapViewLayout.setVerticalGroup(
             mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mapViewLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(miniMap1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap())
+            .addComponent(miniMap1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -110,11 +112,11 @@ public final class GUI extends javax.swing.JFrame {
         canvas.setLayout(canvasLayout);
         canvasLayout.setHorizontalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 988, Short.MAX_VALUE)
+            .addGap(0, 725, Short.MAX_VALUE)
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGap(0, 416, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Canvas", canvas);
@@ -202,7 +204,7 @@ public final class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,17 +285,25 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        showDialog(mapView);
+        showDialog(mapView, false);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
-    public static void showDialog(JDialog d) {
+    private void mapViewFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mapViewFocusLost
+        mapView.setVisible(false);
+    }//GEN-LAST:event_mapViewFocusLost
+
+    private void miniMap1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_miniMap1FocusLost
+        mapView.setVisible(false);
+    }//GEN-LAST:event_miniMap1FocusLost
+
+    public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
         d.setLocation(gui.getX() + (int) (gui.getWidth() / 2) - (d.getWidth() / 2),
                 gui.getY() + (int) (gui.getHeight() / 2) - ((d.getHeight() / 2)));
-        d.setModal(true);
-        d.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        d.setModal(modal);
+        if (modal) d.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         d.setVisible(true);
         System.out.println("Showing " + d.getTitle());
     }
@@ -330,7 +340,6 @@ public final class GUI extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.Canvas canvas;
-    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
