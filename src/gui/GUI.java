@@ -271,7 +271,7 @@ public final class GUI extends javax.swing.JFrame {
         World.getWorld().clearTiles();
         g.generate(World.resize());
         //repaint
-        canvas.repaint();
+        canvas.refresh();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     public static void showDialog(JDialog d) {
