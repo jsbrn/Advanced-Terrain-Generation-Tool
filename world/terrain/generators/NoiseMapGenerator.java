@@ -17,7 +17,7 @@ public class NoiseMapGenerator extends Generator {
         for (int i = 0; i < w.columns(); i++) {
             for (int j = 0; j < w.rows(); j++) {
                 if (i >= dsmap.length || j >= dsmap.length) continue;
-                if (dsmap[i][j] > .5) w.setTile(i, j, layer, Integer.parseInt(getParameter("tile")));
+                if (dsmap[i][j] > .5) w.setTile(i, j, layer, (Integer)w.getLayerProperty("tile", layer));
             }
         }
     }

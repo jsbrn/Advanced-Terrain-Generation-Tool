@@ -14,10 +14,9 @@ public class FlatGenerator extends Generator {
         for (int i = 0; i < w.columns(); i++) {
             for (int j = 0; j < w.rows(); j++) {
                 if (j < w.rows() - Integer.parseInt(getParameter("height"))) continue;
-                String t = getParameter("tile");
+                int t = (Integer)w.getLayerProperty("tile", layer);
                 int tcount = w.getTileCount();
-                w.setTile(i, j, layer, 
-                        "random".equals(t) ? (tcount == 0 ? 0 : w.rng().nextInt() % tcount) : Integer.parseInt(t));
+                w.setTile(i, j, layer, t);
             }
         }
     }

@@ -142,6 +142,11 @@ public final class GUI extends javax.swing.JFrame {
         jLabel3.setText("Tile ID");
 
         jButton2.setText("OK");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -552,6 +557,9 @@ public final class GUI extends javax.swing.JFrame {
 
     private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
         showDialog(layerEditor, false);
+        layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
+        layerTileField.setValue((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        canvas.repaint();
     }//GEN-LAST:event_editLayerButtonActionPerformed
 
     private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
@@ -560,6 +568,7 @@ public final class GUI extends javax.swing.JFrame {
         gui.refreshLayerList();
         layerList.setSelectedIndex(index < layerList.getModel().getSize() ? index 
                 : layerList.getModel().getSize() - 1);
+        canvas.repaint();
     }//GEN-LAST:event_deleteLayerButtonActionPerformed
 
     private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
@@ -569,20 +578,25 @@ public final class GUI extends javax.swing.JFrame {
         World.getWorld().setLayerProperty("lastcmd", s, Canvas.layer());
         //split by colon
         String split[] = s.split("\\s*:\\s*");
-        if (split.length < 2) { System.err.println("Invalid input!"); return; }
+        if (split.length == 0) { System.err.println("Invalid input!"); return; }
         //find generator type
-        String gname = split[0].trim(); String params = split[1].trim();
-        System.out.println(gname);
-        //find parameters
-        String[] params_spl = params.split("\\s*,\\s*");
+        String gname = split[0].trim(); 
         Generator g = Generator.getGenerator(gname);
-        if (g == null) { System.err.println("Generator '"+gname+"' not found!"); return; }
-        for (int i = 0; i < params_spl.length; i++) {
-            String spl[] = params_spl[i].split("\\s*=\\s*");
-            String name = spl[0]; String val = spl[1];
-            g.setParameter(name, val);
-            System.out.println(gname+" parameter: "+name+" = "+val);
+        
+        if (split.length > 1) { //if params actually exist
+            String params = split[1].trim();
+            System.out.println(gname);
+            //find parameters
+            String[] params_spl = params.split("\\s*,\\s*");
+            if (g == null) { System.err.println("Generator '"+gname+"' not found!"); return; }
+            for (int i = 0; i < params_spl.length; i++) {
+                String spl[] = params_spl[i].split("\\s*=\\s*");
+                String name = spl[0]; String val = spl[1];
+                g.setParameter(name, val);
+                System.out.println(gname+" parameter: "+name+" = "+val);
+            }
         }
+        
         //clear and generate
         World.getWorld().clearTiles(layerList.getSelectedIndex());
         g.generate(World.getWorld(), layerList.getSelectedIndex());
@@ -594,6 +608,7 @@ public final class GUI extends javax.swing.JFrame {
         World.getWorld().addLayer();
         gui.refreshLayerList();
         layerList.setSelectedIndex(layerList.getModel().getSize() - 1);
+        canvas.repaint();
     }//GEN-LAST:event_addLayerButtonActionPerformed
 
     private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
@@ -607,6 +622,13 @@ public final class GUI extends javax.swing.JFrame {
     private void layerEditorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_layerEditorFocusLost
         layerEditor.setVisible(false);
     }//GEN-LAST:event_layerEditorFocusLost
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        World.getWorld().setLayerProperty("name", layerNameField.getText(), layerList.getSelectedIndex());
+        World.getWorld().setLayerProperty("tile", layerTileField.getValue(), layerList.getSelectedIndex());
+        layerEditor.setVisible(false);
+        canvas.repaint();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
