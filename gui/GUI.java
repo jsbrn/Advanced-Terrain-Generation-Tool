@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicDirectoryModel;
 import world.World;
 import world.terrain.Generator;
 
@@ -53,6 +56,7 @@ public final class GUI extends javax.swing.JFrame {
         editLayerButton = new javax.swing.JButton();
         deleteLayerButton = new javax.swing.JButton();
         regenLayerButton = new javax.swing.JButton();
+        addLayerButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
@@ -127,9 +131,14 @@ public final class GUI extends javax.swing.JFrame {
 
         layerList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         layerList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Lakes", "Villages1", "Villages3", "Trees", "Beach" };
+            String[] strings = { "Layer 0" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        layerList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                layerListValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(layerList);
 
@@ -176,6 +185,14 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        addLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/add.png"))); // NOI18N
+        addLayerButton.setToolTipText("Move up");
+        addLayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addLayerButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layerPanelLayout = new javax.swing.GroupLayout(layerPanel);
         layerPanel.setLayout(layerPanelLayout);
         layerPanelLayout.setHorizontalGroup(
@@ -183,28 +200,31 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(layerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layerPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layerPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(layerUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
-                            .addComponent(layerDownButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(deleteLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(layerUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(layerDownButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(deleteLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(addLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layerPanelLayout.setVerticalGroup(
             layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layerPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layerPanelLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layerPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addLayerButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerUpButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerDownButton)
@@ -212,9 +232,8 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(editLayerButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteLayerButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(regenLayerButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(regenLayerButton)))
                 .addContainerGap())
         );
 
@@ -391,30 +410,7 @@ public final class GUI extends javax.swing.JFrame {
     
     private String last_terrain_string = "";
     private void generateTerrainFromText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTerrainFromText
-        String s = JOptionPane.showInputDialog(gui, "Parameters:", last_terrain_string);
-        if (s == null) return; s = s.trim();
-        last_terrain_string = s;
-        //split by colon
-        String split[] = s.split("\\s*:\\s*");
-        if (split.length < 2) { System.err.println("Invalid input!"); return; }
-        //find generator type
-        String gname = split[0].trim(); String params = split[1].trim();
-        System.out.println(gname);
-        //find parameters
-        String[] params_spl = params.split("\\s*,\\s*");
-        Generator g = Generator.getGenerator(gname);
-        if (g == null) { System.err.println("Generator '"+gname+"' not found!"); return; }
-        for (int i = 0; i < params_spl.length; i++) {
-            String spl[] = params_spl[i].split("\\s*=\\s*");
-            String name = spl[0]; String val = spl[1];
-            g.setParameter(name, val);
-            System.out.println(gname+" parameter: "+name+" = "+val);
-        }
-        //clear and generate
-        World.getWorld().clearTiles();
-        g.generate(World.getWorld());
-        //repaint
-        canvas.repaint();
+        
     }//GEN-LAST:event_generateTerrainFromText
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
@@ -490,8 +486,40 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteLayerButtonActionPerformed
 
     private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
-        // TODO add your handling code here:
+        String s = JOptionPane.showInputDialog(gui, "Parameters:", last_terrain_string);
+        if (s == null) return; s = s.trim();
+        last_terrain_string = s;
+        //split by colon
+        String split[] = s.split("\\s*:\\s*");
+        if (split.length < 2) { System.err.println("Invalid input!"); return; }
+        //find generator type
+        String gname = split[0].trim(); String params = split[1].trim();
+        System.out.println(gname);
+        //find parameters
+        String[] params_spl = params.split("\\s*,\\s*");
+        Generator g = Generator.getGenerator(gname);
+        if (g == null) { System.err.println("Generator '"+gname+"' not found!"); return; }
+        for (int i = 0; i < params_spl.length; i++) {
+            String spl[] = params_spl[i].split("\\s*=\\s*");
+            String name = spl[0]; String val = spl[1];
+            g.setParameter(name, val);
+            System.out.println(gname+" parameter: "+name+" = "+val);
+        }
+        //clear and generate
+        World.getWorld().clearTiles();
+        g.generate(World.getWorld(), 0);
+        //repaint
+        canvas.repaint();
     }//GEN-LAST:event_regenLayerButtonActionPerformed
+
+    private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
+        World.getWorld().addLayer();
+        gui.refreshLayerList();
+    }//GEN-LAST:event_addLayerButtonActionPerformed
+
+    private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
+        if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
+    }//GEN-LAST:event_layerListValueChanged
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -503,6 +531,12 @@ public final class GUI extends javax.swing.JFrame {
         d.setModalityType(modal ? Dialog.ModalityType.APPLICATION_MODAL : Dialog.ModalityType.MODELESS);
         d.setVisible(true);
         System.out.println("Showing " + d.getTitle());
+    }
+    
+    public void refreshLayerList() {
+        DefaultListModel m = new DefaultListModel();
+        for (int i = 0; i < World.getWorld().layerCount(); i++) m.addElement("Layer "+i);
+        layerList.setModel(m);
     }
     
     /**
@@ -534,8 +568,10 @@ public final class GUI extends javax.swing.JFrame {
     
     protected static Canvas getCanvas() { return gui == null ? null : gui.canvas; }
     protected static MiniMap getMiniMap() { return gui == null ? null : gui.mapView; }
+    protected static JList getLayerList() { return layerList; }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addLayerButton;
     private gui.Canvas canvas;
     private javax.swing.JMenu chooseSpriteSheetMenu;
     private javax.swing.JMenuItem customSpritesheetButton;
@@ -554,7 +590,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JButton layerDownButton;
-    private javax.swing.JList<String> layerList;
+    private static javax.swing.JList<String> layerList;
     private javax.swing.JPanel layerPanel;
     private javax.swing.JButton layerUpButton;
     private gui.MiniMap mapView;

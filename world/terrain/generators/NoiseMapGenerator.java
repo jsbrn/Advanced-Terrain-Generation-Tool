@@ -1,5 +1,6 @@
 package world.terrain.generators;
 
+import gui.Canvas;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import world.World;
@@ -8,13 +9,13 @@ import world.terrain.Generator;
 public class NoiseMapGenerator extends Generator {
 
     @Override
-    public void generate(World w) {
+    public void generate(World w, int layer) {
         DiamondSquare ds = new DiamondSquare(Integer.parseInt(getParameter("size")));
         float[][] dsmap = ds.getMap();
         for (int i = 0; i < w.columns(); i++) {
             for (int j = 0; j < w.rows(); j++) {
                 if (i >= dsmap.length || j >= dsmap.length) continue;
-                if (dsmap[i][j] > .5) w.setTile(0, i, j);
+                if (dsmap[i][j] > .5) w.setTile(i, j, Canvas.layer(), 0);
             }
         }
     }

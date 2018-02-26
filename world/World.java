@@ -34,6 +34,7 @@ public class World {
     private World(int w, int h) {
         this.layers = new ArrayList<int[][]>();
         this.dims = new int[]{w, h};
+        this.addLayer();
         this.rng = new Random();
         setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
@@ -44,10 +45,12 @@ public class World {
     
     public void addLayer() {
         layers.add(new int[dims[0]][dims[1]]);
+        clearTiles(layers.size()-1);
     }
     
     public boolean removeLayer(int index) {
-        layers.remove(index);
+        int[][] removed = layers.remove(index);
+        return removed != null;
     }
     
     public int[][] getLayer(int index) {
@@ -63,7 +66,7 @@ public class World {
     public final void setSeed(long seed) { rng.setSeed(seed); this.seed = seed; }
     public long getSeed() { return seed; }
     
-    public void generate(Generator g) { setSeed(seed); g.generate(this); }
+    public void generate(Generator g) { setSeed(seed); g.generate(this, 0); }
     public void setTile(int x, int y, int layer, int tile) { getLayer(layer)[x][y] = tile; }
     /**
      * Get the topmost visible tile at the {x, y} coordinate specified.
@@ -72,21 +75,31 @@ public class World {
      * @return A tile ID (integer).
      */
     public int getTile(int x, int y) { 
-        for (int l = layers.size() - 1; l >= -1; l++) {
+        for (int l = layers.size() - 1; l > -1; l--) {
             if (layers.get(l)[x][y] == -1) continue;
             return layers.get(l)[x][y];
         }
         return -1;
     }
     public int getTile(int x, int y, int layer) { 
-        return layers.get(l)[x][y];
+        return layers.get(layer)[x][y];
     }
-    public final void clearTiles() {
+    
+    public final int layerCount() { return layers.size(); }
+    
+    public final void clearTiles(int layer) {
         for (int x = 0; x < columns(); x++) {
-            for (int y = 0; y < rows(); y++) {
-                layers[x][y] = -1;
+                for (int y = 0; y < rows(); y++) {
+                    layers.get(layer)[x][y] = -1;
+                }
             }
-        }
+    }
+    
+    /**
+     * Clear all tiles in all layers. Does not change the layers at all.
+     */
+    public final void clearTiles() {
+        for (int i = 0; i < layers.size(); i++) clearTiles(i);
     }
     public int getTileCount() { return textures.size(); }
     
@@ -102,8 +115,8 @@ public class World {
         }
     }
     
-    public int columns() { return layers.length; }
-    public int rows() { return layers.length > 0 ? layers[0].length : 0; }
+    public int columns() { return dims[0]; }
+    public int rows() { return dims[1]; }
     
     public int width() { return columns()*tile_dims[0]; }
     public int height() { return rows()*tile_dims[1]; }
@@ -130,10 +143,10 @@ public class World {
             fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
             
-            for(int j = 0;j < rows(); j++) {
+            for (int j = 0; j < rows(); j++) {
                 String row = "";
-                for(int i = 0; i < columns(); i++) {
-                    row += layers[i][j]+" ";
+                for (int i = 0; i < columns(); i++) {
+                    row += getTile(i, j)+" ";
                 }
                 bw.write(row.trim()+"\n");
             }
@@ -150,8 +163,8 @@ public class World {
     public void draw(Graphics g) {
         g.setColor(Color.red);
         boolean found_null = false;
-        for (int x = 0; x < layers.length; x++) {
-            for (int y = 0; y < layers[0].length; y++) {
+        for (int x = 0; x < dims[0]; x++) {
+            for (int y = 0; y < dims[1]; y++) {
                 //get the onscreen coordinates of the tile
                 int osc[] = getOnscreenCoordinates(x, y);
                 //if tile is offscreen, don't render
@@ -159,8 +172,8 @@ public class World {
                         -tile_dims[0], -tile_dims[1], 
                         Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
                 //if tile ID is valid, draw. otherwise, indicate.
-                if (layers[x][y] < getTileCount()) {
-                    if (layers[x][y] > -1) g.drawImage(textures.get(layers[x][y]), osc[0], osc[1], null);
+                if (getTile(x, y) < getTileCount()) {
+                    if (getTile(x, y) > -1) g.drawImage(textures.get(getTile(x, y)), osc[0], osc[1], null);
                 } else {
                     found_null = true;
                     g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
@@ -168,7 +181,7 @@ public class World {
                     
             }
         }
-        if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 25);
+        if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 40);
     }
     
 }
