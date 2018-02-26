@@ -46,16 +46,17 @@ public class World {
         clearTiles();
         this.textures = new ArrayList<Image>();
         this.setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+        this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree"});
     }
     
     public void addLayer() {
-        layers.add(new int[dims[0]][dims[1]]);
+        layers.add(0, new int[dims[0]][dims[1]]);
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("name", "Untitled Layer");
         properties.put("tile", 0);
         properties.put("lastcmd", "");
-        layer_properties.add(properties);
-        clearTiles(layers.size() - 1);
+        layer_properties.add(0, properties);
+        clearTiles(0);
     }
     
     /**

@@ -487,6 +487,7 @@ public final class GUI extends javax.swing.JFrame {
                         "Type the name of each tile in order, comma separated:", "Add tile definitions", JOptionPane.QUESTION_MESSAGE);
                 String tdefspl[] = tdefs.split("\\s*,\\s*");
                 World.getWorld().setTileNames(tdefspl);
+                editLayerPanel.setVisible(false);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(gui, "You need to choose a valid image file! (.png, .jpg, etc...)", 
                         "Invalid spritesheet", JOptionPane.ERROR_MESSAGE);
@@ -516,10 +517,14 @@ public final class GUI extends javax.swing.JFrame {
 
     private void earthSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earthSpritesheetButtonActionPerformed
         World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+        World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree"});
+        editLayerPanel.setVisible(false);
     }//GEN-LAST:event_earthSpritesheetButtonActionPerformed
 
     private void marsSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marsSpritesheetButtonActionPerformed
         World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/mars.png"));
+        World.getWorld().setTileNames(new String[]{"Sand", "Ice", "Boulder"});
+        editLayerPanel.setVisible(false);
     }//GEN-LAST:event_marsSpritesheetButtonActionPerformed
 
     private void exportTerrainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTerrainButtonActionPerformed
@@ -604,7 +609,7 @@ public final class GUI extends javax.swing.JFrame {
     private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
         World.getWorld().addLayer();
         gui.refreshLayerList();
-        layerList.setSelectedIndex(layerList.getModel().getSize() - 1);
+        layerList.setSelectedIndex(0);
         canvas.repaint();
         layerList.ensureIndexIsVisible(layerList.getSelectedIndex());
     }//GEN-LAST:event_addLayerButtonActionPerformed
