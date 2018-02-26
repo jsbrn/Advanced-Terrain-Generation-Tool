@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -60,11 +62,11 @@ public final class GUI extends javax.swing.JFrame {
         editLayerPanel = new javax.swing.JPanel();
         applyLayerChangesButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        layerTileField = new javax.swing.JSpinner();
         layerNameField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        layerTileChooser = new javax.swing.JComboBox<>();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
@@ -155,6 +157,7 @@ public final class GUI extends javax.swing.JFrame {
 
         layerUpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/up.png"))); // NOI18N
         layerUpButton.setToolTipText("Move up");
+        layerUpButton.setEnabled(false);
         layerUpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 layerUpButtonActionPerformed(evt);
@@ -163,6 +166,7 @@ public final class GUI extends javax.swing.JFrame {
 
         layerDownButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/down.png"))); // NOI18N
         layerDownButton.setToolTipText("Move down");
+        layerDownButton.setEnabled(false);
         layerDownButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 layerDownButtonActionPerformed(evt);
@@ -209,40 +213,39 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(layerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layerPanelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(layerUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
-                            .addComponent(layerDownButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(deleteLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(addLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(deleteLayerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(layerUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(layerDownButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(addLayerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layerPanelLayout.setVerticalGroup(
             layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layerPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layerPanelLayout.createSequentialGroup()
                         .addComponent(addLayerButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editLayerButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerUpButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerDownButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(editLayerButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteLayerButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(regenLayerButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 11, Short.MAX_VALUE))
+                        .addComponent(regenLayerButton)
+                        .addGap(26, 26, 26)
+                        .addComponent(deleteLayerButton))
+                    .addComponent(jScrollPane1))
+                .addGap(9, 15, Short.MAX_VALUE))
         );
 
         applyLayerChangesButton.setText("Apply changes");
@@ -254,7 +257,7 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel2.setText("Name");
 
-        jLabel3.setText("Tile ID");
+        jLabel3.setText("Tile");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Editing 'Untitled Layer'");
@@ -262,21 +265,21 @@ public final class GUI extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
 
+        layerTileChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no tiles defined>" }));
+
         javax.swing.GroupLayout editLayerPanelLayout = new javax.swing.GroupLayout(editLayerPanel);
         editLayerPanel.setLayout(editLayerPanelLayout);
         editLayerPanelLayout.setHorizontalGroup(
             editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editLayerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(layerTileField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3)
+                        .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(layerTileChooser, 0, 164, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
                         .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,22 +290,19 @@ public final class GUI extends javax.swing.JFrame {
             editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(jLabel4)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(editLayerPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(layerTileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(applyLayerChangesButton))
-                    .addGroup(editLayerPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(applyLayerChangesButton)
                 .addContainerGap())
         );
 
@@ -320,7 +320,7 @@ public final class GUI extends javax.swing.JFrame {
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
-                .addContainerGap(190, Short.MAX_VALUE)
+                .addContainerGap(159, Short.MAX_VALUE)
                 .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -480,8 +480,17 @@ public final class GUI extends javax.swing.JFrame {
         int success = chooser.showOpenDialog(gui);
         if (success == JFileChooser.APPROVE_OPTION) {
             File chosen = chooser.getSelectedFile();
-            World.getWorld().setSpritesheet(chosen);
-            System.out.println("Set world spritesheet file to "+chosen.getAbsolutePath());
+            try {
+                World.getWorld().setSpritesheet(chosen);
+                System.out.println("Set world spritesheet file to "+chosen.getAbsolutePath());
+                String tdefs = JOptionPane.showInputDialog(gui, 
+                        "Type the name of each tile in order, comma separated:", "Add tile definitions", JOptionPane.QUESTION_MESSAGE);
+                String tdefspl[] = tdefs.split("\\s*,\\s*");
+                World.getWorld().setTileNames(tdefspl);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(gui, "You need to choose a valid image file! (.png, .jpg, etc...)", 
+                        "Invalid spritesheet", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_customSpritesheetButtonActionPerformed
 
@@ -542,7 +551,11 @@ public final class GUI extends javax.swing.JFrame {
     private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
         editLayerPanel.setVisible(true);
         layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
-        layerTileField.setValue((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<String>();
+        for (String tile: World.getWorld().getTileNames()) m.addElement(tile);
+        if (m.getSize() == 0) m.addElement("<no tiles defined>");
+        layerTileChooser.setModel(m);
+        layerTileChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
         canvas.repaint();
     }//GEN-LAST:event_editLayerButtonActionPerformed
 
@@ -593,19 +606,19 @@ public final class GUI extends javax.swing.JFrame {
         gui.refreshLayerList();
         layerList.setSelectedIndex(layerList.getModel().getSize() - 1);
         canvas.repaint();
+        layerList.ensureIndexIsVisible(layerList.getSelectedIndex());
     }//GEN-LAST:event_addLayerButtonActionPerformed
 
     private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
         if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
         int scount = evt.getLastIndex() - evt.getFirstIndex();
-        layerUpButton.setEnabled(scount == 1 && evt.getFirstIndex() > 0);
-        layerDownButton.setEnabled(scount == 1 && evt.getLastIndex() < layerList.getModel().getSize() - 1);
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_layerListValueChanged
 
     private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
         World.getWorld().setLayerProperty("name", layerNameField.getText(), layerList.getSelectedIndex());
-        World.getWorld().setLayerProperty("tile", layerTileField.getValue(), layerList.getSelectedIndex());
+        World.getWorld().setLayerProperty("tile", 
+                layerTileChooser.getSelectedIndex(), layerList.getSelectedIndex());
         canvas.repaint();
         refreshLayerList();
         editLayerPanel.setVisible(false);
@@ -657,7 +670,7 @@ public final class GUI extends javax.swing.JFrame {
                 gui = new GUI();
                 gui.setVisible(true);
                 World.newWorld(64, 64);
-                
+                gui.refreshLayerList();
             }
         });
     }
@@ -694,7 +707,7 @@ public final class GUI extends javax.swing.JFrame {
     private static javax.swing.JList<String> layerList;
     private javax.swing.JTextField layerNameField;
     private javax.swing.JPanel layerPanel;
-    private javax.swing.JSpinner layerTileField;
+    private javax.swing.JComboBox<String> layerTileChooser;
     private javax.swing.JButton layerUpButton;
     private gui.MiniMap mapView;
     private javax.swing.JMenuItem marsSpritesheetButton;

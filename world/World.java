@@ -22,6 +22,7 @@ public class World {
 
     private static World world;
     private ArrayList<int[][]> layers;
+    private ArrayList<String> tile_names;
     private int[] tile_dims, dims;
     private BufferedImage spritesheet;
     private ArrayList<Image> textures;
@@ -37,6 +38,7 @@ public class World {
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
         this.layers = new ArrayList<int[][]>();
         this.dims = new int[]{w, h};
+        this.tile_names = new ArrayList<String>();
         this.addLayer();
         this.rng = new Random();
         setSeed(rng.nextLong());
@@ -54,6 +56,20 @@ public class World {
         properties.put("lastcmd", "");
         layer_properties.add(properties);
         clearTiles(layers.size() - 1);
+    }
+    
+    /**
+     * Set the tile definitions, i.e. the names of the tiles in the spritesheet for now.
+     * This will soon be replaced by a tile attribute system.
+     * @param names 
+     */
+    public void setTileNames(String[] names) {
+        tile_names = new ArrayList<String>();
+        for (String def: names) tile_names.add(def);
+    }
+    
+    public ArrayList<String> getTileNames() {
+        return tile_names;
     }
     
     public void reorderLayer(int index, int amount) {
