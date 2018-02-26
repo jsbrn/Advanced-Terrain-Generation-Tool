@@ -71,7 +71,7 @@ public class WaterGenerator extends Generator {
             for(int i=0; i<rheight; i++){
                 for(int j=0; j<rwidth; j++){
                     if(x[0]+j>w.columns()-1||x[1]+i>w.rows()-1)continue;
-                    w.setTile(x[0]+j,x[1]+i, Canvas.layer(), t);
+                    w.setTile(x[0]+j,x[1]+i, layer, t);
                 }
             }
             
@@ -234,7 +234,7 @@ public class WaterGenerator extends Generator {
                         break riverloop;
                     
                     //Everything is OK, draw the designated water tile at the next coordinates
-                    w.setTile(next[0], next[1], Canvas.layer(), t);
+                    w.setTile(next[0], next[1], layer, t);
                     
                     //Increment i by one since we used up one of our 'rlength'
                     i++;

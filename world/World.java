@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -24,6 +25,7 @@ public class World {
     private int[] tile_dims, dims;
     private BufferedImage spritesheet;
     private ArrayList<Image> textures;
+    private ArrayList<HashMap<String, Object>> layer_properties;
     
     private Random rng;
     private long seed;
@@ -32,6 +34,7 @@ public class World {
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
+        this.layer_properties = new ArrayList<HashMap<String, Object>>();
         this.layers = new ArrayList<int[][]>();
         this.dims = new int[]{w, h};
         this.addLayer();
@@ -45,16 +48,26 @@ public class World {
     
     public void addLayer() {
         layers.add(new int[dims[0]][dims[1]]);
-        clearTiles(layers.size()-1);
+        HashMap<String, Object> properties = new HashMap<String, Object>();
+        properties.put("name", "Layer "+layers.size());
+        properties.put("tile", 0);
+        properties.put("lastcmd", "");
+        layer_properties.add(properties);
+        clearTiles(layers.size() - 1);
     }
     
     public boolean removeLayer(int index) {
         int[][] removed = layers.remove(index);
+        layer_properties.remove(index);
         return removed != null;
     }
     
-    public int[][] getLayer(int index) {
-        return layers.get(index);
+    public Object getLayerProperty(String prop, int layer) {
+        return layer_properties.get(layer).get(prop);
+    }
+    
+    public int[][] getTerrain(int layer) {
+        return layers.get(layer);
     }
     
     private World(int w, int h, long seed) {
@@ -67,7 +80,7 @@ public class World {
     public long getSeed() { return seed; }
     
     public void generate(Generator g) { setSeed(seed); g.generate(this, 0); }
-    public void setTile(int x, int y, int layer, int tile) { getLayer(layer)[x][y] = tile; }
+    public void setTile(int x, int y, int layer, int tile) { getTerrain(layer)[x][y] = tile; }
     /**
      * Get the topmost visible tile at the {x, y} coordinate specified.
      * @param x The x coord

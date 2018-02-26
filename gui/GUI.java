@@ -135,6 +135,7 @@ public final class GUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        layerList.setSelectedIndices(new int[] {0});
         layerList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 layerListValueChanged(evt);
@@ -482,7 +483,11 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_editLayerButtonActionPerformed
 
     private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
-        // TODO add your handling code here:
+        int index = layerList.getSelectedIndex();
+        World.getWorld().removeLayer(index);
+        gui.refreshLayerList();
+        layerList.setSelectedIndex(index < layerList.getModel().getSize() ? index 
+                : layerList.getModel().getSize() - 1);
     }//GEN-LAST:event_deleteLayerButtonActionPerformed
 
     private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
@@ -506,8 +511,8 @@ public final class GUI extends javax.swing.JFrame {
             System.out.println(gname+" parameter: "+name+" = "+val);
         }
         //clear and generate
-        World.getWorld().clearTiles();
-        g.generate(World.getWorld(), 0);
+        World.getWorld().clearTiles(layerList.getSelectedIndex());
+        g.generate(World.getWorld(), layerList.getSelectedIndex());
         //repaint
         canvas.repaint();
     }//GEN-LAST:event_regenLayerButtonActionPerformed
@@ -515,6 +520,7 @@ public final class GUI extends javax.swing.JFrame {
     private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
         World.getWorld().addLayer();
         gui.refreshLayerList();
+        layerList.setSelectedIndex(layerList.getModel().getSize() - 1);
     }//GEN-LAST:event_addLayerButtonActionPerformed
 
     private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
@@ -535,8 +541,10 @@ public final class GUI extends javax.swing.JFrame {
     
     public void refreshLayerList() {
         DefaultListModel m = new DefaultListModel();
+        int index = layerList.getSelectedIndex();
         for (int i = 0; i < World.getWorld().layerCount(); i++) m.addElement("Layer "+i);
         layerList.setModel(m);
+        layerList.setSelectedIndex(index);
     }
     
     /**

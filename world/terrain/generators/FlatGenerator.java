@@ -16,7 +16,7 @@ public class FlatGenerator extends Generator {
                 if (j < w.rows() - Integer.parseInt(getParameter("height"))) continue;
                 String t = getParameter("tile");
                 int tcount = w.getTileCount();
-                w.setTile(i, j, Canvas.layer(), 
+                w.setTile(i, j, layer, 
                         "random".equals(t) ? (tcount == 0 ? 0 : w.rng().nextInt() % tcount) : Integer.parseInt(t));
             }
         }
