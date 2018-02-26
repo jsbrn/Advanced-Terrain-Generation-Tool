@@ -45,12 +45,12 @@ public final class Canvas extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         
-        if (GUI.getCanvas() == null) return; //ensure that Netbeans editor does not throw an exception
-        
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.white);
         
+        if (GUI.getCanvas() == null) return; //ensure that Netbeans editor does not throw an exception
+
         World world = World.getWorld();
         
         if (world == null) { g.drawString("No world loaded!", 15, 10); return; } else { world.draw(g); }
