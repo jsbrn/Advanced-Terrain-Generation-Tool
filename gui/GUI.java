@@ -411,8 +411,7 @@ public final class GUI extends javax.swing.JFrame {
             System.out.println(gname+" parameter: "+name+" = "+val);
         }
         //clear and generate
-        //commented this out, allows for multiple passes of algorithms
-        //World.getWorld().clearTiles();
+        World.getWorld().clearTiles();
         g.generate(World.getWorld());
         //repaint
         canvas.repaint();

@@ -20,8 +20,8 @@ import world.terrain.Generator;
 public class World {
 
     private static World world;
-    private int[][] terrain;
-    private int[] tile_dims;
+    private ArrayList<int[][]> layers;
+    private int[] tile_dims, dims;
     private BufferedImage spritesheet;
     private ArrayList<Image> textures;
     
@@ -32,13 +32,26 @@ public class World {
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
-        this.terrain = new int[w][h];
+        this.layers = new ArrayList<int[][]>();
+        this.dims = new int[]{w, h};
         this.rng = new Random();
         setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
         clearTiles();
         this.textures = new ArrayList<Image>();
         this.setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+    }
+    
+    public void addLayer() {
+        layers.add(new int[dims[0]][dims[1]]);
+    }
+    
+    public boolean removeLayer(int index) {
+        layers.remove(index);
+    }
+    
+    public int[][] getLayer(int index) {
+        return layers.get(index);
     }
     
     private World(int w, int h, long seed) {
@@ -51,12 +64,27 @@ public class World {
     public long getSeed() { return seed; }
     
     public void generate(Generator g) { setSeed(seed); g.generate(this); }
-    public void setTile(int tile, int x, int y) { terrain[x][y] = tile; }
-    public int getTile(int x, int y) { return terrain[x][y]; }
+    public void setTile(int x, int y, int layer, int tile) { getLayer(layer)[x][y] = tile; }
+    /**
+     * Get the topmost visible tile at the {x, y} coordinate specified.
+     * @param x The x coord
+     * @param y The y coord
+     * @return A tile ID (integer).
+     */
+    public int getTile(int x, int y) { 
+        for (int l = layers.size() - 1; l >= -1; l++) {
+            if (layers.get(l)[x][y] == -1) continue;
+            return layers.get(l)[x][y];
+        }
+        return -1;
+    }
+    public int getTile(int x, int y, int layer) { 
+        return layers.get(l)[x][y];
+    }
     public final void clearTiles() {
         for (int x = 0; x < columns(); x++) {
             for (int y = 0; y < rows(); y++) {
-                terrain[x][y] = -1;
+                layers[x][y] = -1;
             }
         }
     }
@@ -74,8 +102,8 @@ public class World {
         }
     }
     
-    public int columns() { return terrain.length; }
-    public int rows() { return terrain.length > 0 ? terrain[0].length : 0; }
+    public int columns() { return layers.length; }
+    public int rows() { return layers.length > 0 ? layers[0].length : 0; }
     
     public int width() { return columns()*tile_dims[0]; }
     public int height() { return rows()*tile_dims[1]; }
@@ -105,7 +133,7 @@ public class World {
             for(int j = 0;j < rows(); j++) {
                 String row = "";
                 for(int i = 0; i < columns(); i++) {
-                    row += terrain[i][j]+" ";
+                    row += layers[i][j]+" ";
                 }
                 bw.write(row.trim()+"\n");
             }
@@ -122,8 +150,8 @@ public class World {
     public void draw(Graphics g) {
         g.setColor(Color.red);
         boolean found_null = false;
-        for (int x = 0; x < terrain.length; x++) {
-            for (int y = 0; y < terrain[0].length; y++) {
+        for (int x = 0; x < layers.length; x++) {
+            for (int y = 0; y < layers[0].length; y++) {
                 //get the onscreen coordinates of the tile
                 int osc[] = getOnscreenCoordinates(x, y);
                 //if tile is offscreen, don't render
@@ -131,8 +159,8 @@ public class World {
                         -tile_dims[0], -tile_dims[1], 
                         Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
                 //if tile ID is valid, draw. otherwise, indicate.
-                if (terrain[x][y] < getTileCount()) {
-                    if (terrain[x][y] > -1) g.drawImage(textures.get(terrain[x][y]), osc[0], osc[1], null);
+                if (layers[x][y] < getTileCount()) {
+                    if (layers[x][y] > -1) g.drawImage(textures.get(layers[x][y]), osc[0], osc[1], null);
                 } else {
                     found_null = true;
                     g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
