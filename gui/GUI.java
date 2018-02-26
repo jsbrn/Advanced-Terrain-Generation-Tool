@@ -46,6 +46,13 @@ public final class GUI extends javax.swing.JFrame {
 
         navigator = new javax.swing.JDialog();
         mapView = new gui.MiniMap();
+        layerEditor = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        layerTileField = new javax.swing.JSpinner();
+        layerNameField = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -116,6 +123,70 @@ public final class GUI extends javax.swing.JFrame {
             .addComponent(mapView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        layerEditor.setTitle("Edit layer properties");
+        layerEditor.setBounds(new java.awt.Rectangle(0, 0, 295, 200));
+        layerEditor.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                layerEditorFocusLost(evt);
+            }
+        });
+
+        jPanel1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jPanel1FocusLost(evt);
+            }
+        });
+
+        jLabel2.setText("Name");
+
+        jLabel3.setText("Tile ID");
+
+        jButton2.setText("OK");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(layerNameField)
+                    .addComponent(layerTileField)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(layerTileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(68, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layerEditorLayout = new javax.swing.GroupLayout(layerEditor.getContentPane());
+        layerEditor.getContentPane().setLayout(layerEditorLayout);
+        layerEditorLayout.setHorizontalGroup(
+            layerEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layerEditorLayout.setVerticalGroup(
+            layerEditorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool - Untitled World");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
@@ -148,6 +219,7 @@ public final class GUI extends javax.swing.JFrame {
 
         layerUpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/up.png"))); // NOI18N
         layerUpButton.setToolTipText("Move up");
+        layerUpButton.setEnabled(false);
         layerUpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 layerUpButtonActionPerformed(evt);
@@ -156,6 +228,7 @@ public final class GUI extends javax.swing.JFrame {
 
         layerDownButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/down.png"))); // NOI18N
         layerDownButton.setToolTipText("Move down");
+        layerDownButton.setEnabled(false);
         layerDownButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 layerDownButtonActionPerformed(evt);
@@ -172,6 +245,7 @@ public final class GUI extends javax.swing.JFrame {
 
         deleteLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/delete.png"))); // NOI18N
         deleteLayerButton.setToolTipText("Delete layer");
+        deleteLayerButton.setEnabled(false);
         deleteLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteLayerButtonActionPerformed(evt);
@@ -408,8 +482,6 @@ public final class GUI extends javax.swing.JFrame {
         return null;
     }
 
-    
-    private String last_terrain_string = "";
     private void generateTerrainFromText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateTerrainFromText
         
     }//GEN-LAST:event_generateTerrainFromText
@@ -479,7 +551,7 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_layerDownButtonActionPerformed
 
     private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
-        // TODO add your handling code here:
+        showDialog(layerEditor, false);
     }//GEN-LAST:event_editLayerButtonActionPerformed
 
     private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
@@ -491,9 +563,10 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteLayerButtonActionPerformed
 
     private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
-        String s = JOptionPane.showInputDialog(gui, "Parameters:", last_terrain_string);
+        String s = JOptionPane.showInputDialog(gui, "Parameters:", 
+                World.getWorld().getLayerProperty("lastcmd", Canvas.layer()));
         if (s == null) return; s = s.trim();
-        last_terrain_string = s;
+        World.getWorld().setLayerProperty("lastcmd", s, Canvas.layer());
         //split by colon
         String split[] = s.split("\\s*:\\s*");
         if (split.length < 2) { System.err.println("Invalid input!"); return; }
@@ -527,6 +600,14 @@ public final class GUI extends javax.swing.JFrame {
         if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
     }//GEN-LAST:event_layerListValueChanged
 
+    private void jPanel1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel1FocusLost
+        layerEditor.setVisible(false);
+    }//GEN-LAST:event_jPanel1FocusLost
+
+    private void layerEditorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_layerEditorFocusLost
+        layerEditor.setVisible(false);
+    }//GEN-LAST:event_layerEditorFocusLost
+
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -542,9 +623,13 @@ public final class GUI extends javax.swing.JFrame {
     public void refreshLayerList() {
         DefaultListModel m = new DefaultListModel();
         int index = layerList.getSelectedIndex();
-        for (int i = 0; i < World.getWorld().layerCount(); i++) m.addElement("Layer "+i);
+        for (int i = 0; i < World.getWorld().layerCount(); i++) 
+            m.addElement(World.getWorld().getLayerProperty("name", i));
         layerList.setModel(m);
         layerList.setSelectedIndex(index);
+        deleteLayerButton.setEnabled(World.getWorld().layerCount() > 1);
+        //layerUpButton.setEnabled(layerList.getSelectedIndex() > 0);
+        //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
     }
     
     /**
@@ -590,16 +675,23 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportTerrainButton;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem generateTerrainButton;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JButton layerDownButton;
+    private javax.swing.JDialog layerEditor;
     private static javax.swing.JList<String> layerList;
+    private javax.swing.JTextField layerNameField;
     private javax.swing.JPanel layerPanel;
+    private javax.swing.JSpinner layerTileField;
     private javax.swing.JButton layerUpButton;
     private gui.MiniMap mapView;
     private javax.swing.JMenuItem marsSpritesheetButton;

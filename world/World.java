@@ -57,6 +57,7 @@ public class World {
     }
     
     public boolean removeLayer(int index) {
+        if (layers.size() == 1) return false;
         int[][] removed = layers.remove(index);
         layer_properties.remove(index);
         return removed != null;
@@ -64,6 +65,10 @@ public class World {
     
     public Object getLayerProperty(String prop, int layer) {
         return layer_properties.get(layer).get(prop);
+    }
+    
+    public void setLayerProperty(String prop, Object value, int layer) {
+        layer_properties.get(layer).put(prop, value);
     }
     
     public int[][] getTerrain(int layer) {
