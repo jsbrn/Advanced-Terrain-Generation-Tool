@@ -28,8 +28,9 @@ public abstract class Generator {
     /**
      * Fills the specified world instance. Must be implemented by each generator type.
      * @param w The World to fill with terrain.
+     * @param layer The tile layer to generate in.
      */
-    public abstract void generate(World w);
+    public abstract void generate(World w, int layer);
 
     private HashMap<String, String> parameters 
             = new HashMap<String, String>();
