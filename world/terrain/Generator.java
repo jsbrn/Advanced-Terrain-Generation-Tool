@@ -12,7 +12,7 @@ public abstract class Generator {
      */
     private static final Object[][] generators = new Object[][]{
         {"FlatGenerator", new FlatGenerator()},{"FillGenerator", new FillGenerator()},
-        {"WaterGenerator", new WaterGenerator()}
+        {"WaterGenerator", new WaterGenerator()}, {"NoiseMap", new NoiseMapGenerator()}
     };
     
     /**
