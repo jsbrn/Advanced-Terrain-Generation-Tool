@@ -8,9 +8,12 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -38,25 +41,57 @@ public final class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mapView = new javax.swing.JDialog();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        navigator = new javax.swing.JDialog();
+        mapView = new gui.MiniMap();
         canvas = new gui.Canvas();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        layerPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        layerList = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        layerUpButton = new javax.swing.JButton();
+        layerDownButton = new javax.swing.JButton();
+        editLayerButton = new javax.swing.JButton();
+        deleteLayerButton = new javax.swing.JButton();
+        regenLayerButton = new javax.swing.JButton();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        newWorldButton = new javax.swing.JMenuItem();
+        openWorldButton = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        exportTerrainButton = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        exitButton = new javax.swing.JMenuItem();
         worldMenu = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        showNavigatorButton = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        generateTerrainButton = new javax.swing.JMenuItem();
+        setSeedButton = new javax.swing.JMenuItem();
+        chooseSpriteSheetMenu = new javax.swing.JMenu();
+        earthSpritesheetButton = new javax.swing.JMenuItem();
+        marsSpritesheetButton = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        customSpritesheetButton = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
 
-        mapView.setBounds(new java.awt.Rectangle(100, 100, 500, 500));
+        navigator.setTitle("Navigator");
+        navigator.setAlwaysOnTop(true);
+        navigator.setBounds(new java.awt.Rectangle(100, 100, 500, 500));
+        navigator.setIconImage(getIconImage());
+        navigator.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                navigatorFocusLost(evt);
+            }
+        });
 
-        javax.swing.GroupLayout mapViewLayout = new javax.swing.GroupLayout(mapView.getContentPane());
-        mapView.getContentPane().setLayout(mapViewLayout);
+        mapView.setBackground(new java.awt.Color(0, 0, 0));
+        mapView.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                mapViewFocusLost(evt);
+            }
+        });
+
+        javax.swing.GroupLayout mapViewLayout = new javax.swing.GroupLayout(mapView);
+        mapView.setLayout(mapViewLayout);
         mapViewLayout.setHorizontalGroup(
             mapViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 500, Short.MAX_VALUE)
@@ -66,10 +101,21 @@ public final class GUI extends javax.swing.JFrame {
             .addGap(0, 500, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout navigatorLayout = new javax.swing.GroupLayout(navigator.getContentPane());
+        navigator.getContentPane().setLayout(navigatorLayout);
+        navigatorLayout.setHorizontalGroup(
+            navigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(mapView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        navigatorLayout.setVerticalGroup(
+            navigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(mapView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool - Untitled World");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
-        setIconImage(getIconImage());
+        setIconImages(getIconImages());
 
         canvas.setBackground(new java.awt.Color(0, 0, 0));
         canvas.setDoubleBuffered(false);
@@ -79,109 +125,261 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        layerList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        layerList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Lakes", "Villages1", "Villages3", "Trees", "Beach" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(layerList);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Layers");
+
+        layerUpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/up.png"))); // NOI18N
+        layerUpButton.setToolTipText("Move up");
+        layerUpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layerUpButtonActionPerformed(evt);
+            }
+        });
+
+        layerDownButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/down.png"))); // NOI18N
+        layerDownButton.setToolTipText("Move down");
+        layerDownButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layerDownButtonActionPerformed(evt);
+            }
+        });
+
+        editLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/edit.png"))); // NOI18N
+        editLayerButton.setToolTipText("Edit layer properties");
+        editLayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editLayerButtonActionPerformed(evt);
+            }
+        });
+
+        deleteLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/delete.png"))); // NOI18N
+        deleteLayerButton.setToolTipText("Delete layer");
+        deleteLayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteLayerButtonActionPerformed(evt);
+            }
+        });
+
+        regenLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh.png"))); // NOI18N
+        regenLayerButton.setToolTipText("Regenerate layer");
+        regenLayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regenLayerButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layerPanelLayout = new javax.swing.GroupLayout(layerPanel);
+        layerPanel.setLayout(layerPanelLayout);
+        layerPanelLayout.setHorizontalGroup(
+            layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layerPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(layerUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
+                            .addComponent(layerDownButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(deleteLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        layerPanelLayout.setVerticalGroup(
+            layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layerPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layerPanelLayout.createSequentialGroup()
+                        .addComponent(layerUpButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(layerDownButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editLayerButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteLayerButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(regenLayerButton))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
         canvasLayout.setHorizontalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 988, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
+                .addContainerGap(503, Short.MAX_VALUE)
+                .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
+                .addContainerGap(194, Short.MAX_VALUE)
+                .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Canvas", canvas);
+        fileMenu.setText("File");
 
-        jMenu1.setText("File");
-
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("New world...");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        newWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        newWorldButton.setText("New world...");
+        newWorldButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newWorld(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        fileMenu.add(newWorldButton);
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem5.setText("Open existing world...");
-        jMenuItem5.setEnabled(false);
-        jMenu1.add(jMenuItem5);
+        openWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openWorldButton.setText("Open existing world...");
+        openWorldButton.setEnabled(false);
+        fileMenu.add(openWorldButton);
+        fileMenu.add(jSeparator3);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Exit");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        exportTerrainButton.setText("Export terrain...");
+        exportTerrainButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                exportTerrainButtonActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        fileMenu.add(exportTerrainButton);
+        fileMenu.add(jSeparator4);
 
-        jMenuBar1.add(jMenu1);
+        exitButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        exitButton.setText("Exit");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitButtonActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitButton);
+
+        menuBar.add(fileMenu);
 
         worldMenu.setText("World");
 
-        jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem7.setText("Generate terrain...");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        showNavigatorButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        showNavigatorButton.setText("Navigator...");
+        showNavigatorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showNavigatorButtonActionPerformed(evt);
+            }
+        });
+        worldMenu.add(showNavigatorButton);
+        worldMenu.add(jSeparator1);
+
+        generateTerrainButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.ALT_MASK));
+        generateTerrainButton.setText("Generate terrain...");
+        generateTerrainButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateTerrainFromText(evt);
             }
         });
-        worldMenu.add(jMenuItem7);
-        worldMenu.add(jSeparator1);
+        worldMenu.add(generateTerrainButton);
 
-        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem6.setText("Set seed...");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        setSeedButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
+        setSeedButton.setText("Set seed...");
+        setSeedButton.setEnabled(false);
+        setSeedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                setSeedButtonActionPerformed(evt);
             }
         });
-        worldMenu.add(jMenuItem6);
+        worldMenu.add(setSeedButton);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
-        jMenuItem3.setText("Choose tile spritesheet...");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        chooseSpriteSheetMenu.setText("Choose tile spritesheet...");
+
+        earthSpritesheetButton.setText("Earth");
+        earthSpritesheetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                earthSpritesheetButtonActionPerformed(evt);
             }
         });
-        worldMenu.add(jMenuItem3);
+        chooseSpriteSheetMenu.add(earthSpritesheetButton);
+
+        marsSpritesheetButton.setText("Mars");
+        marsSpritesheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                marsSpritesheetButtonActionPerformed(evt);
+            }
+        });
+        chooseSpriteSheetMenu.add(marsSpritesheetButton);
+        chooseSpriteSheetMenu.add(jSeparator2);
+
+        customSpritesheetButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
+        customSpritesheetButton.setText("Pick a file...");
+        customSpritesheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customSpritesheetButtonActionPerformed(evt);
+            }
+        });
+        chooseSpriteSheetMenu.add(customSpritesheetButton);
+
+        worldMenu.add(chooseSpriteSheetMenu);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Resize world...");
         jMenuItem4.setEnabled(false);
         worldMenu.add(jMenuItem4);
 
-        jMenuBar1.add(worldMenu);
+        menuBar.add(worldMenu);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(canvas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
-        World.newWorld(512, 256);
+        World.newWorld(64, 64);
         worldMenu.setEnabled(true);
         canvas.repaint();
     }//GEN-LAST:event_newWorld
 
     @Override
     public Image getIconImage() {
+        return getIconImage(32);
+    }
+
+    @Override
+    public List<Image> getIconImages() {
+        ArrayList<Image> icons = new ArrayList<Image>();
+        icons.add(getIconImage(16));
+        icons.add(getIconImage(32));
+        icons.add(getIconImage(48));
+        icons.add(getIconImage(64));
+        return icons;
+    }
+
+    public Image getIconImage(int size) {
         try {
-            InputStream img = GUI.class.getResourceAsStream("/resources/favicon.png");
+            InputStream img = GUI.class.getResourceAsStream("/resources/favicon-"+size+".png");
             if (img == null) return null;
             return ImageIO.read(img);
         } catch (IOException ex) {
@@ -213,17 +411,18 @@ public final class GUI extends javax.swing.JFrame {
             System.out.println(gname+" parameter: "+name+" = "+val);
         }
         //clear and generate
-        World.getWorld().clearTiles();
+        //commented this out, allows for multiple passes of algorithms
+        //World.getWorld().clearTiles();
         g.generate(World.getWorld());
         //repaint
         canvas.repaint();
     }//GEN-LAST:event_generateTerrainFromText
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void customSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customSpritesheetButtonActionPerformed
         JFileChooser chooser = new JFileChooser();
         int success = chooser.showOpenDialog(gui);
         if (success == JFileChooser.APPROVE_OPTION) {
@@ -231,24 +430,78 @@ public final class GUI extends javax.swing.JFrame {
             World.getWorld().setSpritesheet(chosen);
             System.out.println("Set world spritesheet file to "+chosen.getAbsolutePath());
         }
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_customSpritesheetButtonActionPerformed
 
     private void canvasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseClicked
         canvas.repaint();
     }//GEN-LAST:event_canvasMouseClicked
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void setSeedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setSeedButtonActionPerformed
         World.getWorld().setSeed(Long.parseLong(JOptionPane.showInputDialog(gui, "Seed (integer):")));
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_setSeedButtonActionPerformed
 
-    public static void showDialog(JDialog d) {
+    private void showNavigatorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showNavigatorButtonActionPerformed
+        showDialog(navigator, false);
+    }//GEN-LAST:event_showNavigatorButtonActionPerformed
+
+    private void navigatorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_navigatorFocusLost
+        navigator.setVisible(false);
+    }//GEN-LAST:event_navigatorFocusLost
+
+    private void mapViewFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mapViewFocusLost
+        navigator.setVisible(false);
+    }//GEN-LAST:event_mapViewFocusLost
+
+    private void earthSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earthSpritesheetButtonActionPerformed
+        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+    }//GEN-LAST:event_earthSpritesheetButtonActionPerformed
+
+    private void marsSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marsSpritesheetButtonActionPerformed
+        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/mars.png"));
+    }//GEN-LAST:event_marsSpritesheetButtonActionPerformed
+
+    private void exportTerrainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTerrainButtonActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            boolean saved = World.getWorld().exportTerrain(saver.getSelectedFile());
+            JOptionPane.showMessageDialog(gui, 
+                    saved ? "Terrain data has been exported!" : "Error exporting terrain data!", 
+                    saved ? "Success" : "Error",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
+        }
+        
+    }//GEN-LAST:event_exportTerrainButtonActionPerformed
+
+    private void layerUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerUpButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_layerUpButtonActionPerformed
+
+    private void layerDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerDownButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_layerDownButtonActionPerformed
+
+    private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editLayerButtonActionPerformed
+
+    private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteLayerButtonActionPerformed
+
+    private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_regenLayerButtonActionPerformed
+
+    public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
         double height = screenSize.getHeight();
         d.setLocation(gui.getX() + (int) (gui.getWidth() / 2) - (d.getWidth() / 2),
                 gui.getY() + (int) (gui.getHeight() / 2) - ((d.getHeight() / 2)));
-        d.setModal(true);
-        d.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        d.setModal(modal);
+        d.setModalityType(modal ? Dialog.ModalityType.APPLICATION_MODAL : Dialog.ModalityType.MODELESS);
         d.setVisible(true);
         System.out.println("Showing " + d.getTitle());
     }
@@ -274,27 +527,46 @@ public final class GUI extends javax.swing.JFrame {
             public void run() {
                 gui = new GUI();
                 gui.setVisible(true);
-                World.newWorld(1024, 512);
+                World.newWorld(64, 64);
+                
             }
         });
     }
     
     protected static Canvas getCanvas() { return gui == null ? null : gui.canvas; }
+    protected static MiniMap getMiniMap() { return gui == null ? null : gui.mapView; }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.Canvas canvas;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenu chooseSpriteSheetMenu;
+    private javax.swing.JMenuItem customSpritesheetButton;
+    private javax.swing.JButton deleteLayerButton;
+    private javax.swing.JMenuItem earthSpritesheetButton;
+    private javax.swing.JButton editLayerButton;
+    private javax.swing.JMenuItem exitButton;
+    private javax.swing.JMenuItem exportTerrainButton;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem generateTerrainButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JDialog mapView;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JButton layerDownButton;
+    private javax.swing.JList<String> layerList;
+    private javax.swing.JPanel layerPanel;
+    private javax.swing.JButton layerUpButton;
+    private gui.MiniMap mapView;
+    private javax.swing.JMenuItem marsSpritesheetButton;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JDialog navigator;
+    private javax.swing.JMenuItem newWorldButton;
+    private javax.swing.JMenuItem openWorldButton;
+    private javax.swing.JButton regenLayerButton;
+    private javax.swing.JMenuItem setSeedButton;
+    private javax.swing.JMenuItem showNavigatorButton;
     private javax.swing.JMenu worldMenu;
     // End of variables declaration//GEN-END:variables
 }

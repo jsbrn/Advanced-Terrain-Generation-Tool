@@ -1,15 +1,19 @@
 package world;
 
 import gui.Canvas;
+import gui.GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import misc.MiscMath;
 import world.terrain.Generator;
 
@@ -34,6 +38,7 @@ public class World {
         this.tile_dims = new int[]{16, 16};
         clearTiles();
         this.textures = new ArrayList<Image>();
+        this.setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
     }
     
     private World(int w, int h, long seed) {
@@ -86,6 +91,32 @@ public class World {
         int[] canvas_dims = Canvas.getDimensions();
         return new int[]{(canvas_dims[0]/2) - camera[0] + tx, 
             (canvas_dims[1]/2) - camera[1] + ty};
+    }
+    
+    public boolean exportTerrain(File folder) {
+        FileWriter fw;
+        File f = new File(folder.getAbsolutePath()+"/terrain-export-"+(System.currentTimeMillis()/100000)+".txt");
+        System.out.println("Exporting terrain to file " + f.getAbsoluteFile().getAbsolutePath());
+        try {
+            if (!f.exists()) f.createNewFile();
+            fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            for(int j = 0;j < rows(); j++) {
+                String row = "";
+                for(int i = 0; i < columns(); i++) {
+                    row += terrain[i][j]+" ";
+                }
+                bw.write(row.trim()+"\n");
+            }
+            
+            bw.close();
+            System.out.println("Exported terrain to "+f.getAbsolutePath());
+            return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
     
     public void draw(Graphics g) {
