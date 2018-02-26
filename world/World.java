@@ -56,6 +56,12 @@ public class World {
         clearTiles(layers.size() - 1);
     }
     
+    public void reorderLayer(int index, int amount) {
+        int[][] layer = layers.get(index);
+        layers.remove(index);
+        layers.add((int)MiscMath.clamp(index+amount, 0, layers.size()), layer);
+    }
+    
     public boolean removeLayer(int index) {
         if (layers.size() == 1) return false;
         int[][] removed = layers.remove(index);
@@ -93,7 +99,7 @@ public class World {
      * @return A tile ID (integer).
      */
     public int getTile(int x, int y) { 
-        for (int l = layers.size() - 1; l > -1; l--) {
+        for (int l = 0; l < layers.size(); l++) {
             if (layers.get(l)[x][y] == -1) continue;
             return layers.get(l)[x][y];
         }
@@ -154,21 +160,26 @@ public class World {
     
     public boolean exportTerrain(File folder) {
         FileWriter fw;
-        File f = new File(folder.getAbsolutePath()+"/terrain-export-"+(System.currentTimeMillis()/100000)+".txt");
+        File f = new File(folder.getAbsolutePath()+"/terrain-export-"+(System.currentTimeMillis()/1000)
+                +"-"+MiscMath.randomInt(0, 1000)+".txt");
         System.out.println("Exporting terrain to file " + f.getAbsoluteFile().getAbsolutePath());
         try {
             if (!f.exists()) f.createNewFile();
             fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
-            
-            for (int j = 0; j < rows(); j++) {
-                String row = "";
-                for (int i = 0; i < columns(); i++) {
-                    row += getTile(i, j)+" ";
+            bw.write("Dimensions: "+dims[0]+", "+dims[1]+"\n");
+            bw.write("---BEGIN TERRAIN EXPORT---\n");
+            for (int l = 0; l < layers.size(); l++) {
+                for (int j = 0; j < rows(); j++) {
+                    String row = "";
+                    for (int i = 0; i < columns(); i++) {
+                        row += getTile(i, j, l)+" ";
+                    }
+                    bw.write(row.trim()+"\n");
                 }
-                bw.write(row.trim()+"\n");
+                if (l < layers.size() - 1) bw.write("---\n");
             }
-            
+            bw.write("---END TERRAIN EXPORT---\n");
             bw.close();
             System.out.println("Exported terrain to "+f.getAbsolutePath());
             return true;
@@ -181,22 +192,24 @@ public class World {
     public void draw(Graphics g) {
         g.setColor(Color.red);
         boolean found_null = false;
-        for (int x = 0; x < dims[0]; x++) {
-            for (int y = 0; y < dims[1]; y++) {
-                //get the onscreen coordinates of the tile
-                int osc[] = getOnscreenCoordinates(x, y);
-                //if tile is offscreen, don't render
-                if (!MiscMath.pointIntersectsRect(osc[0], osc[1], 
-                        -tile_dims[0], -tile_dims[1], 
-                        Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
-                //if tile ID is valid, draw. otherwise, indicate.
-                if (getTile(x, y) < getTileCount()) {
-                    if (getTile(x, y) > -1) g.drawImage(textures.get(getTile(x, y)), osc[0], osc[1], null);
-                } else {
-                    found_null = true;
-                    g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
+        for (int l = layers.size() - 1; l > -1; l--) {
+            for (int x = 0; x < dims[0]; x++) {
+                for (int y = 0; y < dims[1]; y++) {
+                    //get the onscreen coordinates of the tile
+                    int osc[] = getOnscreenCoordinates(x, y);
+                    //if tile is offscreen, don't render
+                    if (!MiscMath.pointIntersectsRect(osc[0], osc[1], 
+                            -tile_dims[0], -tile_dims[1], 
+                            Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
+                    //if tile ID is valid, draw. otherwise, indicate.
+                    if (getTile(x, y, l) < getTileCount()) {
+                        if (getTile(x, y, l) > -1) g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
+                    } else {
+                        found_null = true;
+                        g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
+                    }
+
                 }
-                    
             }
         }
         if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 40);
