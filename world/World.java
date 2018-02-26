@@ -46,7 +46,7 @@ public class World {
         clearTiles();
         this.textures = new ArrayList<Image>();
         this.setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
-        this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree"});
+        this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
     }
     
     public void addLayer() {

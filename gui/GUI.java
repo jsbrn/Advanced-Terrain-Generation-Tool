@@ -517,13 +517,13 @@ public final class GUI extends javax.swing.JFrame {
 
     private void earthSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earthSpritesheetButtonActionPerformed
         World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
-        World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree"});
+        World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_earthSpritesheetButtonActionPerformed
 
     private void marsSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marsSpritesheetButtonActionPerformed
         World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/mars.png"));
-        World.getWorld().setTileNames(new String[]{"Sand", "Ice", "Boulder"});
+        World.getWorld().setTileNames(new String[]{"Sand", "Ice", "Rocks"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_marsSpritesheetButtonActionPerformed
 
