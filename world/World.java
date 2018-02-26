@@ -49,6 +49,10 @@ public class World {
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
     }
     
+    public void resize(int new_w, int new_h) {
+        
+    }
+    
     public void addLayer() {
         layers.add(0, new int[dims[0]][dims[1]]);
         HashMap<String, Object> properties = new HashMap<String, Object>();

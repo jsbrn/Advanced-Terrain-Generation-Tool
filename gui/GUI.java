@@ -64,7 +64,7 @@ public final class GUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         layerNameField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        editLayerTitleLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         layerTileChooser = new javax.swing.JComboBox<>();
         menuBar = new javax.swing.JMenuBar();
@@ -259,8 +259,8 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel3.setText("Tile");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("Editing 'Untitled Layer'");
+        editLayerTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        editLayerTitleLabel.setText("Editing 'Untitled Layer'");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
@@ -283,7 +283,7 @@ public final class GUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel2)
                         .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)))
+                        .addComponent(editLayerTitleLabel)))
                 .addContainerGap())
         );
         editLayerPanelLayout.setVerticalGroup(
@@ -292,7 +292,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(editLayerTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -419,6 +419,11 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem4.setText("Resize world...");
         jMenuItem4.setEnabled(false);
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         worldMenu.add(jMenuItem4);
 
         menuBar.add(worldMenu);
@@ -484,7 +489,8 @@ public final class GUI extends javax.swing.JFrame {
                 World.getWorld().setSpritesheet(chosen);
                 System.out.println("Set world spritesheet file to "+chosen.getAbsolutePath());
                 String tdefs = JOptionPane.showInputDialog(gui, 
-                        "Type the name of each tile in order, comma separated:", "Add tile definitions", JOptionPane.QUESTION_MESSAGE);
+                        "Type the name of each tile in order, comma separated:", 
+                        "Add tile definitions", JOptionPane.QUESTION_MESSAGE);
                 String tdefspl[] = tdefs.split("\\s*,\\s*");
                 World.getWorld().setTileNames(tdefspl);
                 editLayerPanel.setVisible(false);
@@ -555,13 +561,8 @@ public final class GUI extends javax.swing.JFrame {
 
     private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
         editLayerPanel.setVisible(true);
-        layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
-        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<String>();
-        for (String tile: World.getWorld().getTileNames()) m.addElement(tile);
-        if (m.getSize() == 0) m.addElement("<no tiles defined>");
-        layerTileChooser.setModel(m);
-        layerTileChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
         canvas.repaint();
+        editLayerTitleLabel.setText("Editing '"+World.getWorld().getLayerProperty("name", layerList.getSelectedIndex())+"'");
     }//GEN-LAST:event_editLayerButtonActionPerformed
 
     private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
@@ -621,6 +622,11 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_layerListValueChanged
 
     private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
+        if (layerNameField.getText().trim().length() == 0) {
+            JOptionPane.showMessageDialog(gui, "You cannot have a blank layer name!", 
+                        "Invalid name", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         World.getWorld().setLayerProperty("name", layerNameField.getText(), layerList.getSelectedIndex());
         World.getWorld().setLayerProperty("tile", 
                 layerTileChooser.getSelectedIndex(), layerList.getSelectedIndex());
@@ -628,6 +634,14 @@ public final class GUI extends javax.swing.JFrame {
         refreshLayerList();
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_applyLayerChangesButtonActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        String input = JOptionPane.showInputDialog(gui, 
+                        "Enter the new world size (i.e. \"64, 64\")", 
+                        "Resize world", JOptionPane.QUESTION_MESSAGE);
+        String[] dims = input.split("\\s*,\\s*");
+        World.getWorld().resize(Integer.parseInt(dims[0]), Integer.parseInt(dims[1]));
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -649,6 +663,14 @@ public final class GUI extends javax.swing.JFrame {
         layerList.setModel(m);
         layerList.setSelectedIndex(index);
         deleteLayerButton.setEnabled(World.getWorld().layerCount() > 1);
+        
+        layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
+        DefaultComboBoxModel<String> md = new DefaultComboBoxModel<String>();
+        for (String tile: World.getWorld().getTileNames()) md.addElement(tile);
+        if (m.getSize() == 0) md.addElement("<no tiles defined>");
+        layerTileChooser.setModel(md);
+        layerTileChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        
         //layerUpButton.setEnabled(layerList.getSelectedIndex() > 0);
         //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
     }
@@ -694,13 +716,13 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem earthSpritesheetButton;
     private javax.swing.JButton editLayerButton;
     private javax.swing.JPanel editLayerPanel;
+    private javax.swing.JLabel editLayerTitleLabel;
     private javax.swing.JMenuItem exitButton;
     private javax.swing.JMenuItem exportTerrainButton;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
