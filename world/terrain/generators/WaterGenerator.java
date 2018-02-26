@@ -1,5 +1,6 @@
 package world.terrain.generators;
 
+import gui.Canvas;
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class WaterGenerator extends Generator {
     * randomly meandering until the specified river length is reached
     * Copy/Paste this for sample generation: WaterGenerator:tile=6,lakes=32,max=40,min=10,rlength=100
     */
-    public void generate(World w){
+    public void generate(World w, int layer){
         /*Parameters
          ==========*/
         
@@ -70,7 +71,7 @@ public class WaterGenerator extends Generator {
             for(int i=0; i<rheight; i++){
                 for(int j=0; j<rwidth; j++){
                     if(x[0]+j>w.columns()-1||x[1]+i>w.rows()-1)continue;
-                    w.setTile(t, x[0]+j,x[1]+i);
+                    w.setTile(x[0]+j,x[1]+i, layer, t);
                 }
             }
             
@@ -233,7 +234,7 @@ public class WaterGenerator extends Generator {
                         break riverloop;
                     
                     //Everything is OK, draw the designated water tile at the next coordinates
-                    w.setTile(t, next[0], next[1]);
+                    w.setTile(next[0], next[1], layer, t);
                     
                     //Increment i by one since we used up one of our 'rlength'
                     i++;
