@@ -49,7 +49,7 @@ public class World {
     public void addLayer() {
         layers.add(new int[dims[0]][dims[1]]);
         HashMap<String, Object> properties = new HashMap<String, Object>();
-        properties.put("name", "Layer "+layers.size());
+        properties.put("name", "Untitled Layer");
         properties.put("tile", 0);
         properties.put("lastcmd", "");
         layer_properties.add(properties);
@@ -57,8 +57,7 @@ public class World {
     }
     
     public void reorderLayer(int index, int amount) {
-        int[][] layer = layers.get(index);
-        layers.remove(index);
+        int[][] layer = layers.remove(index);
         layers.add((int)MiscMath.clamp(index+amount, 0, layers.size()), layer);
     }
     
