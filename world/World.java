@@ -6,8 +6,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class World {
         this.layers = new ArrayList<boolean[][]>();
         this.dims = new int[]{w, h};
         this.tile_names = new ArrayList<String>();
-        this.addLayer();
+        this.newLayer();
         this.rng = new Random();
         setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
@@ -66,7 +68,7 @@ public class World {
         dims = new int[]{new_w, new_h};
     }
     
-    public void addLayer() {
+    public void newLayer() {
         layers.add(0, new boolean[dims[0]][dims[1]]);
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("name", "Untitled Layer");
@@ -204,7 +206,36 @@ public class World {
             (canvas_dims[1]/2) - camera[1] + ty};
     }
     
-    public void save(File folder) {
+    public boolean load(File world_file) {
+        if (!world_file.exists()) return false;
+        FileReader fr;
+        System.out.println("Loading from file: " + world_file.getAbsoluteFile().getAbsolutePath());
+        try {
+            fr = new FileReader(world_file);
+            BufferedReader br = new BufferedReader(fr);
+            while (true) {
+                String line = br.readLine();
+                if (line == null) break;
+                line = line.trim();
+                if (line.indexOf("spritesheet: ") == 0) this.setSpritesheet(new File(line.replace("spritesheet: ", "")));
+                if (line.indexOf("tnames: ") == 0) this.setTileNames(line.replace("tnames: ", "").split("\\s*,\\s*"));
+                if (line.indexOf("dims: ") == 0) {
+                    String[] dimstr = line.replace("dims: ", "").split("\\s*,\\s*");
+                    this.resize(Integer.parseInt(dimstr[0]), Integer.parseInt(dimstr[1]));
+                    for (int i = 0; i < Integer.parseInt(dimstr[2]); i++) newLayer(); //add in all layers to apply z depth
+                }
+                if (line.indexOf("layer: ") == 0) {
+                    
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean save(File folder) {
         FileWriter fw;
         File f = new File(folder.getAbsolutePath()+"/world-"+(System.currentTimeMillis()/1000)
                 +"-"+MiscMath.randomInt(0, 1000)+".txt");
@@ -214,14 +245,23 @@ public class World {
             fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("spritesheet: "+spritesheet_uri+"\n");
-            String tnames = ""; for (String s: tile_names) tnames += s+", "; 
-            bw.write("tnames: "+tnames+"\n");
-            bw.write("dims: "+dims[0]+", "+dims[1]+"\n");
+            String tnames = ""; for (String s: tile_names) tnames += ", "+s; 
+            bw.write("tnames: "+tnames.replaceFirst(",\\s*", "")+"\n");
+            bw.write("dims: "+dims[0]+", "+dims[1]+"\n, "+layers.size()); //x, y, z (depth, or layer count)
+            String props = "";
+            for (HashMap<String, Object> lprops: layer_properties)
+                for (String key: lprops.keySet())
+                    props += ", "+key+" -> "+lprops.get(key);
+            bw.write("layer: "+props.replaceFirst(",\\s*", "")+"\n");
+            bw.write("\n");
+            exportTerrain(bw, false);   
             bw.close();
             System.out.println("Saved world to "+f.getAbsolutePath());
+            return true;
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return false;
     }
     
     public boolean exportTerrain(File folder) {

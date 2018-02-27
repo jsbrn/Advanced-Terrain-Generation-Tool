@@ -48,6 +48,8 @@ public final class GUI extends javax.swing.JFrame {
 
         navigator = new javax.swing.JDialog();
         mapView = new gui.MiniMap();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -71,6 +73,7 @@ public final class GUI extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
         openWorldButton = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         exportTerrainButton = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
@@ -124,6 +127,10 @@ public final class GUI extends javax.swing.JFrame {
             navigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mapView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool - Untitled World");
@@ -328,9 +335,14 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         fileMenu.setText("File");
+        fileMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileMenuActionPerformed(evt);
+            }
+        });
 
         newWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        newWorldButton.setText("New world...");
+        newWorldButton.setText("New world");
         newWorldButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newWorld(evt);
@@ -339,9 +351,17 @@ public final class GUI extends javax.swing.JFrame {
         fileMenu.add(newWorldButton);
 
         openWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        openWorldButton.setText("Open existing world...");
+        openWorldButton.setText("Open world...");
         openWorldButton.setEnabled(false);
         fileMenu.add(openWorldButton);
+
+        jMenuItem3.setText("Save world...");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem3);
         fileMenu.add(jSeparator3);
 
         exportTerrainButton.setText("Export terrain...");
@@ -543,7 +563,6 @@ public final class GUI extends javax.swing.JFrame {
                     saved ? "Success" : "Error",
                     JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
         }
-        
     }//GEN-LAST:event_exportTerrainButtonActionPerformed
 
     private void layerUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerUpButtonActionPerformed
@@ -607,7 +626,7 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_regenLayerButtonActionPerformed
 
     private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
-        World.getWorld().addLayer();
+        World.getWorld().newLayer();
         gui.refreshLayerList();
         layerList.setSelectedIndex(0);
         canvas.repaint();
@@ -621,8 +640,10 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_layerListValueChanged
 
     private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
-        if (layerNameField.getText().trim().length() == 0) {
-            JOptionPane.showMessageDialog(gui, "You cannot have a blank layer name!", 
+        boolean comma = layerNameField.getText().contains(",");
+        if (layerNameField.getText().trim().length() == 0 || comma) {
+            JOptionPane.showMessageDialog(gui, 
+                        !comma ? "You cannot have a blank layer name!" : "Commas are not allowed in layer names!", 
                         "Invalid name", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -643,6 +664,23 @@ public final class GUI extends javax.swing.JFrame {
         canvas.repaint();
         refreshLayerList();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileMenuActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            boolean saved = World.getWorld().save(saver.getSelectedFile());
+            JOptionPane.showMessageDialog(gui, 
+                    saved ? "World has been saved!" : "Error saving world!", 
+                    saved ? "Success" : "Error",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -725,6 +763,9 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
