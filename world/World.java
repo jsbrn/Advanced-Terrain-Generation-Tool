@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import misc.MiscMath;
@@ -21,10 +23,11 @@ import world.terrain.Generator;
 public class World {
 
     private static World world;
-    private ArrayList<int[][]> layers;
+    private ArrayList<boolean[][]> layers;
     private ArrayList<String> tile_names;
     private int[] tile_dims, dims;
     private BufferedImage spritesheet;
+    private String spritesheet_uri;
     private ArrayList<Image> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
     
@@ -36,7 +39,7 @@ public class World {
     
     private World(int w, int h) {
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
-        this.layers = new ArrayList<int[][]>();
+        this.layers = new ArrayList<boolean[][]>();
         this.dims = new int[]{w, h};
         this.tile_names = new ArrayList<String>();
         this.addLayer();
@@ -51,11 +54,11 @@ public class World {
     
     public void resize(int new_w, int new_h) {
         for (int l = 0; l < layers.size(); l++) {
-            int[][] new_ = new int[new_w][new_h];
+            boolean[][] new_ = new boolean[new_w][new_h];
             clear(new_);
             for (int x = 0; x < new_w; x++) {
                 for (int y = 0; y < new_h; y++) {
-                    new_[x][y] = getTile(x, y, l);
+                    new_[x][y] = getTile(x, y, l) > -1;
                 }
             }
             layers.set(l, new_);
@@ -64,7 +67,7 @@ public class World {
     }
     
     public void addLayer() {
-        layers.add(0, new int[dims[0]][dims[1]]);
+        layers.add(0, new boolean[dims[0]][dims[1]]);
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("name", "Untitled Layer");
         properties.put("tile", 0);
@@ -88,13 +91,13 @@ public class World {
     }
     
     public void reorderLayer(int index, int amount) {
-        int[][] layer = layers.remove(index);
+        boolean[][] layer = layers.remove(index);
         layers.add((int)MiscMath.clamp(index+amount, 0, layers.size()), layer);
     }
     
     public boolean removeLayer(int index) {
         if (layers.size() == 1) return false;
-        int[][] removed = layers.remove(index);
+        boolean[][] removed = layers.remove(index);
         layer_properties.remove(index);
         return removed != null;
     }
@@ -107,7 +110,7 @@ public class World {
         layer_properties.get(layer).put(prop, value);
     }
     
-    public int[][] getTerrain(int layer) {
+    public boolean[][] getTerrain(int layer) {
         return layers.get(layer);
     }
     
@@ -121,7 +124,7 @@ public class World {
     public long getSeed() { return seed; }
     
     public void generate(Generator g) { setSeed(seed); g.generate(this, 0); }
-    public void setTile(int x, int y, int layer, int tile) { getTerrain(layer)[x][y] = tile; }
+    public void setTile(int x, int y, int layer, boolean set) { getTerrain(layer)[x][y] = set; }
     
     /**
      * Get the topmost visible tile at the {x, y} coordinate specified.
@@ -131,15 +134,18 @@ public class World {
      */
     public int getTile(int x, int y) { 
         for (int l = 0; l < layers.size(); l++) {
-            if (layers.get(l)[x][y] == -1) continue;
-            return layers.get(l)[x][y];
+            if (!layers.get(l)[x][y]) continue;
+            return getTile(x, y, l);
         }
         return -1;
     }
+    
     public int getTile(int x, int y, int layer) {
         if (x < 0 || y < 0) return -1;
-        int[][] l = layers.get(layer);
-        if (x < l.length) if (y < l[0].length) return l[x][y];
+        boolean[][] l = layers.get(layer);
+        if (x < l.length) if (y < l[0].length) {
+            return l[x][y] ? (Integer)getLayerProperty("tile", layer) : -1;
+        }
         return -1;
     }
     
@@ -149,10 +155,10 @@ public class World {
         clear(layers.get(layer));
     }
     
-    private void clear(int[][] terrain) {
+    private void clear(boolean[][] terrain) {
         for (int x = 0; x < terrain.length; x++) {
             for (int y = 0; y < terrain[0].length; y++) {
-                terrain[x][y] = -1;
+                terrain[x][y] = false;
             }
         }
     }
@@ -171,7 +177,9 @@ public class World {
         try {
             img = ImageIO.read(sprite);
             spritesheet = img;
-            for (int i = 0; i < img.getWidth() / tile_dims[0]; i++) textures.add(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]));
+            for (int i = 0; i < img.getWidth() / tile_dims[0]; i++) //split the spritesheet into preloaded images
+                textures.add(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]));
+            spritesheet_uri = sprite.getAbsolutePath(); //keep track of the uri for saving/loading
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -196,30 +204,65 @@ public class World {
             (canvas_dims[1]/2) - camera[1] + ty};
     }
     
+    public void save(File folder) {
+        FileWriter fw;
+        File f = new File(folder.getAbsolutePath()+"/world-"+(System.currentTimeMillis()/1000)
+                +"-"+MiscMath.randomInt(0, 1000)+".txt");
+        System.out.println("Saving world to file " + f.getAbsoluteFile().getAbsolutePath());
+        try {
+            if (!f.exists()) f.createNewFile();
+            fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("spritesheet: "+spritesheet_uri+"\n");
+            String tnames = ""; for (String s: tile_names) tnames += s+", "; 
+            bw.write("tnames: "+tnames+"\n");
+            bw.write("dims: "+dims[0]+", "+dims[1]+"\n");
+            bw.close();
+            System.out.println("Saved world to "+f.getAbsolutePath());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public boolean exportTerrain(File folder) {
         FileWriter fw;
         File f = new File(folder.getAbsolutePath()+"/terrain-export-"+(System.currentTimeMillis()/1000)
                 +"-"+MiscMath.randomInt(0, 1000)+".txt");
         System.out.println("Exporting terrain to file " + f.getAbsoluteFile().getAbsolutePath());
-        try {
+       
+        try { 
             if (!f.exists()) f.createNewFile();
             fw = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("Dimensions: "+dims[0]+", "+dims[1]+"\n");
-            bw.write("---BEGIN TERRAIN EXPORT---\n");
+            return exportTerrain(bw, true);
+        } catch (IOException ex) {
+            Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    /**
+     * Write terrain data to the specified BufferedWriter.
+     * @param bw The BufferedWriter to write to.
+     * @param raw If true, write the raw tile IDs (0 - n) instead of 0 or 1.
+     * @return True if successful, false if not.
+     */
+    public boolean exportTerrain(BufferedWriter bw, boolean raw) {
+        
+        try {
             for (int l = 0; l < layers.size(); l++) {
                 for (int j = 0; j < rows(); j++) {
                     String row = "";
                     for (int i = 0; i < columns(); i++) {
-                        row += getTile(i, j, l)+" ";
+                        //if raw, output tile ID. else, output 1 if tile is set and 0 if not set
+                        int id = raw ? getTile(i, j, l) : (getTile(i, j, l) != -1 ? 1 : 0);
+                        row += id+" ";
                     }
                     bw.write(row.trim()+"\n");
                 }
-                if (l < layers.size() - 1) bw.write("---\n");
+                if (l < layers.size() - 1) bw.write("\n");
             }
-            bw.write("---END TERRAIN EXPORT---\n");
             bw.close();
-            System.out.println("Exported terrain to "+f.getAbsolutePath());
             return true;
         } catch (IOException ex) {
             ex.printStackTrace();
