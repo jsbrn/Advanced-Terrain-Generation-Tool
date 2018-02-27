@@ -78,13 +78,13 @@ public final class GUI extends javax.swing.JFrame {
         worldMenu = new javax.swing.JMenu();
         showNavigatorButton = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        setSeedButton = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         chooseSpriteSheetMenu = new javax.swing.JMenu();
         earthSpritesheetButton = new javax.swing.JMenuItem();
         marsSpritesheetButton = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         customSpritesheetButton = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        setSeedButton = new javax.swing.JMenuItem();
 
         navigator.setTitle("Navigator");
         navigator.setAlwaysOnTop(true);
@@ -376,15 +376,14 @@ public final class GUI extends javax.swing.JFrame {
         worldMenu.add(showNavigatorButton);
         worldMenu.add(jSeparator1);
 
-        setSeedButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
-        setSeedButton.setText("Set seed...");
-        setSeedButton.setEnabled(false);
-        setSeedButton.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem4.setText("Resize world...");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setSeedButtonActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        worldMenu.add(setSeedButton);
+        worldMenu.add(jMenuItem4);
 
         chooseSpriteSheetMenu.setText("Choose tile spritesheet...");
 
@@ -416,15 +415,15 @@ public final class GUI extends javax.swing.JFrame {
 
         worldMenu.add(chooseSpriteSheetMenu);
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Resize world...");
-        jMenuItem4.setEnabled(false);
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        setSeedButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
+        setSeedButton.setText("Set seed...");
+        setSeedButton.setEnabled(false);
+        setSeedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                setSeedButtonActionPerformed(evt);
             }
         });
-        worldMenu.add(jMenuItem4);
+        worldMenu.add(setSeedButton);
 
         menuBar.add(worldMenu);
 
@@ -641,6 +640,8 @@ public final class GUI extends javax.swing.JFrame {
                         "Resize world", JOptionPane.QUESTION_MESSAGE);
         String[] dims = input.split("\\s*,\\s*");
         World.getWorld().resize(Integer.parseInt(dims[0]), Integer.parseInt(dims[1]));
+        canvas.repaint();
+        refreshLayerList();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     public static void showDialog(JDialog d, boolean modal) {

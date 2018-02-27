@@ -50,7 +50,17 @@ public class World {
     }
     
     public void resize(int new_w, int new_h) {
-        
+        for (int l = 0; l < layers.size(); l++) {
+            int[][] new_ = new int[new_w][new_h];
+            clear(new_);
+            for (int x = 0; x < new_w; x++) {
+                for (int y = 0; y < new_h; y++) {
+                    new_[x][y] = getTile(x, y, l);
+                }
+            }
+            layers.set(l, new_);
+        }
+        dims = new int[]{new_w, new_h};
     }
     
     public void addLayer() {
@@ -112,6 +122,7 @@ public class World {
     
     public void generate(Generator g) { setSeed(seed); g.generate(this, 0); }
     public void setTile(int x, int y, int layer, int tile) { getTerrain(layer)[x][y] = tile; }
+    
     /**
      * Get the topmost visible tile at the {x, y} coordinate specified.
      * @param x The x coord
@@ -125,18 +136,25 @@ public class World {
         }
         return -1;
     }
-    public int getTile(int x, int y, int layer) { 
-        return layers.get(layer)[x][y];
+    public int getTile(int x, int y, int layer) {
+        if (x < 0 || y < 0) return -1;
+        int[][] l = layers.get(layer);
+        if (x < l.length) if (y < l[0].length) return l[x][y];
+        return -1;
     }
     
     public final int layerCount() { return layers.size(); }
     
     public final void clearTiles(int layer) {
-        for (int x = 0; x < columns(); x++) {
-                for (int y = 0; y < rows(); y++) {
-                    layers.get(layer)[x][y] = -1;
-                }
+        clear(layers.get(layer));
+    }
+    
+    private void clear(int[][] terrain) {
+        for (int x = 0; x < terrain.length; x++) {
+            for (int y = 0; y < terrain[0].length; y++) {
+                terrain[x][y] = -1;
             }
+        }
     }
     
     /**
