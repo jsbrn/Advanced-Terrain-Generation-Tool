@@ -100,7 +100,6 @@ public class World {
     }
     
     public boolean removeLayer(int index) {
-        if (layers.size() == 1) return false;
         boolean[][] removed = layers.remove(index);
         layer_properties.remove(index);
         return removed != null;

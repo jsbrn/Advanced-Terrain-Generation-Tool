@@ -15,6 +15,16 @@ public abstract class Generator {
         {"WaterGenerator", new WaterGenerator()}, {"NoiseMap", new NoiseMapGenerator()}
     };
     
+    public static int generatorCount() { return generators.length; }
+    
+    public static Generator getGenerator(int index) {
+        return (Generator)generators[index][1];
+    }
+    
+    public static String getGeneratorName(int index) {
+        return (String)generators[index][0];
+    }
+    
     /**
      * Returns the specified generator from the list of terrain generators.
      * @param name The name of the generator (see list in world.generation.Generator)

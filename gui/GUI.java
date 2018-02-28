@@ -1,10 +1,14 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,12 +21,14 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicDirectoryModel;
+import misc.MiscMath;
 import world.World;
 import world.terrain.Generator;
 
@@ -50,6 +56,9 @@ public final class GUI extends javax.swing.JFrame {
         mapView = new gui.MiniMap();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        fillGeneratorOptions = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -74,6 +83,14 @@ public final class GUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         restrictionModeChooser = new javax.swing.JComboBox<>();
         cancelLayerChangesButton = new javax.swing.JButton();
+        generatorBodyPanel = new javax.swing.JPanel();
+        generatorTitlePanel = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        generatorChooser = new javax.swing.JComboBox<>();
+        jSeparator5 = new javax.swing.JSeparator();
+        generatorBottomPanel = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
@@ -137,6 +154,32 @@ public final class GUI extends javax.swing.JFrame {
 
         jMenuItem2.setText("jMenuItem2");
 
+        jLabel7.setText("Fill Generator");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel8.setText("No options available.");
+
+        javax.swing.GroupLayout fillGeneratorOptionsLayout = new javax.swing.GroupLayout(fillGeneratorOptions);
+        fillGeneratorOptions.setLayout(fillGeneratorOptionsLayout);
+        fillGeneratorOptionsLayout.setHorizontalGroup(
+            fillGeneratorOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fillGeneratorOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(fillGeneratorOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8))
+                .addContainerGap(182, Short.MAX_VALUE))
+        );
+        fillGeneratorOptionsLayout.setVerticalGroup(
+            fillGeneratorOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fillGeneratorOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addContainerGap(456, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool - Untitled World");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
@@ -195,7 +238,6 @@ public final class GUI extends javax.swing.JFrame {
 
         deleteLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/delete.png"))); // NOI18N
         deleteLayerButton.setToolTipText("Delete layer");
-        deleteLayerButton.setEnabled(false);
         deleteLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteLayerButtonActionPerformed(evt);
@@ -260,6 +302,12 @@ public final class GUI extends javax.swing.JFrame {
                 .addGap(9, 19, Short.MAX_VALUE))
         );
 
+        editLayerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                editLayerPanelPropertyChange(evt);
+            }
+        });
+
         applyLayerChangesButton.setText("Apply changes");
         applyLayerChangesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,7 +328,7 @@ public final class GUI extends javax.swing.JFrame {
         layerTileChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no tiles defined>" }));
 
         tileRestrictionList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "<no tiles defined>" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
@@ -356,6 +404,82 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        javax.swing.GroupLayout generatorBodyPanelLayout = new javax.swing.GroupLayout(generatorBodyPanel);
+        generatorBodyPanel.setLayout(generatorBodyPanelLayout);
+        generatorBodyPanelLayout.setHorizontalGroup(
+            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 293, Short.MAX_VALUE)
+        );
+        generatorBodyPanelLayout.setVerticalGroup(
+            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setText("Generation options");
+
+        generatorChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no generators found>" }));
+        generatorChooser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                generatorChooserItemStateChanged(evt);
+            }
+        });
+        generatorChooser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                generatorChooserMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout generatorTitlePanelLayout = new javax.swing.GroupLayout(generatorTitlePanel);
+        generatorTitlePanel.setLayout(generatorTitlePanelLayout);
+        generatorTitlePanelLayout.setHorizontalGroup(
+            generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(generatorChooser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator5))
+                .addContainerGap())
+        );
+        generatorTitlePanelLayout.setVerticalGroup(
+            generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButton2.setText("Generate!");
+
+        jButton3.setText("Cancel");
+
+        javax.swing.GroupLayout generatorBottomPanelLayout = new javax.swing.GroupLayout(generatorBottomPanel);
+        generatorBottomPanel.setLayout(generatorBottomPanelLayout);
+        generatorBottomPanelLayout.setHorizontalGroup(
+            generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorBottomPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        generatorBottomPanelLayout.setVerticalGroup(
+            generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorBottomPanelLayout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
         canvasLayout.setHorizontalGroup(
@@ -365,15 +489,34 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(324, Short.MAX_VALUE))
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(generatorTitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
-                .addContainerGap(317, Short.MAX_VALUE)
-                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addComponent(generatorTitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, 0)
+                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addGap(0, 278, Short.MAX_VALUE)
+                        .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -568,10 +711,6 @@ public final class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_customSpritesheetButtonActionPerformed
 
-    private void canvasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseClicked
-        canvas.repaint();
-    }//GEN-LAST:event_canvasMouseClicked
-
     private void setSeedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setSeedButtonActionPerformed
         World.getWorld().setSeed(Long.parseLong(JOptionPane.showInputDialog(gui, "Seed (integer):")));
     }//GEN-LAST:event_setSeedButtonActionPerformed
@@ -612,80 +751,6 @@ public final class GUI extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
         }
     }//GEN-LAST:event_exportTerrainButtonActionPerformed
-
-    private void layerUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerUpButtonActionPerformed
-        World.getWorld().reorderLayer(layerList.getSelectedIndex(), -1);
-        canvas.repaint();
-        refreshLayerList();
-    }//GEN-LAST:event_layerUpButtonActionPerformed
-
-    private void layerDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerDownButtonActionPerformed
-        World.getWorld().reorderLayer(layerList.getSelectedIndex(), 1);
-        canvas.repaint();
-        refreshLayerList();
-    }//GEN-LAST:event_layerDownButtonActionPerformed
-
-    private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
-        refreshLayerList();
-        canvas.repaint();
-        editLayerPanel.setVisible(true);
-    }//GEN-LAST:event_editLayerButtonActionPerformed
-
-    private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
-        int index = layerList.getSelectedIndex();
-        World.getWorld().removeLayer(index);
-        gui.refreshLayerList();
-        layerList.setSelectedIndex(index < layerList.getModel().getSize() ? index 
-                : layerList.getModel().getSize() - 1);
-        canvas.repaint();
-    }//GEN-LAST:event_deleteLayerButtonActionPerformed
-
-    private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
-        String s = JOptionPane.showInputDialog(gui, "Parameters:", 
-                World.getWorld().getLayerProperty("lastcmd", Canvas.layer()));
-        if (s == null) return; s = s.trim();
-        World.getWorld().setLayerProperty("lastcmd", s, Canvas.layer());
-        //split by colon
-        String split[] = s.split("\\s*:\\s*");
-        if (split.length == 0) { System.err.println("Invalid input!"); return; }
-        //find generator type
-        String gname = split[0].trim(); 
-        Generator g = Generator.getGenerator(gname);
-        
-        if (split.length > 1) { //if params actually exist
-            String params = split[1].trim();
-            System.out.println(gname);
-            //find parameters
-            String[] params_spl = params.split("\\s*,\\s*");
-            if (g == null) { System.err.println("Generator '"+gname+"' not found!"); return; }
-            for (int i = 0; i < params_spl.length; i++) {
-                String spl[] = params_spl[i].split("\\s*=\\s*");
-                String name = spl[0]; String val = spl[1];
-                g.setParameter(name, val);
-                System.out.println(gname+" parameter: "+name+" = "+val);
-            }
-        }
-        
-        //clear and generate
-        World.getWorld().clearTiles(layerList.getSelectedIndex());
-        g.generate(World.getWorld(), layerList.getSelectedIndex());
-        //repaint
-        canvas.repaint();
-    }//GEN-LAST:event_regenLayerButtonActionPerformed
-
-    private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
-        World.getWorld().newLayer();
-        gui.refreshLayerList();
-        layerList.setSelectedIndex(0);
-        canvas.repaint();
-        layerList.ensureIndexIsVisible(layerList.getSelectedIndex());
-    }//GEN-LAST:event_addLayerButtonActionPerformed
-
-    private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
-        if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
-        int scount = evt.getLastIndex() - evt.getFirstIndex();
-        editLayerPanel.setVisible(false);
-    }//GEN-LAST:event_layerListValueChanged
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         String input = JOptionPane.showInputDialog(gui, 
@@ -731,6 +796,22 @@ public final class GUI extends javax.swing.JFrame {
         canvas.repaint();
     }//GEN-LAST:event_openWorldButtonActionPerformed
 
+    private void canvasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseClicked
+        canvas.repaint();
+    }//GEN-LAST:event_canvasMouseClicked
+
+    private void editLayerPanelPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_editLayerPanelPropertyChange
+        System.out.println(evt.getPropertyName());
+    }//GEN-LAST:event_editLayerPanelPropertyChange
+
+    private void cancelLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLayerChangesButtonActionPerformed
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_cancelLayerChangesButtonActionPerformed
+
+    private void tileRestrictionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tileRestrictionListValueChanged
+
+    }//GEN-LAST:event_tileRestrictionListValueChanged
+
     private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
         boolean comma = layerNameField.getText().contains(",");
         if (layerNameField.getText().trim().length() == 0 || comma) {
@@ -740,23 +821,90 @@ public final class GUI extends javax.swing.JFrame {
             return;
         }
         //apply layer properties
-        int layer = layerList.getSelectedIndex();
-        World.getWorld().setLayerProperty("name", layerNameField.getText(), layer);
-        World.getWorld().setLayerProperty("tile", layerTileChooser.getSelectedIndex(), layer);
-        World.getWorld().setLayerProperty("rmode", restrictionModeChooser.getSelectedIndex(), layer);
-        World.getWorld().setLayerProperty("rtiles", tileRestrictionList.getSelectedIndices(), layer);
+        int[] layers = layerList.getSelectedIndices();
+        for (int layer: layers) {
+            World.getWorld().setLayerProperty("name", layerNameField.getText(), layer);
+            World.getWorld().setLayerProperty("tile", layerTileChooser.getSelectedIndex(), layer);
+            World.getWorld().setLayerProperty("rmode", restrictionModeChooser.getSelectedIndex(), layer);
+            World.getWorld().setLayerProperty("rtiles", tileRestrictionList.getSelectedIndices(), layer);
+        }
         canvas.repaint();
         refreshLayerList();
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_applyLayerChangesButtonActionPerformed
 
-    private void cancelLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLayerChangesButtonActionPerformed
+    private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
+        World.getWorld().newLayer();
+        gui.refreshLayerList();
+        layerList.setSelectedIndex(0);
+        canvas.repaint();
+        layerList.ensureIndexIsVisible(layerList.getSelectedIndex());
+    }//GEN-LAST:event_addLayerButtonActionPerformed
+
+    private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
+        int gindex = generatorChooser.getSelectedIndex();
+        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<String>();
+        for (int i = 0; i < Generator.generatorCount(); i++)
+            m.addElement(Generator.getGeneratorName(i));
+        //clear and generate
+        generatorChooser.setSelectedIndex(gindex);
+        //repaint
+        canvas.repaint();
+        generatorTitlePanel.setVisible(true);
+        generatorBodyPanel.setVisible(true);
+        generatorBottomPanel.setVisible(true);
         editLayerPanel.setVisible(false);
-    }//GEN-LAST:event_cancelLayerChangesButtonActionPerformed
+    }//GEN-LAST:event_regenLayerButtonActionPerformed
 
-    private void tileRestrictionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tileRestrictionListValueChanged
+    private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
+        //deleye layers
+        int[] layers = layerList.getSelectedIndices();
+        int start_index = layerList.getSelectedIndex();
+        for (int l = layers.length - 1; l > -1; l--) {
+            //System.out.println("Removing layer: "+layers[l]);
+            World.getWorld().removeLayer(layers[l]);
+        }
+        if (World.getWorld().layerCount() == 0) World.getWorld().newLayer();
+        layerList.setSelectedIndex((int)MiscMath.clamp(start_index, 0, World.getWorld().layerCount() - 1));
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
+        canvas.repaint();
+    }//GEN-LAST:event_deleteLayerButtonActionPerformed
 
-    }//GEN-LAST:event_tileRestrictionListValueChanged
+    private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
+        refreshLayerList();
+        canvas.repaint();
+        editLayerPanel.setVisible(true);
+    }//GEN-LAST:event_editLayerButtonActionPerformed
+
+    private void layerDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerDownButtonActionPerformed
+        World.getWorld().reorderLayer(layerList.getSelectedIndex(), 1);
+        canvas.repaint();
+        refreshLayerList();
+    }//GEN-LAST:event_layerDownButtonActionPerformed
+
+    private void layerUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerUpButtonActionPerformed
+        World.getWorld().reorderLayer(layerList.getSelectedIndex(), -1);
+        canvas.repaint();
+        refreshLayerList();
+    }//GEN-LAST:event_layerUpButtonActionPerformed
+
+    private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
+        if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
+        int scount = evt.getLastIndex() - evt.getFirstIndex();
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_layerListValueChanged
+
+    private void generatorChooserMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generatorChooserMouseReleased
+        generatorBodyPanel.setLayout(new BorderLayout());
+        generatorBodyPanel.add(fillGeneratorOptions, BorderLayout.CENTER);
+        generatorBodyPanel.validate();
+        System.out.println("Hello");
+    }//GEN-LAST:event_generatorChooserMouseReleased
+
+    private void generatorChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_generatorChooserItemStateChanged
+        System.out.println(evt.getStateChange());
+    }//GEN-LAST:event_generatorChooserItemStateChanged
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -772,23 +920,29 @@ public final class GUI extends javax.swing.JFrame {
     
     public void refreshLayerList() {
         DefaultListModel m = new DefaultListModel();
-        int index = layerList.getSelectedIndex();
+        int[] indices = layerList.getSelectedIndices();
         for (int i = 0; i < World.getWorld().layerCount(); i++) 
             m.addElement(World.getWorld().getLayerProperty("name", i));
         layerList.setModel(m);
-        layerList.setSelectedIndex(index);
-        deleteLayerButton.setEnabled(World.getWorld().layerCount() > 1);
+        layerList.setSelectedIndices(indices);
+        
+        boolean multiple = layerList.getSelectedIndices().length > 1;
         
         //update layer edit panel
-        layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
+        layerNameField.setText(multiple ? "" : (String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
         DefaultComboBoxModel<String> md = new DefaultComboBoxModel<String>();
         DefaultListModel dlm = new DefaultListModel();
         for (String tile: World.getWorld().getTileNames()) { md.addElement(tile); dlm.addElement(tile); }
         layerTileChooser.setModel(md);
         tileRestrictionList.setModel(dlm);
-        layerTileChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
-        restrictionModeChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("rmode", layerList.getSelectedIndex()));
-        tileRestrictionList.setSelectedIndices((int[])World.getWorld().getLayerProperty("rtiles", layerList.getSelectedIndex()));
+        layerTileChooser.setSelectedIndex(multiple ? 0 
+                : (Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        restrictionModeChooser.setSelectedIndex(multiple ? 0 
+                : (Integer)World.getWorld().getLayerProperty("rmode", layerList.getSelectedIndex()));
+        tileRestrictionList.setSelectedIndices(multiple ? new int[]{} 
+                : (int[])World.getWorld().getLayerProperty("rtiles", layerList.getSelectedIndex()));
+        
+        editLayerTitleLabel.setText(multiple ? "Editing multiple layers" : "Editing layer properties");
         
         //layerUpButton.setEnabled(layerList.getSelectedIndex() > 0);
         //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
@@ -840,11 +994,21 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitButton;
     private javax.swing.JMenuItem exportTerrainButton;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JPanel fillGeneratorOptions;
+    private javax.swing.JPanel generatorBodyPanel;
+    private javax.swing.JPanel generatorBottomPanel;
+    private javax.swing.JComboBox<String> generatorChooser;
+    private javax.swing.JPanel generatorTitlePanel;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -855,6 +1019,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JButton layerDownButton;
     private static javax.swing.JList<String> layerList;
     private javax.swing.JTextField layerNameField;
