@@ -11,9 +11,21 @@ public abstract class Generator {
      * Put all Generator instances in this list and use getGenerator(name) to access them.
      */
     private static final Object[][] generators = new Object[][]{
-        {"FlatGenerator", new FlatGenerator()},{"FillGenerator", new FillGenerator()},
-        {"WaterGenerator", new WaterGenerator()}, {"NoiseMap", new NoiseMapGenerator()}
+        {"Fill", new FillGenerator()},
+        {"WaterGenerator", new WaterGenerator()}, 
+        {"NoiseMap", new NoiseMapGenerator()},
+        {"Scattered", new ScatteredGenerator()}
     };
+    
+    public static int generatorCount() { return generators.length; }
+    
+    public static Generator getGenerator(int index) {
+        return (Generator)generators[index][1];
+    }
+    
+    public static String getGeneratorName(int index) {
+        return (String)generators[index][0];
+    }
     
     /**
      * Returns the specified generator from the list of terrain generators.

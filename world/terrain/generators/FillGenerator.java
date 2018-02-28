@@ -21,7 +21,7 @@ public class FillGenerator extends Generator{
         int t = (Integer)w.getLayerProperty("tile", layer);
         for (int i = 0; i < w.columns(); i++){
             for (int j = 0; j < w.rows(); j++){
-                w.setTile(i, j, layer, t);
+                w.setTile(i, j, layer, true);
             }
         }
     }

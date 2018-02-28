@@ -1,10 +1,14 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,12 +21,17 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicDirectoryModel;
+import misc.MiscMath;
 import world.World;
 import world.terrain.Generator;
 
@@ -48,6 +57,30 @@ public final class GUI extends javax.swing.JFrame {
 
         navigator = new javax.swing.JDialog();
         mapView = new gui.MiniMap();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        noiseMapOptions = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        noiseMapCutoffSlider = new javax.swing.JSlider();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        noOptionsPanel = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        scatterOptions = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        scatterAmountSlider = new javax.swing.JSlider();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        scatterMinSlider = new javax.swing.JSlider();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        scatterMaxSlider = new javax.swing.JSlider();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -67,10 +100,25 @@ public final class GUI extends javax.swing.JFrame {
         editLayerTitleLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         layerTileChooser = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tileRestrictionList = new javax.swing.JList<>();
+        jLabel4 = new javax.swing.JLabel();
+        restrictionModeChooser = new javax.swing.JComboBox<>();
+        cancelLayerChangesButton = new javax.swing.JButton();
+        generatorBodyPanel = new javax.swing.JPanel();
+        generatorTitlePanel = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        generatorChooser = new javax.swing.JComboBox<>();
+        jSeparator5 = new javax.swing.JSeparator();
+        openCommandLineButton = new javax.swing.JButton();
+        generatorBottomPanel = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
         openWorldButton = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         exportTerrainButton = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
@@ -78,13 +126,13 @@ public final class GUI extends javax.swing.JFrame {
         worldMenu = new javax.swing.JMenu();
         showNavigatorButton = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        setSeedButton = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         chooseSpriteSheetMenu = new javax.swing.JMenu();
         earthSpritesheetButton = new javax.swing.JMenuItem();
         marsSpritesheetButton = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         customSpritesheetButton = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        setSeedButton = new javax.swing.JMenuItem();
 
         navigator.setTitle("Navigator");
         navigator.setAlwaysOnTop(true);
@@ -123,6 +171,218 @@ public final class GUI extends javax.swing.JFrame {
         navigatorLayout.setVerticalGroup(
             navigatorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mapView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel10.setText("Create natural, flowing terrain shapes.");
+
+        noiseMapCutoffSlider.setPaintLabels(true);
+        noiseMapCutoffSlider.setValue(0);
+        noiseMapCutoffSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                noiseMapCutoffSliderStateChanged(evt);
+            }
+        });
+
+        jLabel11.setText("Cutoff (percentage)");
+
+        jLabel12.setText("0%");
+
+        jLabel13.setText("100%");
+
+        javax.swing.GroupLayout noiseMapOptionsLayout = new javax.swing.GroupLayout(noiseMapOptions);
+        noiseMapOptions.setLayout(noiseMapOptionsLayout);
+        noiseMapOptionsLayout.setHorizontalGroup(
+            noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                        .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(noiseMapCutoffSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13))
+                    .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        noiseMapOptionsLayout.setVerticalGroup(
+            noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(noiseMapCutoffSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(415, Short.MAX_VALUE))
+        );
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel15.setText("No options available.");
+
+        javax.swing.GroupLayout noOptionsPanelLayout = new javax.swing.GroupLayout(noOptionsPanel);
+        noOptionsPanel.setLayout(noOptionsPanelLayout);
+        noOptionsPanelLayout.setHorizontalGroup(
+            noOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(noOptionsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel15)
+                .addContainerGap(182, Short.MAX_VALUE))
+        );
+        noOptionsPanelLayout.setVerticalGroup(
+            noOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(noOptionsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel15)
+                .addContainerGap(476, Short.MAX_VALUE))
+        );
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel14.setText("Create scattered plots of tiles.");
+
+        scatterAmountSlider.setPaintLabels(true);
+        noiseMapCutoffSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+            }
+        });
+        scatterAmountSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                scatterAmountSliderStateChanged(evt);
+            }
+        });
+
+        jLabel16.setText("Cover amount");
+
+        jLabel17.setText("0%");
+
+        jLabel18.setText("100%");
+
+        scatterMinSlider.setPaintLabels(true);
+        scatterMinSlider.setValue(0);
+        noiseMapCutoffSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+            }
+        });
+        scatterMinSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                scatterMinSliderStateChanged(evt);
+            }
+        });
+
+        jLabel19.setText("Minimum probability");
+
+        jLabel20.setText("0%");
+
+        jLabel21.setText("100%");
+
+        jLabel22.setText("0%");
+
+        scatterMaxSlider.setPaintLabels(true);
+        scatterMaxSlider.setValue(100);
+        noiseMapCutoffSlider.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+            }
+        });
+        scatterMaxSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                scatterMaxSliderStateChanged(evt);
+            }
+        });
+
+        jLabel23.setText("100%");
+
+        jLabel24.setText("Maximum probability");
+
+        javax.swing.GroupLayout scatterOptionsLayout = new javax.swing.GroupLayout(scatterOptions);
+        scatterOptions.setLayout(scatterOptionsLayout);
+        scatterOptionsLayout.setHorizontalGroup(
+            scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(scatterOptionsLayout.createSequentialGroup()
+                        .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel18))
+                    .addGroup(scatterOptionsLayout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, scatterOptionsLayout.createSequentialGroup()
+                        .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel19)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel21))
+                    .addGroup(scatterOptionsLayout.createSequentialGroup()
+                        .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel24)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel23)))
+                .addContainerGap())
+        );
+        scatterOptionsLayout.setVerticalGroup(
+            scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel14)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(317, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -183,7 +443,6 @@ public final class GUI extends javax.swing.JFrame {
 
         deleteLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/delete.png"))); // NOI18N
         deleteLayerButton.setToolTipText("Delete layer");
-        deleteLayerButton.setEnabled(false);
         deleteLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteLayerButtonActionPerformed(evt);
@@ -245,8 +504,14 @@ public final class GUI extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(deleteLayerButton))
                     .addComponent(jScrollPane1))
-                .addGap(9, 15, Short.MAX_VALUE))
+                .addGap(9, 19, Short.MAX_VALUE))
         );
+
+        editLayerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                editLayerPanelPropertyChange(evt);
+            }
+        });
 
         applyLayerChangesButton.setText("Apply changes");
         applyLayerChangesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -260,12 +525,35 @@ public final class GUI extends javax.swing.JFrame {
         jLabel3.setText("Tile");
 
         editLayerTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        editLayerTitleLabel.setText("Editing 'Untitled Layer'");
+        editLayerTitleLabel.setText("Editing layer properties");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
 
         layerTileChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no tiles defined>" }));
+
+        tileRestrictionList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "<no tiles defined>" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        tileRestrictionList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                tileRestrictionListValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tileRestrictionList);
+
+        jLabel4.setText("Tile placement restrictions");
+
+        restrictionModeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Allow all", "Allow selected", "Block selected" }));
+
+        cancelLayerChangesButton.setText("Cancel");
+        cancelLayerChangesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelLayerChangesButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout editLayerPanelLayout = new javax.swing.GroupLayout(editLayerPanel);
         editLayerPanel.setLayout(editLayerPanelLayout);
@@ -274,16 +562,22 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(editLayerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(layerNameField, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(layerTileChooser, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(editLayerTitleLabel)
+                    .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cancelLayerChangesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3)
-                        .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(layerTileChooser, 0, 164, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(editLayerTitleLabel)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(0, 58, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(restrictionModeChooser, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         editLayerPanelLayout.setVerticalGroup(
@@ -294,15 +588,123 @@ public final class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                     .addComponent(editLayerTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(restrictionModeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editLayerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(applyLayerChangesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelLayerChangesButton))
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout generatorBodyPanelLayout = new javax.swing.GroupLayout(generatorBodyPanel);
+        generatorBodyPanel.setLayout(generatorBodyPanelLayout);
+        generatorBodyPanelLayout.setHorizontalGroup(
+            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 293, Short.MAX_VALUE)
+        );
+        generatorBodyPanelLayout.setVerticalGroup(
+            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setText("Generation options");
+
+        generatorChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no generators found>" }));
+        generatorChooser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                generatorChooserItemStateChanged(evt);
+            }
+        });
+        generatorChooser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                generatorChooserMouseReleased(evt);
+            }
+        });
+
+        openCommandLineButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal.png"))); // NOI18N
+        openCommandLineButton.setToolTipText("Move up");
+        openCommandLineButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openCommandLineButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout generatorTitlePanelLayout = new javax.swing.GroupLayout(generatorTitlePanel);
+        generatorTitlePanel.setLayout(generatorTitlePanelLayout);
+        generatorTitlePanelLayout.setHorizontalGroup(
+            generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator5)
+                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        generatorTitlePanelLayout.setVerticalGroup(
+            generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(applyLayerChangesButton)
+                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(openCommandLineButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(generatorChooser))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButton2.setText("Generate!");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Cancel");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout generatorBottomPanelLayout = new javax.swing.GroupLayout(generatorBottomPanel);
+        generatorBottomPanel.setLayout(generatorBottomPanelLayout);
+        generatorBottomPanelLayout.setHorizontalGroup(
+            generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorBottomPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        generatorBottomPanelLayout.setVerticalGroup(
+            generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorBottomPanelLayout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap())
         );
 
@@ -315,22 +717,46 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(285, Short.MAX_VALUE))
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(generatorTitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
-                .addContainerGap(159, Short.MAX_VALUE)
-                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addComponent(generatorTitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, 0)
+                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addGap(0, 278, Short.MAX_VALUE)
+                        .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
         fileMenu.setText("File");
+        fileMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileMenuActionPerformed(evt);
+            }
+        });
 
         newWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        newWorldButton.setText("New world...");
+        newWorldButton.setText("New world");
         newWorldButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newWorld(evt);
@@ -339,9 +765,21 @@ public final class GUI extends javax.swing.JFrame {
         fileMenu.add(newWorldButton);
 
         openWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        openWorldButton.setText("Open existing world...");
-        openWorldButton.setEnabled(false);
+        openWorldButton.setText("Open world...");
+        openWorldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openWorldButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(openWorldButton);
+
+        jMenuItem3.setText("Save world...");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem3);
         fileMenu.add(jSeparator3);
 
         exportTerrainButton.setText("Export terrain...");
@@ -376,15 +814,14 @@ public final class GUI extends javax.swing.JFrame {
         worldMenu.add(showNavigatorButton);
         worldMenu.add(jSeparator1);
 
-        setSeedButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
-        setSeedButton.setText("Set seed...");
-        setSeedButton.setEnabled(false);
-        setSeedButton.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem4.setText("Resize world...");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setSeedButtonActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        worldMenu.add(setSeedButton);
+        worldMenu.add(jMenuItem4);
 
         chooseSpriteSheetMenu.setText("Choose tile spritesheet...");
 
@@ -416,15 +853,15 @@ public final class GUI extends javax.swing.JFrame {
 
         worldMenu.add(chooseSpriteSheetMenu);
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Resize world...");
-        jMenuItem4.setEnabled(false);
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        setSeedButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
+        setSeedButton.setText("Set seed...");
+        setSeedButton.setEnabled(false);
+        setSeedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                setSeedButtonActionPerformed(evt);
             }
         });
-        worldMenu.add(jMenuItem4);
+        worldMenu.add(setSeedButton);
 
         menuBar.add(worldMenu);
 
@@ -446,7 +883,8 @@ public final class GUI extends javax.swing.JFrame {
 
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
         World.newWorld(64, 64);
-        worldMenu.setEnabled(true);
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
         canvas.repaint();
     }//GEN-LAST:event_newWorld
 
@@ -501,10 +939,6 @@ public final class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_customSpritesheetButtonActionPerformed
 
-    private void canvasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseClicked
-        canvas.repaint();
-    }//GEN-LAST:event_canvasMouseClicked
-
     private void setSeedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setSeedButtonActionPerformed
         World.getWorld().setSeed(Long.parseLong(JOptionPane.showInputDialog(gui, "Seed (integer):")));
     }//GEN-LAST:event_setSeedButtonActionPerformed
@@ -544,14 +978,130 @@ public final class GUI extends javax.swing.JFrame {
                     saved ? "Success" : "Error",
                     JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
         }
-        
     }//GEN-LAST:event_exportTerrainButtonActionPerformed
 
-    private void layerUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerUpButtonActionPerformed
-        World.getWorld().reorderLayer(layerList.getSelectedIndex(), -1);
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        String input = JOptionPane.showInputDialog(gui, 
+                        "Enter the new world size (i.e. \"64, 64\")", 
+                        "Resize world", JOptionPane.QUESTION_MESSAGE);
+        String[] dims = input.split("\\s*,\\s*");
+        World.getWorld().resize(Integer.parseInt(dims[0]), Integer.parseInt(dims[1]));
         canvas.repaint();
         refreshLayerList();
-    }//GEN-LAST:event_layerUpButtonActionPerformed
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileMenuActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            boolean saved = World.getWorld().save(saver.getSelectedFile());
+            JOptionPane.showMessageDialog(gui, 
+                    saved ? "World has been saved!" : "Error saving world!", 
+                    saved ? "Success" : "Error",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void openWorldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWorldButtonActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            World.newWorld(0, 0);
+            boolean saved = World.getWorld().load(saver.getSelectedFile());
+            JOptionPane.showMessageDialog(gui, 
+                    saved ? "World has been loaded!" : "Error loading world!", 
+                    saved ? "Success" : "Error",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
+        }
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
+        canvas.repaint();
+    }//GEN-LAST:event_openWorldButtonActionPerformed
+
+    private void canvasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canvasMouseClicked
+        canvas.repaint();
+    }//GEN-LAST:event_canvasMouseClicked
+
+    private void editLayerPanelPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_editLayerPanelPropertyChange
+        System.out.println(evt.getPropertyName());
+    }//GEN-LAST:event_editLayerPanelPropertyChange
+
+    private void cancelLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLayerChangesButtonActionPerformed
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_cancelLayerChangesButtonActionPerformed
+
+    private void tileRestrictionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tileRestrictionListValueChanged
+
+    }//GEN-LAST:event_tileRestrictionListValueChanged
+
+    private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
+        boolean comma = layerNameField.getText().contains(",");
+        if (layerNameField.getText().trim().length() == 0 || comma) {
+            JOptionPane.showMessageDialog(gui,
+                !comma ? "You cannot have a blank layer name!" : "Commas are not allowed in layer names!",
+                "Invalid name", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        //apply layer properties
+        int[] layers = layerList.getSelectedIndices();
+        for (int layer: layers) {
+            World.getWorld().setLayerProperty("name", layerNameField.getText(), layer);
+            World.getWorld().setLayerProperty("tile", layerTileChooser.getSelectedIndex(), layer);
+            World.getWorld().setLayerProperty("rmode", restrictionModeChooser.getSelectedIndex(), layer);
+            World.getWorld().setLayerProperty("rtiles", tileRestrictionList.getSelectedIndices(), layer);
+        }
+        canvas.repaint();
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_applyLayerChangesButtonActionPerformed
+
+    private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
+        World.getWorld().newLayer();
+        gui.refreshLayerList();
+        layerList.setSelectedIndex(0);
+        canvas.repaint();
+        layerList.ensureIndexIsVisible(layerList.getSelectedIndex());
+    }//GEN-LAST:event_addLayerButtonActionPerformed
+
+    private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
+        int gindex = generatorChooser.getSelectedIndex();
+        DefaultComboBoxModel<String> m = new DefaultComboBoxModel<String>();
+        for (int i = 0; i < Generator.generatorCount(); i++)
+            m.addElement(Generator.getGeneratorName(i));
+        generatorChooser.setModel(m);
+        generatorChooser.setSelectedIndex(-1);
+        generatorChooser.setSelectedIndex(gindex);
+        //repaint
+        canvas.repaint();
+        setGeneratorPanelVisible(true);
+    }//GEN-LAST:event_regenLayerButtonActionPerformed
+
+    private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
+        //deleye layers
+        int[] layers = layerList.getSelectedIndices();
+        int start_index = layerList.getSelectedIndex();
+        for (int l = layers.length - 1; l > -1; l--) {
+            //System.out.println("Removing layer: "+layers[l]);
+            World.getWorld().removeLayer(layers[l]);
+        }
+        if (World.getWorld().layerCount() == 0) World.getWorld().newLayer();
+        layerList.setSelectedIndex((int)MiscMath.clamp(start_index, 0, World.getWorld().layerCount() - 1));
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
+        canvas.repaint();
+    }//GEN-LAST:event_deleteLayerButtonActionPerformed
+
+    private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
+        refreshLayerList();
+        canvas.repaint();
+        editLayerPanel.setVisible(true);
+    }//GEN-LAST:event_editLayerButtonActionPerformed
 
     private void layerDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerDownButtonActionPerformed
         World.getWorld().reorderLayer(layerList.getSelectedIndex(), 1);
@@ -559,22 +1109,41 @@ public final class GUI extends javax.swing.JFrame {
         refreshLayerList();
     }//GEN-LAST:event_layerDownButtonActionPerformed
 
-    private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
-        editLayerPanel.setVisible(true);
+    private void layerUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerUpButtonActionPerformed
+        World.getWorld().reorderLayer(layerList.getSelectedIndex(), -1);
         canvas.repaint();
-        editLayerTitleLabel.setText("Editing '"+World.getWorld().getLayerProperty("name", layerList.getSelectedIndex())+"'");
-    }//GEN-LAST:event_editLayerButtonActionPerformed
+        refreshLayerList();
+    }//GEN-LAST:event_layerUpButtonActionPerformed
 
-    private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
-        int index = layerList.getSelectedIndex();
-        World.getWorld().removeLayer(index);
-        gui.refreshLayerList();
-        layerList.setSelectedIndex(index < layerList.getModel().getSize() ? index 
-                : layerList.getModel().getSize() - 1);
-        canvas.repaint();
-    }//GEN-LAST:event_deleteLayerButtonActionPerformed
+    private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
+        if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
+        int scount = evt.getLastIndex() - evt.getFirstIndex();
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_layerListValueChanged
 
-    private void regenLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regenLayerButtonActionPerformed
+    private void generatorChooserMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generatorChooserMouseReleased
+
+    }//GEN-LAST:event_generatorChooserMouseReleased
+
+    private void generatorChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_generatorChooserItemStateChanged
+
+        if (generatorChooser.getSelectedIndex() == -1) return;
+        
+        JPanel[] panels = new JPanel[] {
+            noOptionsPanel, 
+            noOptionsPanel,
+            noiseMapOptions,
+            scatterOptions
+        };
+        
+        generatorBodyPanel.removeAll();
+        generatorBodyPanel.setLayout(new BorderLayout());
+        generatorBodyPanel.add(panels[generatorChooser.getSelectedIndex()], BorderLayout.CENTER);
+        generatorBodyPanel.revalidate();
+        generatorBodyPanel.repaint();
+    }//GEN-LAST:event_generatorChooserItemStateChanged
+
+    private void openCommandLineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openCommandLineButtonActionPerformed
         String s = JOptionPane.showInputDialog(gui, "Parameters:", 
                 World.getWorld().getLayerProperty("lastcmd", Canvas.layer()));
         if (s == null) return; s = s.trim();
@@ -601,47 +1170,45 @@ public final class GUI extends javax.swing.JFrame {
         }
         
         //clear and generate
-        World.getWorld().clearTiles(layerList.getSelectedIndex());
-        g.generate(World.getWorld(), layerList.getSelectedIndex());
+        
+        int[] selected = layerList.getSelectedIndices();
+        for (int l = selected.length - 1; l > -1; l--) {
+            World.getWorld().clearTiles(selected[l]);
+            g.generate(World.getWorld(), selected[l]);
+        }
         //repaint
         canvas.repaint();
-    }//GEN-LAST:event_regenLayerButtonActionPerformed
+    }//GEN-LAST:event_openCommandLineButtonActionPerformed
 
-    private void addLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLayerButtonActionPerformed
-        World.getWorld().addLayer();
-        gui.refreshLayerList();
-        layerList.setSelectedIndex(0);
-        canvas.repaint();
-        layerList.ensureIndexIsVisible(layerList.getSelectedIndex());
-    }//GEN-LAST:event_addLayerButtonActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        setGeneratorPanelVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void layerListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_layerListValueChanged
-        if (evt.getFirstIndex() == -1) layerList.setSelectedIndex(0);
-        int scount = evt.getLastIndex() - evt.getFirstIndex();
-        editLayerPanel.setVisible(false);
-    }//GEN-LAST:event_layerListValueChanged
-
-    private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
-        if (layerNameField.getText().trim().length() == 0) {
-            JOptionPane.showMessageDialog(gui, "You cannot have a blank layer name!", 
-                        "Invalid name", JOptionPane.ERROR_MESSAGE);
-            return;
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        int[] selected = layerList.getSelectedIndices();
+        for (int l = selected.length - 1; l > -1; l--) {
+            World.getWorld().clearTiles(selected[l]);
+            g.generate(World.getWorld(), selected[l]);
         }
-        World.getWorld().setLayerProperty("name", layerNameField.getText(), layerList.getSelectedIndex());
-        World.getWorld().setLayerProperty("tile", 
-                layerTileChooser.getSelectedIndex(), layerList.getSelectedIndex());
         canvas.repaint();
-        refreshLayerList();
-        editLayerPanel.setVisible(false);
-    }//GEN-LAST:event_applyLayerChangesButtonActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        String input = JOptionPane.showInputDialog(gui, 
-                        "Enter the new world size (i.e. \"64, 64\")", 
-                        "Resize world", JOptionPane.QUESTION_MESSAGE);
-        String[] dims = input.split("\\s*,\\s*");
-        World.getWorld().resize(Integer.parseInt(dims[0]), Integer.parseInt(dims[1]));
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void noiseMapCutoffSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_noiseMapCutoffSliderStateChanged
+        Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+    }//GEN-LAST:event_noiseMapCutoffSliderStateChanged
+
+    private void scatterAmountSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterAmountSliderStateChanged
+        Generator.getGenerator("Scatter").setParameter("amount", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+    }//GEN-LAST:event_scatterAmountSliderStateChanged
+
+    private void scatterMinSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterMinSliderStateChanged
+        Generator.getGenerator("Scatter").setParameter("min", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+    }//GEN-LAST:event_scatterMinSliderStateChanged
+
+    private void scatterMaxSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterMaxSliderStateChanged
+       Generator.getGenerator("Scatter").setParameter("max", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+    }//GEN-LAST:event_scatterMaxSliderStateChanged
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -655,21 +1222,37 @@ public final class GUI extends javax.swing.JFrame {
         System.out.println("Showing " + d.getTitle());
     }
     
+    private void setGeneratorPanelVisible(boolean v) {
+        generatorTitlePanel.setVisible(v);
+        generatorBodyPanel.setVisible(v);
+        generatorBottomPanel.setVisible(v);
+    }
+    
     public void refreshLayerList() {
         DefaultListModel m = new DefaultListModel();
-        int index = layerList.getSelectedIndex();
+        int[] indices = layerList.getSelectedIndices();
         for (int i = 0; i < World.getWorld().layerCount(); i++) 
             m.addElement(World.getWorld().getLayerProperty("name", i));
         layerList.setModel(m);
-        layerList.setSelectedIndex(index);
-        deleteLayerButton.setEnabled(World.getWorld().layerCount() > 1);
+        layerList.setSelectedIndices(indices);
         
-        layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
+        boolean multiple = layerList.getSelectedIndices().length > 1;
+        
+        //update layer edit panel
+        layerNameField.setText(multiple ? "" : (String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
         DefaultComboBoxModel<String> md = new DefaultComboBoxModel<String>();
-        for (String tile: World.getWorld().getTileNames()) md.addElement(tile);
-        if (m.getSize() == 0) md.addElement("<no tiles defined>");
+        DefaultListModel dlm = new DefaultListModel();
+        for (String tile: World.getWorld().getTileNames()) { md.addElement(tile); dlm.addElement(tile); }
         layerTileChooser.setModel(md);
-        layerTileChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        tileRestrictionList.setModel(dlm);
+        layerTileChooser.setSelectedIndex(multiple ? 0 
+                : (Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        restrictionModeChooser.setSelectedIndex(multiple ? 0 
+                : (Integer)World.getWorld().getLayerProperty("rmode", layerList.getSelectedIndex()));
+        tileRestrictionList.setSelectedIndices(multiple ? new int[]{} 
+                : (int[])World.getWorld().getLayerProperty("rtiles", layerList.getSelectedIndex()));
+        
+        editLayerTitleLabel.setText(multiple ? "Editing multiple layers" : "Editing layer properties");
         
         //layerUpButton.setEnabled(layerList.getSelectedIndex() > 0);
         //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
@@ -698,6 +1281,7 @@ public final class GUI extends javax.swing.JFrame {
                 gui.setVisible(true);
                 World.newWorld(64, 64);
                 gui.refreshLayerList();
+                gui.setGeneratorPanelVisible(false);
             }
         });
     }
@@ -709,6 +1293,7 @@ public final class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addLayerButton;
     private javax.swing.JButton applyLayerChangesButton;
+    private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
     private javax.swing.JMenu chooseSpriteSheetMenu;
     private javax.swing.JMenuItem customSpritesheetButton;
@@ -720,16 +1305,44 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitButton;
     private javax.swing.JMenuItem exportTerrainButton;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JPanel generatorBodyPanel;
+    private javax.swing.JPanel generatorBottomPanel;
+    private javax.swing.JComboBox<String> generatorChooser;
+    private javax.swing.JPanel generatorTitlePanel;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JButton layerDownButton;
     private static javax.swing.JList<String> layerList;
     private javax.swing.JTextField layerNameField;
@@ -741,10 +1354,20 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JDialog navigator;
     private javax.swing.JMenuItem newWorldButton;
+    private javax.swing.JPanel noOptionsPanel;
+    private javax.swing.JSlider noiseMapCutoffSlider;
+    private javax.swing.JPanel noiseMapOptions;
+    private javax.swing.JButton openCommandLineButton;
     private javax.swing.JMenuItem openWorldButton;
     private javax.swing.JButton regenLayerButton;
+    private javax.swing.JComboBox<String> restrictionModeChooser;
+    private javax.swing.JSlider scatterAmountSlider;
+    private javax.swing.JSlider scatterMaxSlider;
+    private javax.swing.JSlider scatterMinSlider;
+    private javax.swing.JPanel scatterOptions;
     private javax.swing.JMenuItem setSeedButton;
     private javax.swing.JMenuItem showNavigatorButton;
+    private javax.swing.JList<String> tileRestrictionList;
     private javax.swing.JMenu worldMenu;
     // End of variables declaration//GEN-END:variables
 }
