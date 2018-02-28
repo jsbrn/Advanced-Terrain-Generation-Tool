@@ -450,7 +450,7 @@ public final class GUI extends javax.swing.JFrame {
         });
 
         regenLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/favicon-16.png"))); // NOI18N
-        regenLayerButton.setToolTipText("Generator options");
+        regenLayerButton.setToolTipText("Generate terrain");
         regenLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regenLayerButtonActionPerformed(evt);
@@ -458,7 +458,7 @@ public final class GUI extends javax.swing.JFrame {
         });
 
         addLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/add.png"))); // NOI18N
-        addLayerButton.setToolTipText("Move up");
+        addLayerButton.setToolTipText("Add layer");
         addLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addLayerButtonActionPerformed(evt);
@@ -617,7 +617,7 @@ public final class GUI extends javax.swing.JFrame {
         );
         generatorBodyPanelLayout.setVerticalGroup(
             generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 404, Short.MAX_VALUE)
         );
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -680,7 +680,7 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Cancel");
+        jButton3.setText("Close");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -695,7 +695,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         generatorBottomPanelLayout.setVerticalGroup(
@@ -717,16 +717,15 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(canvasLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(generatorTitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(10, 10, 10))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(canvasLayout.createSequentialGroup()
+                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         canvasLayout.setVerticalGroup(
@@ -924,7 +923,7 @@ public final class GUI extends javax.swing.JFrame {
         if (success == JFileChooser.APPROVE_OPTION) {
             File chosen = chooser.getSelectedFile();
             try {
-                World.getWorld().setSpritesheet(chosen);
+                World.getWorld().setSpritesheet(chosen.getAbsolutePath());
                 System.out.println("Set world spritesheet file to "+chosen.getAbsolutePath());
                 String tdefs = JOptionPane.showInputDialog(gui, 
                         "Type the name of each tile in order, comma separated:", 
@@ -956,13 +955,13 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mapViewFocusLost
 
     private void earthSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earthSpritesheetButtonActionPerformed
-        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+        World.getWorld().setSpritesheet("resources/samples/terrain/earth.png");
         World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_earthSpritesheetButtonActionPerformed
 
     private void marsSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marsSpritesheetButtonActionPerformed
-        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/mars.png"));
+        World.getWorld().setSpritesheet("resources/samples/terrain/mars.png");
         World.getWorld().setTileNames(new String[]{"Sand", "Ice", "Rocks"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_marsSpritesheetButtonActionPerformed

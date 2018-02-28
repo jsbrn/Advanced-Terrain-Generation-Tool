@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -50,7 +51,7 @@ public class World {
         this.tile_dims = new int[]{16, 16};
         clearTiles();
         this.textures = new ArrayList<Image>();
-        this.setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+        this.setSpritesheet("resources/samples/terrain/earth.png");
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
     }
     
@@ -212,15 +213,18 @@ public class World {
     }
     public int getTileCount() { return textures.size(); }
     
-    public void setSpritesheet(File sprite) {
+    public void setSpritesheet(String uri) {
+        boolean internal = uri.indexOf("resources/") == 0;
         textures = new ArrayList<Image>();
         BufferedImage img = null;
         try {
-            img = ImageIO.read(sprite);
+            img = internal 
+                    ? ImageIO.read(getClass().getResourceAsStream("/"+uri))
+                    : ImageIO.read(new File(uri));
             spritesheet = img;
             for (int i = 0; i < img.getWidth() / tile_dims[0]; i++) //split the spritesheet into preloaded images
                 textures.add(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]));
-            spritesheet_uri = sprite.getAbsolutePath(); //keep track of the uri for saving/loading
+            spritesheet_uri = uri; //keep track of the uri for saving/loading
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -258,7 +262,7 @@ public class World {
                 String line = br.readLine();
                 if (line == null) break;
                 line = line.trim();
-                if (line.indexOf("spritesheet: ") == 0) this.setSpritesheet(new File(line.replace("spritesheet: ", "")));
+                if (line.indexOf("spritesheet: ") == 0) this.setSpritesheet(line.replace("spritesheet: ", ""));
                 if (line.indexOf("tnames: ") == 0) this.setTileNames(line.replace("tnames: ", "").split("\\s*,\\s*"));
                 if (line.indexOf("dims: ") == 0) {
                     String[] dimstr = line.replace("dims: ", "").split("\\s*,\\s*");
