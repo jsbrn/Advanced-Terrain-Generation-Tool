@@ -69,6 +69,11 @@ public final class GUI extends javax.swing.JFrame {
         editLayerTitleLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         layerTileChooser = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tileRestrictionList = new javax.swing.JList<>();
+        jLabel4 = new javax.swing.JLabel();
+        restrictionModeChooser = new javax.swing.JComboBox<>();
+        cancelLayerChangesButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
@@ -252,7 +257,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(deleteLayerButton))
                     .addComponent(jScrollPane1))
-                .addGap(9, 15, Short.MAX_VALUE))
+                .addGap(9, 19, Short.MAX_VALUE))
         );
 
         applyLayerChangesButton.setText("Apply changes");
@@ -274,6 +279,29 @@ public final class GUI extends javax.swing.JFrame {
 
         layerTileChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no tiles defined>" }));
 
+        tileRestrictionList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        tileRestrictionList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                tileRestrictionListValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tileRestrictionList);
+
+        jLabel4.setText("Tile restrictions");
+
+        restrictionModeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Allow all", "Allow selected", "Block selected" }));
+
+        cancelLayerChangesButton.setText("Cancel");
+        cancelLayerChangesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelLayerChangesButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout editLayerPanelLayout = new javax.swing.GroupLayout(editLayerPanel);
         editLayerPanel.setLayout(editLayerPanelLayout);
         editLayerPanelLayout.setHorizontalGroup(
@@ -281,16 +309,22 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(editLayerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(layerNameField, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(layerTileChooser, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(editLayerTitleLabel)
+                    .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cancelLayerChangesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3)
-                        .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(layerTileChooser, 0, 164, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel2)
-                        .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(editLayerTitleLabel)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(restrictionModeChooser, javax.swing.GroupLayout.Alignment.TRAILING, 0, 186, Short.MAX_VALUE))
                 .addContainerGap())
         );
         editLayerPanelLayout.setVerticalGroup(
@@ -301,15 +335,24 @@ public final class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                     .addComponent(editLayerTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(applyLayerChangesButton)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(restrictionModeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(editLayerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(applyLayerChangesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelLayerChangesButton))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
 
@@ -322,12 +365,12 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(569, Short.MAX_VALUE))
+                .addContainerGap(320, Short.MAX_VALUE))
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
-                .addContainerGap(321, Short.MAX_VALUE)
+                .addContainerGap(317, Short.MAX_VALUE)
                 .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -469,7 +512,8 @@ public final class GUI extends javax.swing.JFrame {
 
     private void newWorld(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newWorld
         World.newWorld(64, 64);
-        worldMenu.setEnabled(true);
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
         canvas.repaint();
     }//GEN-LAST:event_newWorld
 
@@ -643,22 +687,6 @@ public final class GUI extends javax.swing.JFrame {
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_layerListValueChanged
 
-    private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
-        boolean comma = layerNameField.getText().contains(",");
-        if (layerNameField.getText().trim().length() == 0 || comma) {
-            JOptionPane.showMessageDialog(gui, 
-                        !comma ? "You cannot have a blank layer name!" : "Commas are not allowed in layer names!", 
-                        "Invalid name", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        World.getWorld().setLayerProperty("name", layerNameField.getText(), layerList.getSelectedIndex());
-        World.getWorld().setLayerProperty("tile", 
-                layerTileChooser.getSelectedIndex(), layerList.getSelectedIndex());
-        canvas.repaint();
-        refreshLayerList();
-        editLayerPanel.setVisible(false);
-    }//GEN-LAST:event_applyLayerChangesButtonActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         String input = JOptionPane.showInputDialog(gui, 
                         "Enter the new world size (i.e. \"64, 64\")", 
@@ -699,8 +727,36 @@ public final class GUI extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
         }
         refreshLayerList();
+        editLayerPanel.setVisible(false);
         canvas.repaint();
     }//GEN-LAST:event_openWorldButtonActionPerformed
+
+    private void applyLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyLayerChangesButtonActionPerformed
+        boolean comma = layerNameField.getText().contains(",");
+        if (layerNameField.getText().trim().length() == 0 || comma) {
+            JOptionPane.showMessageDialog(gui,
+                !comma ? "You cannot have a blank layer name!" : "Commas are not allowed in layer names!",
+                "Invalid name", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        //apply layer properties
+        int layer = layerList.getSelectedIndex();
+        World.getWorld().setLayerProperty("name", layerNameField.getText(), layer);
+        World.getWorld().setLayerProperty("tile", layerTileChooser.getSelectedIndex(), layer);
+        World.getWorld().setLayerProperty("rmode", restrictionModeChooser.getSelectedIndex(), layer);
+        World.getWorld().setLayerProperty("rtiles", tileRestrictionList.getSelectedIndices(), layer);
+        canvas.repaint();
+        refreshLayerList();
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_applyLayerChangesButtonActionPerformed
+
+    private void cancelLayerChangesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelLayerChangesButtonActionPerformed
+        editLayerPanel.setVisible(false);
+    }//GEN-LAST:event_cancelLayerChangesButtonActionPerformed
+
+    private void tileRestrictionListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_tileRestrictionListValueChanged
+
+    }//GEN-LAST:event_tileRestrictionListValueChanged
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -723,12 +779,15 @@ public final class GUI extends javax.swing.JFrame {
         layerList.setSelectedIndex(index);
         deleteLayerButton.setEnabled(World.getWorld().layerCount() > 1);
         
+        //update layer edit panel
         layerNameField.setText((String)World.getWorld().getLayerProperty("name", layerList.getSelectedIndex()));
         DefaultComboBoxModel<String> md = new DefaultComboBoxModel<String>();
         for (String tile: World.getWorld().getTileNames()) md.addElement(tile);
         if (m.getSize() == 0) md.addElement("<no tiles defined>");
         layerTileChooser.setModel(md);
         layerTileChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("tile", layerList.getSelectedIndex()));
+        restrictionModeChooser.setSelectedIndex((Integer)World.getWorld().getLayerProperty("rmode", layerList.getSelectedIndex()));
+        tileRestrictionList.setSelectedIndices((int[])World.getWorld().getLayerProperty("rtiles", layerList.getSelectedIndex()));
         
         //layerUpButton.setEnabled(layerList.getSelectedIndex() > 0);
         //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
@@ -768,6 +827,7 @@ public final class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addLayerButton;
     private javax.swing.JButton applyLayerChangesButton;
+    private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
     private javax.swing.JMenu chooseSpriteSheetMenu;
     private javax.swing.JMenuItem customSpritesheetButton;
@@ -782,12 +842,14 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
@@ -805,8 +867,10 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem newWorldButton;
     private javax.swing.JMenuItem openWorldButton;
     private javax.swing.JButton regenLayerButton;
+    private javax.swing.JComboBox<String> restrictionModeChooser;
     private javax.swing.JMenuItem setSeedButton;
     private javax.swing.JMenuItem showNavigatorButton;
+    private javax.swing.JList<String> tileRestrictionList;
     private javax.swing.JMenu worldMenu;
     // End of variables declaration//GEN-END:variables
 }

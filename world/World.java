@@ -60,7 +60,7 @@ public class World {
             clear(new_);
             for (int x = 0; x < new_w; x++) {
                 for (int y = 0; y < new_h; y++) {
-                    new_[x][y] = getTile(x, y, l) > -1;
+                    new_[x][y] = layers.get(l)[x][y];
                 }
             }
             layers.set(l, new_);
@@ -74,6 +74,8 @@ public class World {
         properties.put("name", "Untitled Layer");
         properties.put("tile", 0);
         properties.put("lastcmd", "");
+        properties.put("rmode", 0);
+        properties.put("rtiles", new int[]{});
         layer_properties.add(0, properties);
         clearTiles(0);
     }
@@ -126,7 +128,7 @@ public class World {
     public long getSeed() { return seed; }
     
     public void generate(Generator g) { setSeed(seed); g.generate(this, 0); }
-    public void setTile(int x, int y, int layer, boolean set) { getTerrain(layer)[x][y] = set; }
+    public void setTile(int x, int y, int layer, boolean set) { if (isTileAllowed(x, y, layer)) getTerrain(layer)[x][y] = set; }
     
     /**
      * Get the topmost visible tile at the {x, y} coordinate specified.
@@ -135,20 +137,57 @@ public class World {
      * @return A tile ID (integer).
      */
     public int getTile(int x, int y) { 
-        for (int l = 0; l < layers.size(); l++) {
+        return getTileBelow(x, y, -1);
+    }
+    
+    /**
+     * Get the tile at the specified layer. 
+     * @param x
+     * @param y
+     * @param layer
+     * @return 
+     */
+    public int getTile(int x, int y, int layer) {
+        if (x < 0 || y < 0) return -1;
+        if (layer < 0 || layer >= layers.size()) return -1;
+        boolean[][] l = layers.get(layer);
+        if (x < l.length) if (y < l[0].length) {
+            return l[x][y] ? (Integer)getLayerProperty("tile", layer) : -1;
+        }
+        return -1;
+    }
+    
+    /**
+     * Get the topmost tile underneath the specified layer.
+     * @param x The x coord
+     * @param y The y coord
+     * @param layer The layer to look under.
+     * @return 
+     */
+    public int getTileBelow(int x, int y, int layer) {
+        for (int l = layer+1; l < layers.size(); l++) {
             if (!layers.get(l)[x][y]) continue;
             return getTile(x, y, l);
         }
         return -1;
     }
     
-    public int getTile(int x, int y, int layer) {
-        if (x < 0 || y < 0) return -1;
-        boolean[][] l = layers.get(layer);
-        if (x < l.length) if (y < l[0].length) {
-            return l[x][y] ? (Integer)getLayerProperty("tile", layer) : -1;
-        }
-        return -1;
+    /**
+     * Is a tile allowed to exist on the layer at the specified coordinates? Uses the layers beneath to determine.
+     * @param x
+     * @param y
+     * @param layer
+     * @return 
+     */
+    public boolean isTileAllowed(int x, int y, int layer) {
+        int tile = getTileBelow(x, y, layer);
+        int rmode = (Integer)getLayerProperty("rmode", layer);
+        if (rmode == 0) return true;
+        boolean whitelist = rmode == 1;
+        int[] tile_ids = (int[])getLayerProperty("rtiles", layer);
+        boolean on_list = false;
+        for (int t: tile_ids) if (tile == t) on_list = true;
+        return (whitelist && on_list) || (!whitelist && !on_list);
     }
     
     public final int layerCount() { return layers.size(); }
@@ -238,8 +277,9 @@ public class World {
                 }
                 
                 if (line.equals("---BEGIN TERRAIN DATA---")) layer = 0;
-                if (line.isEmpty()) { layer++; row = 0; }
-                if ((line.charAt(0)+"").matches("^\\d+$")) {
+                if (line.isEmpty()) { 
+                    layer++; row = 0; 
+                } else if ((line.charAt(0)+"").matches("^\\d+$")) {
                     //prepare row
                     String[] ro = line.split(" ");
                     for (int i = 0; i < ro.length; i++) layers.get(layer)[i][row] = Integer.parseInt(ro[i]) == 1;
@@ -247,6 +287,7 @@ public class World {
                 }
                 
             }
+            Canvas.setCamera(0, 0);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
