@@ -41,6 +41,7 @@ public final class Canvas extends JPanel {
     
     public static int[] getDimensions() { return new int[]{GUI.getCanvas().getWidth(), GUI.getCanvas().getHeight()}; }
     public static int[] getCamera() { return new int[]{(int)GUI.getCanvas().camera[0], (int)GUI.getCanvas().camera[1]}; }
+    public static void setCamera(int x, int y) { GUI.getCanvas().camera = new int[]{x, y}; }
     
     public static int layer() { return GUI.getLayerList().getSelectedIndex(); }
     
