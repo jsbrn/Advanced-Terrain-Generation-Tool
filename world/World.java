@@ -107,13 +107,11 @@ public class World {
     
     public Object getLayerProperty(String prop, int layer) {
         Object val = layer_properties.get(layer).get(prop);
-        System.out.println("Value of "+prop+" in "+layer+" is "+val);
         return val;
     }
     
     public void setLayerProperty(String prop, Object value, int layer) {
         layer_properties.get(layer).put(prop, value);
-        System.out.println("Put "+value+" in "+prop+" for layer "+layer);
     }
     
     public boolean[][] getTerrain(int layer) {
