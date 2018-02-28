@@ -68,14 +68,14 @@ public class World {
         dims = new int[]{new_w, new_h};
     }
     
-    public void newLayer() {
+    public final void newLayer() {
         layers.add(0, new boolean[dims[0]][dims[1]]);
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("name", "Untitled Layer");
         properties.put("tile", 0);
         properties.put("lastcmd", "");
         properties.put("rmode", 0);
-        properties.put("rtiles", new int[]{});
+        properties.put("rtiles", new int[]{-1});
         layer_properties.add(0, properties);
         clearTiles(0);
     }
@@ -107,11 +107,14 @@ public class World {
     }
     
     public Object getLayerProperty(String prop, int layer) {
-        return layer_properties.get(layer).get(prop);
+        Object val = layer_properties.get(layer).get(prop);
+        System.out.println("Value of "+prop+" in "+layer+" is "+val);
+        return val;
     }
     
     public void setLayerProperty(String prop, Object value, int layer) {
         layer_properties.get(layer).put(prop, value);
+        System.out.println("Put "+value+" in "+prop+" for layer "+layer);
     }
     
     public boolean[][] getTerrain(int layer) {
@@ -270,8 +273,18 @@ public class World {
                     String[] props = propstr.split("\\s*,\\s*");
                     for (String prop: props) {
                         String[] keyval = prop.split("\\s*->\\s*");
-                        boolean integer = keyval[1].matches("^\\d+$");
-                        setLayerProperty(keyval[0], integer ? Integer.parseInt(keyval[1]) : keyval[1], layer);
+                        if (keyval.length < 2) continue; //do not load, no value
+                        Object val = keyval[1];
+                        if ("rtiles".equals(keyval[0])) { //int arrays
+                            int[] rtiles = new int[]{};
+                            String[] arr = keyval[1].split("\\s*");
+                            rtiles = new int[arr.length];
+                            for (int r = 0; r < rtiles.length; r++) rtiles[r] = Integer.parseInt(arr[r]);
+                            val = rtiles;
+                        } else if (keyval[1].matches("\\d*\\s?")) {
+                            val = Integer.parseInt(keyval[1].trim());
+                        }
+                        setLayerProperty(keyval[0], val, layer);
                     }
                     layer++;
                 }
@@ -310,8 +323,12 @@ public class World {
             bw.write("dims: "+dims[0]+", "+dims[1]+", "+layers.size()+"\n"); //x, y, z (depth, or layer count)
             String props = "";
             for (HashMap<String, Object> lprops: layer_properties)
-                for (String key: lprops.keySet())
-                    props += ", "+key+" -> "+lprops.get(key);
+                for (String key: lprops.keySet()) {
+                    Object val = lprops.get(key);
+                    String tostring = val.toString();
+                    if (val instanceof int[]) { tostring = ""; for (int v: (int[])val) tostring += v+" "; }
+                    props += ", "+key+" -> "+tostring;
+                }
             bw.write("layer: "+props.replaceFirst(",\\s*", "")+"\n");
             bw.write("---BEGIN TERRAIN DATA---\n");
             exportTerrain(bw, false);   
