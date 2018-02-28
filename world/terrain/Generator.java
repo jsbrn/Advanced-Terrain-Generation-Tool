@@ -11,8 +11,10 @@ public abstract class Generator {
      * Put all Generator instances in this list and use getGenerator(name) to access them.
      */
     private static final Object[][] generators = new Object[][]{
-        {"FlatGenerator", new FlatGenerator()},{"FillGenerator", new FillGenerator()},
-        {"WaterGenerator", new WaterGenerator()}, {"NoiseMap", new NoiseMapGenerator()}
+        {"Fill", new FillGenerator()},
+        {"WaterGenerator", new WaterGenerator()}, 
+        {"NoiseMap", new NoiseMapGenerator()},
+        {"Scattered", new ScatteredGenerator()}
     };
     
     public static int generatorCount() { return generators.length; }

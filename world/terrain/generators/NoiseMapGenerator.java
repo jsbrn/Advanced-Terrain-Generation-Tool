@@ -11,7 +11,7 @@ import world.terrain.misc.DiamondSquare;
 public class NoiseMapGenerator extends Generator {
 
     public NoiseMapGenerator() {
-        this.setParameter("cutoff", "0.5");
+        this.setParameter("cutoff", "0");
     }
     
     @Override
