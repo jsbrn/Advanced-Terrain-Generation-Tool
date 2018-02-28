@@ -267,7 +267,7 @@ public final class GUI extends javax.swing.JFrame {
         jLabel3.setText("Tile");
 
         editLayerTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        editLayerTitleLabel.setText("Editing 'Untitled Layer'");
+        editLayerTitleLabel.setText("Editing layer properties");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/left.png"))); // NOI18N
@@ -352,7 +352,11 @@ public final class GUI extends javax.swing.JFrame {
 
         openWorldButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         openWorldButton.setText("Open world...");
-        openWorldButton.setEnabled(false);
+        openWorldButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openWorldButtonActionPerformed(evt);
+            }
+        });
         fileMenu.add(openWorldButton);
 
         jMenuItem3.setText("Save world...");
@@ -578,9 +582,9 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_layerDownButtonActionPerformed
 
     private void editLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLayerButtonActionPerformed
-        editLayerPanel.setVisible(true);
+        refreshLayerList();
         canvas.repaint();
-        editLayerTitleLabel.setText("Editing '"+World.getWorld().getLayerProperty("name", layerList.getSelectedIndex())+"'");
+        editLayerPanel.setVisible(true);
     }//GEN-LAST:event_editLayerButtonActionPerformed
 
     private void deleteLayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteLayerButtonActionPerformed
@@ -681,6 +685,22 @@ public final class GUI extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void openWorldButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWorldButtonActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            World.newWorld(0, 0);
+            boolean saved = World.getWorld().load(saver.getSelectedFile());
+            JOptionPane.showMessageDialog(gui, 
+                    saved ? "World has been loaded!" : "Error loading world!", 
+                    saved ? "Success" : "Error",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
+        }
+        refreshLayerList();
+        canvas.repaint();
+    }//GEN-LAST:event_openWorldButtonActionPerformed
 
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

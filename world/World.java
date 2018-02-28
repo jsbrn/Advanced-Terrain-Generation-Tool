@@ -213,6 +213,8 @@ public class World {
         try {
             fr = new FileReader(world_file);
             BufferedReader br = new BufferedReader(fr);
+            layers.clear();
+            int layer = 0, row = 0;
             while (true) {
                 String line = br.readLine();
                 if (line == null) break;
@@ -225,8 +227,25 @@ public class World {
                     for (int i = 0; i < Integer.parseInt(dimstr[2]); i++) newLayer(); //add in all layers to apply z depth
                 }
                 if (line.indexOf("layer: ") == 0) {
-                    
+                    String propstr = line.replace("layer: ", "");
+                    String[] props = propstr.split("\\s*,\\s*");
+                    for (String prop: props) {
+                        String[] keyval = prop.split("\\s*->\\s*");
+                        boolean integer = keyval[1].matches("^\\d+$");
+                        setLayerProperty(keyval[0], integer ? Integer.parseInt(keyval[1]) : keyval[1], layer);
+                    }
+                    layer++;
                 }
+                
+                if (line.equals("---BEGIN TERRAIN DATA---")) layer = 0;
+                if (line.isEmpty()) { layer++; row = 0; }
+                if ((line.charAt(0)+"").matches("^\\d+$")) {
+                    //prepare row
+                    String[] ro = line.split(" ");
+                    for (int i = 0; i < ro.length; i++) layers.get(layer)[i][row] = Integer.parseInt(ro[i]) == 1;
+                    row++;
+                }
+                
             }
             return true;
         } catch (Exception e) {
@@ -247,14 +266,15 @@ public class World {
             bw.write("spritesheet: "+spritesheet_uri+"\n");
             String tnames = ""; for (String s: tile_names) tnames += ", "+s; 
             bw.write("tnames: "+tnames.replaceFirst(",\\s*", "")+"\n");
-            bw.write("dims: "+dims[0]+", "+dims[1]+"\n, "+layers.size()); //x, y, z (depth, or layer count)
+            bw.write("dims: "+dims[0]+", "+dims[1]+", "+layers.size()+"\n"); //x, y, z (depth, or layer count)
             String props = "";
             for (HashMap<String, Object> lprops: layer_properties)
                 for (String key: lprops.keySet())
                     props += ", "+key+" -> "+lprops.get(key);
             bw.write("layer: "+props.replaceFirst(",\\s*", "")+"\n");
-            bw.write("\n");
+            bw.write("---BEGIN TERRAIN DATA---\n");
             exportTerrain(bw, false);   
+            bw.write("---END TERRAIN DATA---\n");
             bw.close();
             System.out.println("Saved world to "+f.getAbsolutePath());
             return true;
@@ -282,7 +302,7 @@ public class World {
     }
     
     /**
-     * Write terrain data to the specified BufferedWriter.
+     * Write terrain data to the specified BufferedWriter. Does not close BufferedWriter.
      * @param bw The BufferedWriter to write to.
      * @param raw If true, write the raw tile IDs (0 - n) instead of 0 or 1.
      * @return True if successful, false if not.
@@ -302,7 +322,6 @@ public class World {
                 }
                 if (l < layers.size() - 1) bw.write("\n");
             }
-            bw.close();
             return true;
         } catch (IOException ex) {
             ex.printStackTrace();
