@@ -64,4 +64,10 @@ public abstract class Generator {
     public final String getParameter(String param) {
         return parameters.get(param);
     }
+    
+    @Override
+    public String toString() {
+        return "";
+    }
+    
 }
