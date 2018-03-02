@@ -61,7 +61,7 @@ public class World {
             clear(new_);
             for (int x = 0; x < new_w; x++) {
                 for (int y = 0; y < new_h; y++) {
-                    new_[x][y] = layers.get(l)[x][y];
+                    new_[x][y] = getTile(x, y, l) > -1;
                 }
             }
             layers.set(l, new_);

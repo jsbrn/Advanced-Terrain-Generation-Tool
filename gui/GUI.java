@@ -1249,6 +1249,7 @@ public final class GUI extends javax.swing.JFrame {
         generatorBodyPanel.setVisible(v);
         generatorBottomPanel.setVisible(v);
         genOptionsScrollPane.setVisible(v);
+        jPanel1.setVisible(v);
     }
     
     public void refreshLayerList() {
