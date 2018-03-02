@@ -8,6 +8,7 @@ import world.terrain.misc.DiamondSquare;
 /**
  * Creates a scattered plot of tiles using the DiamondSquare algorithm.
  * @author Ryan Dykstra (Classified1)
+ * @see DiamondSquare
  */
 public class ScatteredGenerator extends Generator {
 

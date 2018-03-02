@@ -27,6 +27,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -89,9 +90,9 @@ public final class GUI extends javax.swing.JFrame {
         layerUpButton = new javax.swing.JButton();
         layerDownButton = new javax.swing.JButton();
         editLayerButton = new javax.swing.JButton();
-        deleteLayerButton = new javax.swing.JButton();
         regenLayerButton = new javax.swing.JButton();
         addLayerButton = new javax.swing.JButton();
+        deleteLayerButton = new javax.swing.JButton();
         editLayerPanel = new javax.swing.JPanel();
         applyLayerChangesButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -105,15 +106,16 @@ public final class GUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         restrictionModeChooser = new javax.swing.JComboBox<>();
         cancelLayerChangesButton = new javax.swing.JButton();
-        generatorBodyPanel = new javax.swing.JPanel();
         generatorTitlePanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         generatorChooser = new javax.swing.JComboBox<>();
-        jSeparator5 = new javax.swing.JSeparator();
         openCommandLineButton = new javax.swing.JButton();
         generatorBottomPanel = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        genOptionsScrollPane = new javax.swing.JScrollPane();
+        generatorBodyPanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newWorldButton = new javax.swing.JMenuItem();
@@ -229,8 +231,10 @@ public final class GUI extends javax.swing.JFrame {
                     .addComponent(noiseMapCutoffSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(415, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        noOptionsPanel.setAutoscrolls(true);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel15.setText("No options available.");
@@ -249,8 +253,10 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(noOptionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
-                .addContainerGap(476, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        scatterOptions.setAutoscrolls(true);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel14.setText("Create scattered plots of tiles.");
@@ -316,7 +322,7 @@ public final class GUI extends javax.swing.JFrame {
         scatterOptionsLayout.setHorizontalGroup(
             scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(scatterOptionsLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(scatterOptionsLayout.createSequentialGroup()
                         .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,7 +332,7 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(scatterOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                                .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel18))
                     .addGroup(scatterOptionsLayout.createSequentialGroup()
@@ -340,7 +346,7 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(scatterOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel20)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                                .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel21))
                     .addGroup(scatterOptionsLayout.createSequentialGroup()
@@ -351,10 +357,10 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(scatterOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel22)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                                .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel23)))
-                .addContainerGap())
+                .addGap(15, 15, 15))
         );
         scatterOptionsLayout.setVerticalGroup(
             scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,7 +388,7 @@ public final class GUI extends javax.swing.JFrame {
                     .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(317, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -397,6 +403,8 @@ public final class GUI extends javax.swing.JFrame {
                 canvasMouseClicked(evt);
             }
         });
+
+        layerPanel.setPreferredSize(new java.awt.Dimension(292, 242));
 
         layerList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         layerList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -441,16 +449,8 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
-        deleteLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/delete.png"))); // NOI18N
-        deleteLayerButton.setToolTipText("Delete layer");
-        deleteLayerButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteLayerButtonActionPerformed(evt);
-            }
-        });
-
         regenLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/favicon-16.png"))); // NOI18N
-        regenLayerButton.setToolTipText("Generator options");
+        regenLayerButton.setToolTipText("Terrain generation");
         regenLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 regenLayerButtonActionPerformed(evt);
@@ -458,10 +458,18 @@ public final class GUI extends javax.swing.JFrame {
         });
 
         addLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/add.png"))); // NOI18N
-        addLayerButton.setToolTipText("Move up");
+        addLayerButton.setToolTipText("Add layer");
         addLayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addLayerButtonActionPerformed(evt);
+            }
+        });
+
+        deleteLayerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/delete.png"))); // NOI18N
+        deleteLayerButton.setToolTipText("Delete layer");
+        deleteLayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteLayerButtonActionPerformed(evt);
             }
         });
 
@@ -472,16 +480,19 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(layerPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addGroup(layerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(deleteLayerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(layerUpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(layerDownButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(addLayerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, Short.MAX_VALUE))
+                    .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(layerDownButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(layerUpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(deleteLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layerPanelLayout.setVerticalGroup(
@@ -500,11 +511,11 @@ public final class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerDownButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(regenLayerButton)
+                        .addComponent(deleteLayerButton)
                         .addGap(26, 26, 26)
-                        .addComponent(deleteLayerButton))
+                        .addComponent(regenLayerButton))
                     .addComponent(jScrollPane1))
-                .addGap(9, 19, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
 
         editLayerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -609,19 +620,8 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout generatorBodyPanelLayout = new javax.swing.GroupLayout(generatorBodyPanel);
-        generatorBodyPanel.setLayout(generatorBodyPanelLayout);
-        generatorBodyPanelLayout.setHorizontalGroup(
-            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 293, Short.MAX_VALUE)
-        );
-        generatorBodyPanelLayout.setVerticalGroup(
-            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Generation options");
+        jLabel6.setText("Generate terrain");
 
         generatorChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no generators found>" }));
         generatorChooser.addItemListener(new java.awt.event.ItemListener() {
@@ -636,7 +636,7 @@ public final class GUI extends javax.swing.JFrame {
         });
 
         openCommandLineButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal.png"))); // NOI18N
-        openCommandLineButton.setToolTipText("Move up");
+        openCommandLineButton.setToolTipText("Advanced options...");
         openCommandLineButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openCommandLineButtonActionPerformed(evt);
@@ -650,27 +650,28 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator5)
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, Short.MAX_VALUE)))
+                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         generatorTitlePanelLayout.setVerticalGroup(
             generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(openCommandLineButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(generatorChooser))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         jButton2.setText("Generate!");
@@ -680,7 +681,7 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Cancel");
+        jButton3.setText("Close");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -695,56 +696,77 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         generatorBottomPanelLayout.setVerticalGroup(
             generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorBottomPanelLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
                 .addContainerGap())
         );
 
+        genOptionsScrollPane.setBackground(new java.awt.Color(255, 255, 255));
+        genOptionsScrollPane.setBorder(null);
+        genOptionsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        javax.swing.GroupLayout generatorBodyPanelLayout = new javax.swing.GroupLayout(generatorBodyPanel);
+        generatorBodyPanel.setLayout(generatorBodyPanelLayout);
+        generatorBodyPanelLayout.setHorizontalGroup(
+            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 293, Short.MAX_VALUE)
+        );
+        generatorBodyPanelLayout.setVerticalGroup(
+            generatorBodyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 254, Short.MAX_VALUE)
+        );
+
+        genOptionsScrollPane.setViewportView(generatorBodyPanel);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(genOptionsScrollPane)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(genOptionsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
         canvasLayout.setHorizontalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
+            .addGroup(canvasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(canvasLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(generatorTitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(10, 10, 10))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(generatorTitlePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, canvasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(canvasLayout.createSequentialGroup()
-                        .addComponent(generatorTitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(generatorBodyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0)
-                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(canvasLayout.createSequentialGroup()
-                        .addGap(0, 278, Short.MAX_VALUE)
-                        .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addComponent(generatorTitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -924,7 +946,7 @@ public final class GUI extends javax.swing.JFrame {
         if (success == JFileChooser.APPROVE_OPTION) {
             File chosen = chooser.getSelectedFile();
             try {
-                World.getWorld().setSpritesheet(chosen);
+                World.getWorld().setSpritesheet(chosen.getAbsolutePath());
                 System.out.println("Set world spritesheet file to "+chosen.getAbsolutePath());
                 String tdefs = JOptionPane.showInputDialog(gui, 
                         "Type the name of each tile in order, comma separated:", 
@@ -956,13 +978,13 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mapViewFocusLost
 
     private void earthSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earthSpritesheetButtonActionPerformed
-        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/earth.png"));
+        World.getWorld().setSpritesheet("resources/samples/terrain/earth.png");
         World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_earthSpritesheetButtonActionPerformed
 
     private void marsSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marsSpritesheetButtonActionPerformed
-        World.getWorld().setSpritesheet(new File("src/resources/samples/terrain/mars.png"));
+        World.getWorld().setSpritesheet("resources/samples/terrain/mars.png");
         World.getWorld().setTileNames(new String[]{"Sand", "Ice", "Rocks"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_marsSpritesheetButtonActionPerformed
@@ -1199,17 +1221,22 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_noiseMapCutoffSliderStateChanged
 
     private void scatterAmountSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterAmountSliderStateChanged
-        Generator.getGenerator("Scatter").setParameter("amount", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+        Generator.getGenerator("Scattered").setParameter("amount", ""+((double)scatterAmountSlider.getValue()/100d));
     }//GEN-LAST:event_scatterAmountSliderStateChanged
 
     private void scatterMinSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterMinSliderStateChanged
-        Generator.getGenerator("Scatter").setParameter("min", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+        Generator.getGenerator("Scattered").setParameter("min", ""+((double)scatterMinSlider.getValue()/100d));
     }//GEN-LAST:event_scatterMinSliderStateChanged
 
     private void scatterMaxSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterMaxSliderStateChanged
-       Generator.getGenerator("Scatter").setParameter("max", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+       Generator.getGenerator("Scattered").setParameter("max", ""+((double)scatterMaxSlider.getValue()/100d));
     }//GEN-LAST:event_scatterMaxSliderStateChanged
 
+    /**
+     * Show (and make modal) a custom dialog popup.
+     * @param d The JDialog to show.
+     * @param modal Modal, or not?
+     */
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -1226,8 +1253,13 @@ public final class GUI extends javax.swing.JFrame {
         generatorTitlePanel.setVisible(v);
         generatorBodyPanel.setVisible(v);
         generatorBottomPanel.setVisible(v);
+        genOptionsScrollPane.setVisible(v);
+        jPanel1.setVisible(v);
     }
     
+    /**
+     * Refresh input fields and the list of layers in the corner of the Canvas.
+     */
     public void refreshLayerList() {
         DefaultListModel m = new DefaultListModel();
         int[] indices = layerList.getSelectedIndices();
@@ -1305,6 +1337,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitButton;
     private javax.swing.JMenuItem exportTerrainButton;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JScrollPane genOptionsScrollPane;
     private javax.swing.JPanel generatorBodyPanel;
     private javax.swing.JPanel generatorBottomPanel;
     private javax.swing.JComboBox<String> generatorChooser;
@@ -1336,13 +1369,13 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JButton layerDownButton;
     private static javax.swing.JList<String> layerList;
     private javax.swing.JTextField layerNameField;
