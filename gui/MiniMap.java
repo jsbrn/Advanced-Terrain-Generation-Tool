@@ -7,6 +7,11 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import world.World;
 
+/**
+ * An unfinished canvas element that is supposed to draw an overview of the world. Similar to Canvas.
+ * @author Jeremy
+ * @see Canvas
+ */
 public final class MiniMap extends JPanel {
     
     public static void refresh() {

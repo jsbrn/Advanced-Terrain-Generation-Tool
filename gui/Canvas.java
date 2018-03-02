@@ -7,6 +7,10 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import world.World;
 
+/**
+ * A custom Swing element used to render the World and other visual elements.
+ * @author Jeremy
+ */
 public final class Canvas extends JPanel {
     
     private int[] camera;
@@ -35,16 +39,40 @@ public final class Canvas extends JPanel {
         });
     }
     
+    /**
+     * Refresh the Canvas. Calls repaint() on the element in GUI.
+     * @see GUI
+     */
     public static void refresh() {
         GUI.getCanvas().repaint();
     }
-    
     public static int[] getDimensions() { return new int[]{GUI.getCanvas().getWidth(), GUI.getCanvas().getHeight()}; }
+    
+    /**
+     * Get the world-coordinates of the camera.
+     * @return An integer array {x, y}.
+     */
     public static int[] getCamera() { return new int[]{(int)GUI.getCanvas().camera[0], (int)GUI.getCanvas().camera[1]}; }
+    /**
+     * Set the camera position in the world.
+     * @param x The new world x-coordinate.
+     * @param y The new world y-coordinate.
+     */
     public static void setCamera(int x, int y) { GUI.getCanvas().camera = new int[]{x, y}; }
     
+    /**
+     * Get the currently active layer.
+     * @return The layer index selected by the JList element in GUI.
+     * @see GUI#getLayerList() 
+     */
     public static int layer() { return GUI.getLayerList().getSelectedIndex(); }
     
+    /**
+     * Draw the world, and other visual elements like the axis lines.
+     * @param g The Graphics instance used by Swing.
+     * @see World#draw(java.awt.Graphics) 
+     * @see World#getOnscreenCoordinates(double, double) 
+     */
     @Override
     protected void paintComponent(Graphics g) {
         

@@ -90,6 +90,7 @@ public class MiscMath {
      * @param cx The origin x of the circle.
      * @param cy The origin y of the circle.
      * @param r  The radius of the circle.
+     * @return True if intersection, false if not.
      */
     public static boolean rectangleIntersectsCircle(double x, double y, int w, int h, double cx, double cy, int r) {
         double r_x = x + (w / 2), r_y = y + (h / 2);

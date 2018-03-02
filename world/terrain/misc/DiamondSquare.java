@@ -3,10 +3,13 @@ package world.terrain.misc;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-// https://en.wikipedia.org/wiki/Diamond-square_algorithm
-// To use for other things use the command: float map[][] = new DiamondSquare(n).map;
-// where 2^n = the map's width and height (so n=10 will give a 1024 by 1024 array).
-// author: Ryan Dykstra
+/**
+ * Creates a noise map using the diamond square algorithm.
+ * To use for other things use the command: float map[][] = new DiamondSquare(n).map;
+ * where 2^n = the map's width and height (so n=10 will give a 1024 by 1024 array).
+ * @author Ryan Dykstra
+ * @see <a href = "https://en.wikipedia.org/wiki/Diamond-square_algorithm">Wikipedia article on the topic</a>
+ */
 public class DiamondSquare {
     
     private static final float SCALAR = (float) (1/Math.sqrt(2));
@@ -98,6 +101,10 @@ public class DiamondSquare {
         
     }
     
+    /**
+     * Writes the noise map to a BufferedImage.
+     * @return The buffered image instance created.
+     */
     public BufferedImage toBufferedImage() {
         BufferedImage output = new BufferedImage(map.length, map.length,BufferedImage.TYPE_INT_RGB);
         float max = map[0][0];
@@ -127,6 +134,10 @@ public class DiamondSquare {
         return output;
     }
     
+    /**
+     * Get the noise map. Each value in the map can be a value between 0 and 1.0, inclusive.
+     * @return 
+     */
     public float[][] getMap() { return map; }
     
     public String toString()
