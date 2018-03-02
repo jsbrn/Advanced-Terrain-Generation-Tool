@@ -10,12 +10,11 @@ import world.World;
 import world.terrain.Generator;
 
 /**
- *
+ * A simple generator that fills the entire layer.
  * @author Joseph
  */
 public class FillGenerator extends Generator{
     
-    //simple generator that just fills the world with tiles of set attribute "tile"
     @Override
     public void generate(World w, int layer){
         int t = (Integer)w.getLayerProperty("tile", layer);

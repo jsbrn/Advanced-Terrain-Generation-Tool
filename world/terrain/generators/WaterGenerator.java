@@ -8,18 +8,17 @@ import world.World;
 import world.terrain.Generator;
 
 /**
- * 
- * @author Joseph Cherneske
- */
+* This is a basic Water Generator that generates "lakes" that are simply
+* randomized rectangles set within specified dimensional constraints
+* rivers are also generated, starting at random position within a lake and
+* randomly meandering until the specified river length is reached
+* @author Joseph Cherneske
+*/
 public class WaterGenerator extends Generator {
     
     
     @Override
     /*
-     * This is a basic Water Generator that generates "lakes" that are simply
-    * randomized rectangles set within specified dimensional constraints
-    * rivers are also generated, starting at random position within a lake and
-    * randomly meandering until the specified river length is reached
     * Copy/Paste this for sample generation: WaterGenerator:tile=6,lakes=32,max=40,min=10,rlength=100
     */
     public void generate(World w, int layer){

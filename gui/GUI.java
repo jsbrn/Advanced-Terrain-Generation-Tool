@@ -1232,6 +1232,11 @@ public final class GUI extends javax.swing.JFrame {
        Generator.getGenerator("Scattered").setParameter("max", ""+((double)scatterMaxSlider.getValue()/100d));
     }//GEN-LAST:event_scatterMaxSliderStateChanged
 
+    /**
+     * Show (and make modal) a custom dialog popup.
+     * @param d The JDialog to show.
+     * @param modal Modal, or not?
+     */
     public static void showDialog(JDialog d, boolean modal) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         double width = screenSize.getWidth();
@@ -1252,6 +1257,9 @@ public final class GUI extends javax.swing.JFrame {
         jPanel1.setVisible(v);
     }
     
+    /**
+     * Refresh input fields and the list of layers in the corner of the Canvas.
+     */
     public void refreshLayerList() {
         DefaultListModel m = new DefaultListModel();
         int[] indices = layerList.getSelectedIndices();
