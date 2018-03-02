@@ -4,6 +4,10 @@ import world.terrain.generators.*;
 import java.util.HashMap;
 import world.World;
 
+/**
+ * An extendable, abstract class that places tiles into the world.
+ * @author Jeremy
+ */
 public abstract class Generator {
 
     /**
@@ -17,12 +21,29 @@ public abstract class Generator {
         {"Scattered", new ScatteredGenerator()}
     };
     
+    /**
+     * Get the number of available generators.
+     * @return An integer.
+     * @see #generators
+     */
     public static int generatorCount() { return generators.length; }
     
+    /**
+     * Get the Generator instance at the specified index.
+     * @param index The index of the generator.
+     * @return The desired Generator.
+     * @see #generators
+     */
     public static Generator getGenerator(int index) {
         return (Generator)generators[index][1];
     }
     
+    /**
+     * Get the name of the Generator instance at the specified index.
+     * @param index The index of the generator.
+     * @return The name, as a String.
+     * @see #generators
+     */
     public static String getGeneratorName(int index) {
         return (String)generators[index][0];
     }
@@ -31,6 +52,7 @@ public abstract class Generator {
      * Returns the specified generator from the list of terrain generators.
      * @param name The name of the generator (see list in world.generation.Generator)
      * @return A Generator instance, or null if no match found.
+     * @see #generators
      */
     public static Generator getGenerator(String name) {
         for (Object o[]: generators) if (o[0].equals(name)) return (Generator)o[1];
@@ -48,7 +70,8 @@ public abstract class Generator {
             = new HashMap<String, String>();
     
     /**
-     * Set this Generator's parameter. Stores parameters in a HashMap.
+     * Set this Generator's parameter. Stores parameters in a HashMap. It stores them as a String
+     * because the user can enter them in via a text field, or opt to use the GUI sliders.
      * @param param The name of the parameter, as a String.
      * @param value The value (as a String), i.e. "0.4".
      */
@@ -63,11 +86,6 @@ public abstract class Generator {
      */
     public final String getParameter(String param) {
         return parameters.get(param);
-    }
-    
-    @Override
-    public String toString() {
-        return "";
     }
     
 }
