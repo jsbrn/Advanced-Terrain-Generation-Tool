@@ -70,84 +70,138 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="noiseMapCutoffSlider" pref="212" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="jPanel2" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="noiseMapCutoffSlider" max="32767" attributes="0"/>
-                      <Component id="jLabel12" max="32767" attributes="0"/>
-                      <Component id="jLabel13" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jPanel2" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="178" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabel10">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="11" style="2"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Create natural, flowing terrain shapes."/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JSlider" name="noiseMapCutoffSlider">
-          <Properties>
-            <Property name="paintLabels" type="boolean" value="true"/>
-            <Property name="value" type="int" value="0"/>
-          </Properties>
-          <Events>
-            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="noiseMapCutoffSliderStateChanged"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel11">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cutoff (percentage)"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel12">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0%"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="jLabel13">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="100%"/>
-          </Properties>
-        </Component>
+        <Container class="javax.swing.JPanel" name="jPanel2">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="noiseMapElevationSlider" pref="192" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="noiseMapAlgoChooser" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="noiseMapElevationSlider" max="32767" attributes="0"/>
+                          <Component id="jLabel12" max="32767" attributes="0"/>
+                          <Component id="jLabel13" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="noiseMapAlgoChooser" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="114" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel10">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="11" style="2"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Create natural, flowing terrain shapes."/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel11">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Elevation"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel12">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0%"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSlider" name="noiseMapElevationSlider">
+              <Properties>
+                <Property name="paintLabels" type="boolean" value="true"/>
+                <Property name="value" type="int" value="0"/>
+              </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="noiseMapElevationSliderStateChanged"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel13">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="100%"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel7">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Style"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="noiseMapAlgoChooser">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="2">
+                    <StringItem index="0" value="Perlin"/>
+                    <StringItem index="1" value="Diamond Square"/>
+                  </StringArray>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="noiseMapAlgoChooserItemStateChanged"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="noOptionsPanel">
@@ -302,7 +356,7 @@
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="scatterAmountSliderStateChanged"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="noiseMapCutoffSlider.addChangeListener(new ChangeListener() {&#xa;    public void stateChanged(ChangeEvent e) {&#xa;        Generator.getGenerator(&quot;NoiseMap&quot;).setParameter(&quot;cutoff&quot;, &quot;&quot;+((double)noiseMapCutoffSlider.getValue()/100d));&#xa;    }&#xa;  });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="noiseMapElevationSlider.addChangeListener(new ChangeListener() {&#xa;    public void stateChanged(ChangeEvent e) {&#xa;        Generator.getGenerator(&quot;NoiseMap&quot;).setParameter(&quot;cutoff&quot;, &quot;&quot;+((double)noiseMapElevationSlider.getValue()/100d));&#xa;    }&#xa;  });"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel16">
@@ -329,7 +383,7 @@
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="scatterMinSliderStateChanged"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="noiseMapCutoffSlider.addChangeListener(new ChangeListener() {&#xa;    public void stateChanged(ChangeEvent e) {&#xa;        Generator.getGenerator(&quot;NoiseMap&quot;).setParameter(&quot;cutoff&quot;, &quot;&quot;+((double)noiseMapCutoffSlider.getValue()/100d));&#xa;    }&#xa;  });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="noiseMapElevationSlider.addChangeListener(new ChangeListener() {&#xa;    public void stateChanged(ChangeEvent e) {&#xa;        Generator.getGenerator(&quot;NoiseMap&quot;).setParameter(&quot;cutoff&quot;, &quot;&quot;+((double)noiseMapElevationSlider.getValue()/100d));&#xa;    }&#xa;  });"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel19">
@@ -361,7 +415,7 @@
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="scatterMaxSliderStateChanged"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="noiseMapCutoffSlider.addChangeListener(new ChangeListener() {&#xa;    public void stateChanged(ChangeEvent e) {&#xa;        Generator.getGenerator(&quot;NoiseMap&quot;).setParameter(&quot;cutoff&quot;, &quot;&quot;+((double)noiseMapCutoffSlider.getValue()/100d));&#xa;    }&#xa;  });"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="noiseMapElevationSlider.addChangeListener(new ChangeListener() {&#xa;    public void stateChanged(ChangeEvent e) {&#xa;        Generator.getGenerator(&quot;NoiseMap&quot;).setParameter(&quot;cutoff&quot;, &quot;&quot;+((double)noiseMapElevationSlider.getValue()/100d));&#xa;    }&#xa;  });"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel23">

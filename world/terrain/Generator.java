@@ -18,7 +18,7 @@ public abstract class Generator {
         {"Fill", new FillGenerator()},
         {"WaterGenerator", new WaterGenerator()}, 
         {"NoiseMap", new NoiseMapGenerator()},
-        {"Scattered", new ScatteredGenerator()}
+        {"Scattered", new ScatteredGenerator()},
     };
     
     /**
