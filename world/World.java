@@ -68,7 +68,7 @@ public class World {
         clearTiles();
         this.textures = new ArrayList<Image>();
         this.setSpritesheet("resources/samples/terrain/earth.png");
-        this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
+        this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
     }
     
     private World(int w, int h, long seed) {
@@ -477,14 +477,15 @@ public class World {
             bw.write("tnames: "+tnames.replaceFirst(",\\s*", "")+"\n");
             bw.write("dims: "+dims[0]+", "+dims[1]+", "+layers.size()+"\n"); //x, y, z (depth, or layer count)
             String props = "";
-            for (HashMap<String, Object> lprops: layer_properties)
+            for (HashMap<String, Object> lprops: layer_properties) {
                 for (String key: lprops.keySet()) {
                     Object val = lprops.get(key);
                     String tostring = val.toString();
                     if (val instanceof int[]) { tostring = ""; for (int v: (int[])val) tostring += v+" "; }
                     props += ", "+key+" -> "+tostring;
                 }
-            bw.write("layer: "+props.replaceFirst(",\\s*", "")+"\n");
+                bw.write("layer: "+props.replaceFirst(",\\s*", "")+"\n");
+            }
             bw.write("---BEGIN TERRAIN DATA---\n");
             exportTerrain(bw, false);   
             bw.write("---END TERRAIN DATA---\n");
