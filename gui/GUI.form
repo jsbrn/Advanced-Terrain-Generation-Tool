@@ -610,19 +610,15 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="layerPanel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                          <Component id="editLayerPanel" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="generatorBottomPanel" alignment="0" max="32767" attributes="0"/>
-                          <Component id="generatorTitlePanel" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="layerPanel" pref="293" max="32767" attributes="0"/>
+                      <Component id="generatorBottomPanel" alignment="0" max="32767" attributes="0"/>
+                      <Component id="generatorTitlePanel" alignment="0" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="181" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <Component id="editLayerPanel" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -635,9 +631,9 @@
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="generatorBottomPanel" max="-2" attributes="0"/>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="layerPanel" max="32767" attributes="0"/>
+                      <Component id="layerPanel" pref="264" max="32767" attributes="0"/>
                       <Component id="editLayerPanel" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -663,20 +659,18 @@
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane1" pref="215" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="regenLayerButton" alignment="1" max="32767" attributes="0"/>
-                              <Component id="editLayerButton" alignment="1" max="32767" attributes="0"/>
-                              <Component id="addLayerButton" alignment="1" max="32767" attributes="0"/>
-                              <Component id="layerDownButton" alignment="0" max="32767" attributes="0"/>
-                              <Component id="layerUpButton" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="deleteLayerButton" alignment="1" pref="51" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="regenLayerButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="editLayerButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="addLayerButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="layerDownButton" alignment="0" max="32767" attributes="0"/>
+                          <Component id="layerUpButton" max="32767" attributes="0"/>
+                          <Component id="deleteLayerButton" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -686,7 +680,7 @@
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" pref="22" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="addLayerButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -697,12 +691,12 @@
                               <Component id="layerDownButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="deleteLayerButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="regenLayerButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -841,6 +835,8 @@
                           <Component id="editLayerTitleLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="applyLayerChangesButton" max="32767" attributes="0"/>
                           <Component id="cancelLayerChangesButton" alignment="1" pref="164" max="32767" attributes="0"/>
+                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                          <Component id="layerElevationSpinner" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -868,14 +864,18 @@
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="layerNameField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="restrictionModeChooser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="restrictionModeChooser" min="-2" max="-2" attributes="0"/>
+                          <Component id="layerNameField" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="layerElevationSpinner" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="layerTileChooser" min="-2" max="-2" attributes="0"/>
@@ -884,7 +884,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="cancelLayerChangesButton" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane2" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" pref="168" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -989,6 +989,16 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelLayerChangesButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel8">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Elevation"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="layerElevationSpinner">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="layerElevationSpinnerStateChanged"/>
               </Events>
             </Component>
           </SubComponents>
@@ -1129,7 +1139,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="genOptionsScrollPane" alignment="0" pref="245" max="32767" attributes="0"/>
+                  <Component id="genOptionsScrollPane" alignment="0" pref="227" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

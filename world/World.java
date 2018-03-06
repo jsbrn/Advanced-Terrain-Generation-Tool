@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import misc.Assets;
 import misc.MiscMath;
 import world.terrain.Generator;
 
@@ -117,6 +118,7 @@ public class World {
         properties.put("lastcmd", "");
         properties.put("rmode", 0);
         properties.put("rtiles", new int[]{});
+        properties.put("elevation", 0);
         layer_properties.add(0, properties);
         clearTiles(0);
     }
@@ -188,6 +190,7 @@ public class World {
      */
     public void setLayerProperty(String prop, Object value, int layer) {
         layer_properties.get(layer).put(prop, value);
+        System.out.println("Layer "+layer+", property '"+prop+"' set to "+value);
     }
     
     /**
@@ -239,6 +242,13 @@ public class World {
         boolean[][] l = layers.get(layer);
         if (x < l.length) if (y < l[0].length) {
             return l[x][y] ? (Integer)getLayerProperty("tile", layer) : -1;
+        }
+        return -1;
+    }
+    
+    public int getTopmostLayer(int x, int y) {
+        for (int l = 0; l < layers.size(); l++) {
+            if (getTile(x, y, l) > -1) return l;
         }
         return -1;
     }
@@ -575,6 +585,19 @@ public class World {
                     } else {
                         found_null = true;
                         g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
+                    }
+                    
+                    if (l == 0) { //if working in the topmost layer
+                        for (int i = 0; i < 9; i++) {
+                            int topmost = getTopmostLayer(x, y);
+                            int topmost2 = getTopmostLayer(x - 1 + (i % 3), y - 1 + (i / 3));
+                            if (topmost > -1 && topmost2 > -1) {
+                                if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
+                                    g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
+                                            osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
+                                }
+                            }
+                        }
                     }
 
                 }
