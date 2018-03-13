@@ -13,10 +13,11 @@ public class Perlin {
      * Returns a 2D array of random values [0, 1] for Perlin Noise algorithm.
      * @param width Number of columns for terrain you want to generate.
      * @param height Number of rows for terrain you want to generate.
+     * @param seed The seed to use for the generation.
      * @return A 2D array of random values [0, 1].
      */
-    public float[][] generateWhiteNoise(int width, int height) {
-        Random random = new Random(System.currentTimeMillis());
+    public float[][] generateWhiteNoise(int width, int height, long seed) {
+        Random random = new Random(seed);
         float[][] noise = new float[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

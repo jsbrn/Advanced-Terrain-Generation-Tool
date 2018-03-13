@@ -35,7 +35,7 @@ public class NoiseMapGenerator extends Generator {
             Perlin perlin = new Perlin();
             // Use PerlinNoise algorithm in other location
             // 6 is a random value, I don't know what the best value would be
-            float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows());
+            float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed());
             map = perlin.generatePerlinNoise(whitenoise, 6);
         }
 

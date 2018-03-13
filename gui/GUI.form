@@ -1017,8 +1017,6 @@
                               <Component id="seedField" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="randomSeedButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="applySeedButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -1048,7 +1046,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="randomSeedButton" max="32767" attributes="0"/>
-                          <Component id="applySeedButton" alignment="1" max="32767" attributes="0"/>
                           <Component id="jLabel9" alignment="1" max="32767" attributes="0"/>
                           <Component id="seedField" alignment="1" max="32767" attributes="0"/>
                       </Group>
@@ -1077,6 +1074,7 @@
               <Events>
                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="generatorChooserItemStateChanged"/>
                 <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="generatorChooserMouseReleased"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatorChooserActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -1094,22 +1092,14 @@
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="seedField">
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="seedFieldKeyReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Seed:"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="applySeedButton">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/resources/checkmark.png"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" value="Advanced options..."/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="applySeedButtonActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="randomSeedButton">
               <Properties>

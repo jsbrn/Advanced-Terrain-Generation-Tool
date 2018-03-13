@@ -118,7 +118,6 @@ public final class GUI extends javax.swing.JFrame {
         openCommandLineButton = new javax.swing.JButton();
         seedField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        applySeedButton = new javax.swing.JButton();
         randomSeedButton = new javax.swing.JButton();
         generatorBottomPanel = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
@@ -675,6 +674,11 @@ public final class GUI extends javax.swing.JFrame {
                 generatorChooserMouseReleased(evt);
             }
         });
+        generatorChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generatorChooserActionPerformed(evt);
+            }
+        });
 
         openCommandLineButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal.png"))); // NOI18N
         openCommandLineButton.setToolTipText("Advanced options...");
@@ -684,15 +688,13 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel9.setText("Seed:");
-
-        applySeedButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/checkmark.png"))); // NOI18N
-        applySeedButton.setToolTipText("Advanced options...");
-        applySeedButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                applySeedButtonActionPerformed(evt);
+        seedField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                seedFieldKeyReleased(evt);
             }
         });
+
+        jLabel9.setText("Seed:");
 
         randomSeedButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh.png"))); // NOI18N
         randomSeedButton.setToolTipText("Advanced options...");
@@ -714,9 +716,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(seedField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(randomSeedButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(applySeedButton))
+                        .addComponent(randomSeedButton))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -738,7 +738,6 @@ public final class GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(randomSeedButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(applySeedButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(seedField))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1222,6 +1221,7 @@ public final class GUI extends javax.swing.JFrame {
     private void generatorChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_generatorChooserItemStateChanged
 
         if (generatorChooser.getSelectedIndex() == -1) return;
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
         
         JPanel[] panels = new JPanel[] {
             noOptionsPanel, 
@@ -1235,6 +1235,10 @@ public final class GUI extends javax.swing.JFrame {
         generatorBodyPanel.add(panels[generatorChooser.getSelectedIndex()], BorderLayout.CENTER);
         generatorBodyPanel.revalidate();
         generatorBodyPanel.repaint();
+        
+        seedField.setText(g.getSeed()+"");
+        seedField.setForeground(Color.black);
+        
     }//GEN-LAST:event_generatorChooserItemStateChanged
 
     private void openCommandLineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openCommandLineButtonActionPerformed
@@ -1280,6 +1284,7 @@ public final class GUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        g.reset();
         int[] selected = layerList.getSelectedIndices();
         for (int l = selected.length - 1; l > -1; l--) {
             World.getWorld().clearTiles(selected[l]);
@@ -1313,18 +1318,25 @@ public final class GUI extends javax.swing.JFrame {
         canvas.repaint();
     }//GEN-LAST:event_layerElevationSpinnerStateChanged
 
-    private void applySeedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applySeedButtonActionPerformed
-        if (!seedField.getText().matches("(-)*\\d+")) {
-            JOptionPane.showMessageDialog(gui, "Enter a valid numerical value!", 
-                        "Invalid seed", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        Generator.getGenerator(generatorChooser.getSelectedIndex()).setSeed(Long.parseLong(seedField.getText()));
-    }//GEN-LAST:event_applySeedButtonActionPerformed
-
     private void randomSeedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomSeedButtonActionPerformed
-        seedField.setText(new Random().nextLong()+"");
+        seedField.setText(new Random().nextInt()+"");
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        g.setSeed(Long.parseLong(seedField.getText()));
+        seedField.setForeground(Color.black);
+        
     }//GEN-LAST:event_randomSeedButtonActionPerformed
+
+    private void seedFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_seedFieldKeyReleased
+        boolean valid = seedField.getText().matches("(-)*\\d+")
+                && seedField.getText().length() < 16;
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        if (valid) g.setSeed(Long.parseLong(seedField.getText()));
+        seedField.setForeground(valid ? Color.black : Color.red);
+    }//GEN-LAST:event_seedFieldKeyReleased
+
+    private void generatorChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatorChooserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_generatorChooserActionPerformed
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -1421,7 +1433,6 @@ public final class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addLayerButton;
     private javax.swing.JButton applyLayerChangesButton;
-    private javax.swing.JButton applySeedButton;
     private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
     private javax.swing.JMenu chooseSpriteSheetMenu;

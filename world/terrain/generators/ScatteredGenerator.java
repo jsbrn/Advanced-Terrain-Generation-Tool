@@ -30,7 +30,7 @@ public class ScatteredGenerator extends Generator {
         Perlin perlin = new Perlin();
         // Use PerlinNoise algorithm in other location
         // 6 is a random value, I don't know what the best value would be
-        float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows());
+        float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed());
         float[][] map = perlin.generatePerlinNoise(whitenoise, 6);
 
         for (int i = 0; i < w.columns(); i++) {
@@ -42,7 +42,7 @@ public class ScatteredGenerator extends Generator {
                 if (prob < amount) {
                     continue;
                 } else {
-                    float rand = (float) Math.random();
+                    float rand = (float) rng().nextDouble();
                     rand *= (amount-1);
                     prob = (min - max)*prob - min + max*amount;
                     if (rand > prob) w.setTile(i, j, layer, true);

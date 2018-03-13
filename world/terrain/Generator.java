@@ -26,7 +26,7 @@ public abstract class Generator {
     };
     
     public Generator() {
-        this.seed = new Random().nextLong();
+        this.seed = new Random().nextInt();
         this.rng = new Random(seed);
     }
     
@@ -62,7 +62,9 @@ public abstract class Generator {
         this.rng = new Random(seed);
     }
     public long getSeed() { return seed; }
+    public void randomSeed() { setSeed(new Random().nextLong()); }
     public Random rng() { return rng; }
+    public void reset() { setSeed(seed); }
     
     /**
      * Returns the specified generator from the list of terrain generators.
