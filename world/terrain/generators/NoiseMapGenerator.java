@@ -17,6 +17,7 @@ import world.terrain.misc.Perlin;
 public class NoiseMapGenerator extends Generator {
 
     public NoiseMapGenerator() {
+        super();
         this.setParameter("elevation", "0");
         this.setParameter("algo", "Perlin");
     }
@@ -28,7 +29,7 @@ public class NoiseMapGenerator extends Generator {
         float[][] map = new float[w.columns()][w.rows()];
         if (!useperlin) {
             int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
-            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1));
+            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), getSeed());
             map = ds.getMap();
         } else {
             Perlin perlin = new Perlin();

@@ -13,6 +13,10 @@ import world.terrain.Generator;
  * @author Joseph
  */
 public class FillGenerator extends Generator {
+
+    public FillGenerator() {
+        super();
+    }
     
     @Override
     public void generate(World w, int layer){

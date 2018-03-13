@@ -2,6 +2,7 @@ package world.terrain.misc;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 /**
  * Creates a noise map using the diamond square algorithm.
@@ -14,9 +15,10 @@ public class DiamondSquare {
     
     private static final float SCALAR = (float) (1/Math.sqrt(2));
     private float map[][];
+    private Random rng;
     
-    public DiamondSquare(int logWidth) {
-        
+    public DiamondSquare(int logWidth, long seed) {
+        this.rng = new Random(seed);
         map = new float[1<<logWidth][1<<logWidth];
         map[0][0] = 0;
         
@@ -77,7 +79,7 @@ public class DiamondSquare {
         average += map[x1][y1];
         average /= 4;
         
-        map[xMid][yMid] = average + (float)((Math.random()*2-1)*magnitude);
+        map[xMid][yMid] = average + (float)((rng.nextDouble()*2-1)*magnitude);
     }
     
     private void Square(int x0, int y0, int w, int h, float magnitude)
@@ -96,7 +98,7 @@ public class DiamondSquare {
         average += map[xMid][y1];
         average /= 4;
         
-        map[xMid][yMid] = average + (float)((Math.random()*2-1)*magnitude);
+        map[xMid][yMid] = average + (float)((rng.nextDouble()*2-1)*magnitude);
         
         
     }

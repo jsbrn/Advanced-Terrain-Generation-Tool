@@ -14,6 +14,7 @@ import world.terrain.misc.Perlin;
 public class ScatteredGenerator extends Generator {
 
     public ScatteredGenerator() {
+        super();
         this.setParameter("amount", "0.5");
         this.setParameter("min", "0");
         this.setParameter("max", "1");
