@@ -62,7 +62,7 @@ public final class GUI extends javax.swing.JFrame {
         mapView = new gui.MiniMap();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        noiseMapOptions = new javax.swing.JPanel();
+        NOISEMAP_OPTIONS = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -70,9 +70,9 @@ public final class GUI extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         noiseMapAlgoChooser = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        noOptionsPanel = new javax.swing.JPanel();
+        NO_OPTIONS = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        scatterOptions = new javax.swing.JPanel();
+        SCATTER_OPTIONS = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         scatterAmountSlider = new javax.swing.JSlider();
         jLabel16 = new javax.swing.JLabel();
@@ -97,11 +97,8 @@ public final class GUI extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jLabel28 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -232,43 +229,43 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel7.setText("Style");
 
-        javax.swing.GroupLayout noiseMapOptionsLayout = new javax.swing.GroupLayout(noiseMapOptions);
-        noiseMapOptions.setLayout(noiseMapOptionsLayout);
-        noiseMapOptionsLayout.setHorizontalGroup(
-            noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+        javax.swing.GroupLayout NOISEMAP_OPTIONSLayout = new javax.swing.GroupLayout(NOISEMAP_OPTIONS);
+        NOISEMAP_OPTIONS.setLayout(NOISEMAP_OPTIONSLayout);
+        NOISEMAP_OPTIONSLayout.setHorizontalGroup(
+            NOISEMAP_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(noiseMapOptionsLayout.createSequentialGroup()
-                        .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                .addGroup(NOISEMAP_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(NOISEMAP_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel11)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                            .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(noiseMapElevationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel13))
-                    .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                    .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(noiseMapAlgoChooser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
-            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+            .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel10)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        noiseMapOptionsLayout.setVerticalGroup(
-            noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+        NOISEMAP_OPTIONSLayout.setVerticalGroup(
+            NOISEMAP_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NOISEMAP_OPTIONSLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(NOISEMAP_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(noiseMapElevationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -279,29 +276,29 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
-        noOptionsPanel.setAutoscrolls(true);
+        NO_OPTIONS.setAutoscrolls(true);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel15.setText("No options available.");
 
-        javax.swing.GroupLayout noOptionsPanelLayout = new javax.swing.GroupLayout(noOptionsPanel);
-        noOptionsPanel.setLayout(noOptionsPanelLayout);
-        noOptionsPanelLayout.setHorizontalGroup(
-            noOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(noOptionsPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout NO_OPTIONSLayout = new javax.swing.GroupLayout(NO_OPTIONS);
+        NO_OPTIONS.setLayout(NO_OPTIONSLayout);
+        NO_OPTIONSLayout.setHorizontalGroup(
+            NO_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NO_OPTIONSLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
                 .addContainerGap(182, Short.MAX_VALUE))
         );
-        noOptionsPanelLayout.setVerticalGroup(
-            noOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(noOptionsPanelLayout.createSequentialGroup()
+        NO_OPTIONSLayout.setVerticalGroup(
+            NO_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NO_OPTIONSLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        scatterOptions.setAutoscrolls(true);
+        SCATTER_OPTIONS.setAutoscrolls(true);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel14.setText("Create scattered plots of tiles.");
@@ -362,44 +359,44 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel24.setText("Maximum probability");
 
-        javax.swing.GroupLayout scatterOptionsLayout = new javax.swing.GroupLayout(scatterOptions);
-        scatterOptions.setLayout(scatterOptionsLayout);
-        scatterOptionsLayout.setHorizontalGroup(
-            scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(scatterOptionsLayout.createSequentialGroup()
+        javax.swing.GroupLayout SCATTER_OPTIONSLayout = new javax.swing.GroupLayout(SCATTER_OPTIONS);
+        SCATTER_OPTIONS.setLayout(SCATTER_OPTIONSLayout);
+        SCATTER_OPTIONSLayout.setHorizontalGroup(
+            SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(scatterOptionsLayout.createSequentialGroup()
-                        .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel18))
-                    .addGroup(scatterOptionsLayout.createSequentialGroup()
+                    .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, scatterOptionsLayout.createSequentialGroup()
-                        .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SCATTER_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel19)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel20)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel21))
-                    .addGroup(scatterOptionsLayout.createSequentialGroup()
-                        .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                    .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel24)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(scatterOptionsLayout.createSequentialGroup()
+                            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                                 .addComponent(jLabel22)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
@@ -407,29 +404,29 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel23)))
                 .addGap(20, 20, 20))
         );
-        scatterOptionsLayout.setVerticalGroup(
-            scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(scatterOptionsLayout.createSequentialGroup()
+        SCATTER_OPTIONSLayout.setVerticalGroup(
+            SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(SCATTER_OPTIONSLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel14)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel24)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(SCATTER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -437,7 +434,7 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         heightmaps.setTitle("Heightmap Editor");
-        heightmaps.setBounds(new java.awt.Rectangle(100, 100, 500, 500));
+        heightmaps.setBounds(new java.awt.Rectangle(100, 100, 500, 400));
         heightmaps.setIconImage(getIconImage());
         heightmaps.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -463,17 +460,9 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel27.setText("Seed:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin x DiamondSquare", "Perlin + DiamondSquare" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "DiamondSquare" }));
 
-        jLabel26.setText("Operation:");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "New heightmap" }));
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "my custom heightmap" }));
-
-        jLabel28.setText("Using:");
-
-        jLabel29.setText("and");
+        jLabel26.setText("Algorithm:");
 
         jButton4.setText("Create heightmap");
 
@@ -487,16 +476,9 @@ public final class GUI extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel27)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel28))
+                            .addComponent(jLabel26))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel29)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField1)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -515,16 +497,12 @@ public final class GUI extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jComboBox2)
                     .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel28)
-                    .addComponent(jLabel29))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );
+
+        jButton5.setText("Combine selected");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -537,7 +515,9 @@ public final class GUI extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -550,10 +530,13 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel25)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton5))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -772,7 +755,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(0, 58, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(restrictionModeChooser, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -955,7 +938,7 @@ public final class GUI extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(genOptionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(genOptionsScrollPane)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1386,17 +1369,9 @@ public final class GUI extends javax.swing.JFrame {
 
         if (generatorChooser.getSelectedIndex() == -1) return;
         Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
-        
-        JPanel[] panels = new JPanel[] {
-            noOptionsPanel, 
-            noOptionsPanel,
-            noiseMapOptions,
-            scatterOptions
-        };
-        
         generatorBodyPanel.removeAll();
         generatorBodyPanel.setLayout(new BorderLayout());
-        generatorBodyPanel.add(panels[generatorChooser.getSelectedIndex()], BorderLayout.CENTER);
+        generatorBodyPanel.add(Generator.getOptions(generatorChooser.getSelectedIndex()), BorderLayout.CENTER);
         generatorBodyPanel.revalidate();
         generatorBodyPanel.repaint();
         
@@ -1603,6 +1578,9 @@ public final class GUI extends javax.swing.JFrame {
     protected static JList getLayerList() { return layerList; }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JPanel NOISEMAP_OPTIONS;
+    public static javax.swing.JPanel NO_OPTIONS;
+    public static javax.swing.JPanel SCATTER_OPTIONS;
     private javax.swing.JButton addLayerButton;
     private javax.swing.JButton applyLayerChangesButton;
     private javax.swing.JButton cancelLayerChangesButton;
@@ -1627,10 +1605,9 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1651,8 +1628,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1689,10 +1664,8 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JDialog navigator;
     private javax.swing.JMenuItem newWorldButton;
-    private javax.swing.JPanel noOptionsPanel;
     private javax.swing.JComboBox<String> noiseMapAlgoChooser;
     private javax.swing.JSlider noiseMapElevationSlider;
-    private javax.swing.JPanel noiseMapOptions;
     private javax.swing.JButton openCommandLineButton;
     private javax.swing.JMenuItem openWorldButton;
     private javax.swing.JButton randomSeedButton;
@@ -1701,7 +1674,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JSlider scatterAmountSlider;
     private javax.swing.JSlider scatterMaxSlider;
     private javax.swing.JSlider scatterMinSlider;
-    private javax.swing.JPanel scatterOptions;
     private javax.swing.JTextField seedField;
     private javax.swing.JMenuItem setSeedButton;
     private javax.swing.JMenuItem showNavigatorButton;

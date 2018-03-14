@@ -1,8 +1,10 @@
 package world.terrain;
 
+import gui.GUI;
 import world.terrain.generators.*;
 import java.util.HashMap;
 import java.util.Random;
+import javax.swing.JPanel;
 import world.World;
 
 /**
@@ -19,10 +21,10 @@ public abstract class Generator {
      * Put all Generator instances in this list and use getGenerator(name) to access them.
      */
     private static final Object[][] generators = new Object[][]{
-        {"Fill", new FillGenerator()},
-        {"WaterGenerator", new WaterGenerator()}, 
-        {"NoiseMap", new NoiseMapGenerator()},
-        {"Scattered", new ScatteredGenerator()},
+        {"Fill", new FillGenerator(), GUI.NO_OPTIONS},
+        {"WaterGenerator", new WaterGenerator(), GUI.NO_OPTIONS}, 
+        {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
+        {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
     };
     
     public Generator() {
@@ -35,7 +37,11 @@ public abstract class Generator {
      * @return An integer.
      * @see #generators
      */
-    public static int generatorCount() { return generators.length; }
+    public static final int generatorCount() { return generators.length; }
+    
+    public static final JPanel getOptions(int generator) {
+        return (JPanel)generators[generator][2];
+    }
     
     /**
      * Get the Generator instance at the specified index.
@@ -43,7 +49,7 @@ public abstract class Generator {
      * @return The desired Generator.
      * @see #generators
      */
-    public static Generator getGenerator(int index) {
+    public static final Generator getGenerator(int index) {
         return (Generator)generators[index][1];
     }
     
