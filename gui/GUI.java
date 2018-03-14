@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -32,6 +33,7 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicDirectoryModel;
+import misc.Assets;
 import misc.MiscMath;
 import world.World;
 import world.terrain.Generator;
@@ -62,10 +64,12 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         noiseMapOptions = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        noiseMapCutoffSlider = new javax.swing.JSlider();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        noiseMapElevationSlider = new javax.swing.JSlider();
         jLabel13 = new javax.swing.JLabel();
+        noiseMapAlgoChooser = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
         noOptionsPanel = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         scatterOptions = new javax.swing.JPanel();
@@ -106,10 +110,16 @@ public final class GUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         restrictionModeChooser = new javax.swing.JComboBox<>();
         cancelLayerChangesButton = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        layerElevationSpinner = new javax.swing.JSpinner();
         generatorTitlePanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         generatorChooser = new javax.swing.JComboBox<>();
         openCommandLineButton = new javax.swing.JButton();
+        seedField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        randomSeedButton = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
         generatorBottomPanel = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -182,26 +192,35 @@ public final class GUI extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel10.setText("Create natural, flowing terrain shapes.");
 
-        noiseMapCutoffSlider.setPaintLabels(true);
-        noiseMapCutoffSlider.setValue(0);
-        noiseMapCutoffSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                noiseMapCutoffSliderStateChanged(evt);
-            }
-        });
-
-        jLabel11.setText("Cutoff (percentage)");
+        jLabel11.setText("Elevation");
 
         jLabel12.setText("0%");
 
+        noiseMapElevationSlider.setPaintLabels(true);
+        noiseMapElevationSlider.setValue(0);
+        noiseMapElevationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                noiseMapElevationSliderStateChanged(evt);
+            }
+        });
+
         jLabel13.setText("100%");
+
+        noiseMapAlgoChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square" }));
+        noiseMapAlgoChooser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                noiseMapAlgoChooserItemStateChanged(evt);
+            }
+        });
+
+        jLabel7.setText("Style");
 
         javax.swing.GroupLayout noiseMapOptionsLayout = new javax.swing.GroupLayout(noiseMapOptions);
         noiseMapOptions.setLayout(noiseMapOptionsLayout);
         noiseMapOptionsLayout.setHorizontalGroup(
             noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(noiseMapOptionsLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
                 .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(noiseMapOptionsLayout.createSequentialGroup()
                         .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,13 +230,18 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(noiseMapOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(noiseMapCutoffSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
+                                .addComponent(noiseMapElevationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel13))
                     .addGroup(noiseMapOptionsLayout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(noiseMapAlgoChooser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
+            .addGroup(noiseMapOptionsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         noiseMapOptionsLayout.setVerticalGroup(
             noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,10 +252,14 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(noiseMapOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(noiseMapCutoffSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(noiseMapElevationSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(noiseMapAlgoChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         noOptionsPanel.setAutoscrolls(true);
@@ -262,9 +290,9 @@ public final class GUI extends javax.swing.JFrame {
         jLabel14.setText("Create scattered plots of tiles.");
 
         scatterAmountSlider.setPaintLabels(true);
-        noiseMapCutoffSlider.addChangeListener(new ChangeListener() {
+        noiseMapElevationSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapElevationSlider.getValue()/100d));
             }
         });
         scatterAmountSlider.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -281,9 +309,9 @@ public final class GUI extends javax.swing.JFrame {
 
         scatterMinSlider.setPaintLabels(true);
         scatterMinSlider.setValue(0);
-        noiseMapCutoffSlider.addChangeListener(new ChangeListener() {
+        noiseMapElevationSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapElevationSlider.getValue()/100d));
             }
         });
         scatterMinSlider.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -302,9 +330,9 @@ public final class GUI extends javax.swing.JFrame {
 
         scatterMaxSlider.setPaintLabels(true);
         scatterMaxSlider.setValue(100);
-        noiseMapCutoffSlider.addChangeListener(new ChangeListener() {
+        noiseMapElevationSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
-                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
+                Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapElevationSlider.getValue()/100d));
             }
         });
         scatterMaxSlider.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -332,7 +360,7 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(scatterOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                                .addComponent(scatterAmountSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel18))
                     .addGroup(scatterOptionsLayout.createSequentialGroup()
@@ -346,7 +374,7 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(scatterOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel20)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                                .addComponent(scatterMinSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel21))
                     .addGroup(scatterOptionsLayout.createSequentialGroup()
@@ -357,10 +385,10 @@ public final class GUI extends javax.swing.JFrame {
                             .addGroup(scatterOptionsLayout.createSequentialGroup()
                                 .addComponent(jLabel22)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)))
+                                .addComponent(scatterMaxSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel23)))
-                .addGap(15, 15, 15))
+                .addGap(20, 20, 20))
         );
         scatterOptionsLayout.setVerticalGroup(
             scatterOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,7 +420,7 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Advanced Terrain Generation Tool - Untitled World");
+        setTitle("Advanced Terrain Generation Tool (1.0.2-alpha)");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
         setIconImages(getIconImages());
 
@@ -483,17 +511,16 @@ public final class GUI extends javax.swing.JFrame {
                     .addGroup(layerPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(layerDownButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(layerUpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(deleteLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(regenLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(editLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addLayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(layerDownButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(layerUpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteLayerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
         layerPanelLayout.setVerticalGroup(
             layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -501,7 +528,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layerPanelLayout.createSequentialGroup()
                         .addComponent(addLayerButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -512,10 +539,10 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(layerDownButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteLayerButton)
-                        .addGap(26, 26, 26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(regenLayerButton))
                     .addComponent(jScrollPane1))
-                .addGap(10, 10, 10))
+                .addContainerGap())
         );
 
         editLayerPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -566,6 +593,14 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Elevation");
+
+        layerElevationSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                layerElevationSpinnerStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout editLayerPanelLayout = new javax.swing.GroupLayout(editLayerPanel);
         editLayerPanel.setLayout(editLayerPanelLayout);
         editLayerPanelLayout.setHorizontalGroup(
@@ -581,7 +616,9 @@ public final class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(editLayerTitleLabel)
                     .addComponent(applyLayerChangesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cancelLayerChangesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+                    .addComponent(cancelLayerChangesButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                    .addComponent(jLabel8)
+                    .addComponent(layerElevationSpinner))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editLayerPanelLayout.createSequentialGroup()
@@ -602,13 +639,17 @@ public final class GUI extends javax.swing.JFrame {
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(restrictionModeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(restrictionModeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(layerNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(editLayerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(editLayerPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(layerElevationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -616,12 +657,12 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(applyLayerChangesButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelLayerChangesButton))
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Generate terrain");
+        jLabel6.setText("Generate");
 
         generatorChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no generators found>" }));
         generatorChooser.addItemListener(new java.awt.event.ItemListener() {
@@ -634,6 +675,11 @@ public final class GUI extends javax.swing.JFrame {
                 generatorChooserMouseReleased(evt);
             }
         });
+        generatorChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generatorChooserActionPerformed(evt);
+            }
+        });
 
         openCommandLineButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/terminal.png"))); // NOI18N
         openCommandLineButton.setToolTipText("Advanced options...");
@@ -643,6 +689,24 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        seedField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                seedFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel9.setText("Seed:");
+
+        randomSeedButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/refresh.png"))); // NOI18N
+        randomSeedButton.setToolTipText("Advanced options...");
+        randomSeedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                randomSeedButtonActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terrain", "elevation" }));
+
         javax.swing.GroupLayout generatorTitlePanelLayout = new javax.swing.GroupLayout(generatorTitlePanel);
         generatorTitlePanel.setLayout(generatorTitlePanelLayout);
         generatorTitlePanelLayout.setHorizontalGroup(
@@ -651,27 +715,39 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
-                        .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(seedField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(randomSeedButton))
+                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         generatorTitlePanelLayout.setVerticalGroup(
             generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(generatorTitlePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorTitlePanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                .addContainerGap()
+                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(generatorTitlePanelLayout.createSequentialGroup()
+                        .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorTitlePanelLayout.createSequentialGroup()
-                        .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(randomSeedButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(seedField))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton2.setText("Generate!");
@@ -734,7 +810,10 @@ public final class GUI extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(genOptionsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(genOptionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
@@ -743,16 +822,14 @@ public final class GUI extends javax.swing.JFrame {
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(canvasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(canvasLayout.createSequentialGroup()
-                        .addComponent(layerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(generatorBottomPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(generatorTitlePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                    .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(generatorTitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -760,12 +837,12 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(generatorTitlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                     .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -979,7 +1056,7 @@ public final class GUI extends javax.swing.JFrame {
 
     private void earthSpritesheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_earthSpritesheetButtonActionPerformed
         World.getWorld().setSpritesheet("resources/samples/terrain/earth.png");
-        World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks"});
+        World.getWorld().setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
         editLayerPanel.setVisible(false);
     }//GEN-LAST:event_earthSpritesheetButtonActionPerformed
 
@@ -1077,6 +1154,7 @@ public final class GUI extends javax.swing.JFrame {
             World.getWorld().setLayerProperty("tile", layerTileChooser.getSelectedIndex(), layer);
             World.getWorld().setLayerProperty("rmode", restrictionModeChooser.getSelectedIndex(), layer);
             World.getWorld().setLayerProperty("rtiles", tileRestrictionList.getSelectedIndices(), layer);
+            World.getWorld().setLayerProperty("elevation", layerElevationSpinner.getValue(), layerList.getSelectedIndex());
         }
         canvas.repaint();
         refreshLayerList();
@@ -1150,6 +1228,7 @@ public final class GUI extends javax.swing.JFrame {
     private void generatorChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_generatorChooserItemStateChanged
 
         if (generatorChooser.getSelectedIndex() == -1) return;
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
         
         JPanel[] panels = new JPanel[] {
             noOptionsPanel, 
@@ -1163,6 +1242,10 @@ public final class GUI extends javax.swing.JFrame {
         generatorBodyPanel.add(panels[generatorChooser.getSelectedIndex()], BorderLayout.CENTER);
         generatorBodyPanel.revalidate();
         generatorBodyPanel.repaint();
+        
+        seedField.setText(g.getSeed()+"");
+        seedField.setForeground(Color.black);
+        
     }//GEN-LAST:event_generatorChooserItemStateChanged
 
     private void openCommandLineButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openCommandLineButtonActionPerformed
@@ -1208,6 +1291,7 @@ public final class GUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        g.reset();
         int[] selected = layerList.getSelectedIndices();
         for (int l = selected.length - 1; l > -1; l--) {
             World.getWorld().clearTiles(selected[l]);
@@ -1216,9 +1300,9 @@ public final class GUI extends javax.swing.JFrame {
         canvas.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void noiseMapCutoffSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_noiseMapCutoffSliderStateChanged
-        Generator.getGenerator("NoiseMap").setParameter("cutoff", ""+((double)noiseMapCutoffSlider.getValue()/100d));
-    }//GEN-LAST:event_noiseMapCutoffSliderStateChanged
+    private void noiseMapElevationSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_noiseMapElevationSliderStateChanged
+        Generator.getGenerator("NoiseMap").setParameter("elevation", ""+((double)noiseMapElevationSlider.getValue()/100d));
+    }//GEN-LAST:event_noiseMapElevationSliderStateChanged
 
     private void scatterAmountSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterAmountSliderStateChanged
         Generator.getGenerator("Scattered").setParameter("amount", ""+((double)scatterAmountSlider.getValue()/100d));
@@ -1231,6 +1315,35 @@ public final class GUI extends javax.swing.JFrame {
     private void scatterMaxSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_scatterMaxSliderStateChanged
        Generator.getGenerator("Scattered").setParameter("max", ""+((double)scatterMaxSlider.getValue()/100d));
     }//GEN-LAST:event_scatterMaxSliderStateChanged
+
+    private void noiseMapAlgoChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_noiseMapAlgoChooserItemStateChanged
+        String[] algos = new String[]{"Perlin", "DiamondSquare"};
+        Generator.getGenerator("NoiseMap").setParameter("algo", algos[noiseMapAlgoChooser.getSelectedIndex()]);
+    }//GEN-LAST:event_noiseMapAlgoChooserItemStateChanged
+
+    private void layerElevationSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_layerElevationSpinnerStateChanged
+        canvas.repaint();
+    }//GEN-LAST:event_layerElevationSpinnerStateChanged
+
+    private void randomSeedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomSeedButtonActionPerformed
+        seedField.setText(new Random().nextInt()+"");
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        g.setSeed(Long.parseLong(seedField.getText()));
+        seedField.setForeground(Color.black);
+        
+    }//GEN-LAST:event_randomSeedButtonActionPerformed
+
+    private void seedFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_seedFieldKeyReleased
+        boolean valid = seedField.getText().matches("(-)*\\d+")
+                && seedField.getText().length() < 16;
+        Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
+        if (valid) g.setSeed(Long.parseLong(seedField.getText()));
+        seedField.setForeground(valid ? Color.black : Color.red);
+    }//GEN-LAST:event_seedFieldKeyReleased
+
+    private void generatorChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatorChooserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_generatorChooserActionPerformed
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -1285,6 +1398,7 @@ public final class GUI extends javax.swing.JFrame {
                 : (int[])World.getWorld().getLayerProperty("rtiles", layerList.getSelectedIndex()));
         
         editLayerTitleLabel.setText(multiple ? "Editing multiple layers" : "Editing layer properties");
+        layerElevationSpinner.setValue(multiple ? 0 : World.getWorld().getLayerProperty("elevation", layerList.getSelectedIndex()));
         
         //layerUpButton.setEnabled(layerList.getSelectedIndex() > 0);
         //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
@@ -1309,6 +1423,7 @@ public final class GUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                Assets.init();
                 gui = new GUI();
                 gui.setVisible(true);
                 World.newWorld(64, 64);
@@ -1344,6 +1459,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel generatorTitlePanel;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1365,6 +1481,9 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -1377,6 +1496,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JButton layerDownButton;
+    private javax.swing.JSpinner layerElevationSpinner;
     private static javax.swing.JList<String> layerList;
     private javax.swing.JTextField layerNameField;
     private javax.swing.JPanel layerPanel;
@@ -1388,16 +1508,19 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JDialog navigator;
     private javax.swing.JMenuItem newWorldButton;
     private javax.swing.JPanel noOptionsPanel;
-    private javax.swing.JSlider noiseMapCutoffSlider;
+    private javax.swing.JComboBox<String> noiseMapAlgoChooser;
+    private javax.swing.JSlider noiseMapElevationSlider;
     private javax.swing.JPanel noiseMapOptions;
     private javax.swing.JButton openCommandLineButton;
     private javax.swing.JMenuItem openWorldButton;
+    private javax.swing.JButton randomSeedButton;
     private javax.swing.JButton regenLayerButton;
     private javax.swing.JComboBox<String> restrictionModeChooser;
     private javax.swing.JSlider scatterAmountSlider;
     private javax.swing.JSlider scatterMaxSlider;
     private javax.swing.JSlider scatterMinSlider;
     private javax.swing.JPanel scatterOptions;
+    private javax.swing.JTextField seedField;
     private javax.swing.JMenuItem setSeedButton;
     private javax.swing.JMenuItem showNavigatorButton;
     private javax.swing.JList<String> tileRestrictionList;

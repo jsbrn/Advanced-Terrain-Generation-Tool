@@ -2,6 +2,7 @@ package world.terrain;
 
 import world.terrain.generators.*;
 import java.util.HashMap;
+import java.util.Random;
 import world.World;
 
 /**
@@ -10,6 +11,9 @@ import world.World;
  */
 public abstract class Generator {
 
+    private long seed;
+    private Random rng;
+    
     /**
      * This is a static list of generators that the GUI/CLI uses when you specify the name of the generator.
      * Put all Generator instances in this list and use getGenerator(name) to access them.
@@ -18,8 +22,13 @@ public abstract class Generator {
         {"Fill", new FillGenerator()},
         {"WaterGenerator", new WaterGenerator()}, 
         {"NoiseMap", new NoiseMapGenerator()},
-        {"Scattered", new ScatteredGenerator()}
+        {"Scattered", new ScatteredGenerator()},
     };
+    
+    public Generator() {
+        this.seed = new Random().nextInt();
+        this.rng = new Random(seed);
+    }
     
     /**
      * Get the number of available generators.
@@ -47,6 +56,15 @@ public abstract class Generator {
     public static String getGeneratorName(int index) {
         return (String)generators[index][0];
     }
+    
+    public void setSeed(long seed) { 
+        this.seed = seed; 
+        this.rng = new Random(seed);
+    }
+    public long getSeed() { return seed; }
+    public void randomSeed() { setSeed(new Random().nextLong()); }
+    public Random rng() { return rng; }
+    public void reset() { setSeed(seed); }
     
     /**
      * Returns the specified generator from the list of terrain generators.

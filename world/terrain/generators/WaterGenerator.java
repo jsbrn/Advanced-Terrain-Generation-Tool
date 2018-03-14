@@ -21,7 +21,7 @@ public class WaterGenerator extends Generator {
     /*
     * Copy/Paste this for sample generation: WaterGenerator:tile=6,lakes=32,max=40,min=10,rlength=100
     */
-    public void generate(World w, int layer){
+    public void generate(World w, int layer) {
         /*Parameters
          ==========*/
         
