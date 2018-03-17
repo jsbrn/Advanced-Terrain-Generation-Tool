@@ -90,13 +90,14 @@ public final class GUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        heightMapList = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        heightMapSeedField = new javax.swing.JTextField();
+        heightMapAlgorithmChooser = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
+        createHeightMapButton = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         canvas = new gui.Canvas();
@@ -447,43 +448,53 @@ public final class GUI extends javax.swing.JFrame {
         jLabel25.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel25.setText("Stored Heightmaps");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        heightMapList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "my custom heightmap" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane3.setViewportView(jList1);
+        jScrollPane3.setViewportView(heightMapList);
 
         jButton1.setText("Delete selected");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Create a new heightmap..."));
 
         jLabel27.setText("Seed:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "DiamondSquare" }));
+        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "DiamondSquare" }));
 
         jLabel26.setText("Algorithm:");
 
-        jButton4.setText("Create heightmap");
+        createHeightMapButton.setText("Create heightmap");
+
+        jButton4.setText("Random seed");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(createHeightMapButton))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel27)
                             .addComponent(jLabel26))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(heightMapAlgorithmChooser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(heightMapSeedField, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton4)))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -492,13 +503,14 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox2)
-                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(heightMapSeedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(heightMapAlgorithmChooser)
+                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(createHeightMapButton)
                 .addContainerGap())
         );
 
@@ -517,7 +529,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)))
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -943,9 +955,9 @@ public final class GUI extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
                 .addComponent(genOptionsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
 
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
@@ -1371,7 +1383,7 @@ public final class GUI extends javax.swing.JFrame {
         Generator g = Generator.getGenerator(generatorChooser.getSelectedIndex());
         generatorBodyPanel.removeAll();
         generatorBodyPanel.setLayout(new BorderLayout());
-        generatorBodyPanel.add(Generator.getOptions(generatorChooser.getSelectedIndex()), BorderLayout.CENTER);
+        generatorBodyPanel.add(Generator.getOptionsPanel(generatorChooser.getSelectedIndex()), BorderLayout.CENTER);
         generatorBodyPanel.revalidate();
         generatorBodyPanel.repaint();
         
@@ -1485,6 +1497,10 @@ public final class GUI extends javax.swing.JFrame {
         showDialog(heightmaps, true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int[] indices = heightMapList.getSelectedIndices();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * Show (and make modal) a custom dialog popup.
      * @param d The JDialog to show.
@@ -1586,6 +1602,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
     private javax.swing.JMenu chooseSpriteSheetMenu;
+    private javax.swing.JButton createHeightMapButton;
     private javax.swing.JMenuItem customSpritesheetButton;
     private javax.swing.JButton deleteLayerButton;
     private javax.swing.JMenuItem earthSpritesheetButton;
@@ -1600,6 +1617,9 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel generatorBottomPanel;
     private javax.swing.JComboBox<String> generatorChooser;
     private javax.swing.JPanel generatorTitlePanel;
+    private javax.swing.JComboBox<String> heightMapAlgorithmChooser;
+    private javax.swing.JList<String> heightMapList;
+    private javax.swing.JTextField heightMapSeedField;
     private javax.swing.JDialog heightmaps;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1607,7 +1627,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1635,7 +1654,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -1651,7 +1669,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton layerDownButton;
     private javax.swing.JSpinner layerElevationSpinner;
     private static javax.swing.JList<String> layerList;

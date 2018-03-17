@@ -39,7 +39,7 @@ public abstract class Generator {
      */
     public static final int generatorCount() { return generators.length; }
     
-    public static final JPanel getOptions(int generator) {
+    public static final JPanel getOptionsPanel(int generator) {
         return (JPanel)generators[generator][2];
     }
     
