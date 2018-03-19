@@ -25,6 +25,7 @@ public abstract class Generator {
         {"WaterGenerator", new WaterGenerator(), GUI.NO_OPTIONS}, 
         {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
+        {"Sine", new SineGenerator(), GUI.NO_OPTIONS},
     };
     
     public Generator() {
