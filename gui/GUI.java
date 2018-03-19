@@ -564,7 +564,7 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Advanced Terrain Generation Tool (1.0.2-alpha)");
+        setTitle("Advanced Terrain Generation Tool (1.0.3-alpha)");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
         setIconImages(getIconImages());
 
