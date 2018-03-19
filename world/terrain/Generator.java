@@ -25,6 +25,7 @@ public abstract class Generator {
         {"WaterGenerator", new WaterGenerator(), GUI.NO_OPTIONS}, 
         {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
+        {"Sine", new SineGenerator(), GUI.NO_OPTIONS},
     };
     
     public Generator() {
@@ -39,7 +40,7 @@ public abstract class Generator {
      */
     public static final int generatorCount() { return generators.length; }
     
-    public static final JPanel getOptions(int generator) {
+    public static final JPanel getOptionsPanel(int generator) {
         return (JPanel)generators[generator][2];
     }
     

@@ -41,6 +41,7 @@ public class World {
     private String spritesheet_uri;
     private ArrayList<Image> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
+    private HashMap<String, float[][]> saved_heightmaps;
     
     private Random rng;
     private long seed;
@@ -70,11 +71,36 @@ public class World {
         this.textures = new ArrayList<Image>();
         this.setSpritesheet("resources/samples/terrain/earth.png");
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
+        this.saved_heightmaps = new HashMap<String, float[][]>();
     }
     
     private World(int w, int h, long seed) {
         this(w, h);
         setSeed(seed);
+    }
+    
+    public float[][] getHeightMap(String name) {
+        return saved_heightmaps.get(name);
+    }
+    
+    public String[] getSavedHeightMaps() {
+        return saved_heightmaps.keySet().toArray(new String[]{});
+    }
+    
+    public void saveHeightMap(String name, float[][] map) {
+        saved_heightmaps.put(name, map);
+    }
+    
+    public void deleteHeightMap(String name) {
+        saved_heightmaps.remove(name);
+    }
+    
+    public void deleteHeightMap(int i) {
+        int index = 0;
+        for (String name: saved_heightmaps.keySet()) {
+            if (index == i) { saved_heightmaps.remove(name);  break; }
+            index++;
+        }
     }
     
     /**
