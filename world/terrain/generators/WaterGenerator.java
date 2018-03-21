@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import world.World;
 import world.terrain.Generator;
+import world.terrain.misc.Perlin;
 
 /**
 * This is a basic Water Generator that generates "lakes" that are simply
@@ -16,7 +17,14 @@ import world.terrain.Generator;
 */
 public class WaterGenerator extends Generator {
     
-    
+    public WaterGenerator(){
+        super();
+        this.setParameter("lakes", "3");
+        this.setParameter("max", "20");
+        this.setParameter("min", "10");
+        this.setParameter("rlength", "25");
+        this.setParameter("elevation", "1.8");
+    }
     @Override
     /*
     * Copy/Paste this for sample generation: WaterGenerator:tile=6,lakes=32,max=40,min=10,rlength=100
@@ -24,9 +32,6 @@ public class WaterGenerator extends Generator {
     public void generate(World w, int layer) {
         /*Parameters
          ==========*/
-        
-        //tile: the designated tile attribute number used for water
-        int t = Integer.parseInt(getParameter("tile"));
         
         /* lakes: the total number of lakes to generate, which also will be the
          * total number of rivers
@@ -66,11 +71,30 @@ public class WaterGenerator extends Generator {
             int rwidth = min+rand.nextInt(max-min);
             int rheight = min+rand.nextInt(max-min);
             
+            //New: use perlin noise algorithm to make the lakes look more realistic
+            Perlin perlin = new Perlin();
+            
+            float[][] whitenoise = perlin.generateWhiteNoise(rwidth, rheight, getSeed());
+            //create a lake "mask"
+            
+            float[][] lakemask = new float[rwidth][rheight];
+            
+             for(int i=0;i<rwidth;i++){
+                for(int j=0;j<rheight;j++){
+                    lakemask[i][j]= (float)(
+                            ((i<=rwidth/2) ? (float)i/rwidth : (float)(rwidth-i)/rwidth/2) + 
+                            ((j<=rheight/2) ? (float)j/rheight : (float)(rheight-j)/rheight/2));
+                }
+            }
+            
+            
             //Now draw the rectangles on the World!
             for(int i=0; i<rheight; i++){
                 for(int j=0; j<rwidth; j++){
                     if(x[0]+j>w.columns()-1||x[1]+i>w.rows()-1)continue;
-                    w.setTile(x[0]+j,x[1]+i, layer, true);
+                    //w.setTile(x[0]+j,x[1]+i, layer, true);
+                    if (whitenoise[j][i]/lakemask[j][i] < Double.parseDouble(getParameter("elevation"))) w.setTile(x[0]+j, x[1]+i, layer, true);
+                    
                 }
             }
             
@@ -143,7 +167,7 @@ public class WaterGenerator extends Generator {
                            case 0://check north
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
-                                       if(w.getTile(next[0], next[1]+chk)==t){
+                                       if(w.getTile(next[0], next[1]+chk,layer)>-1){
                                             //Set the section length to chk-1 and try again
                                             sectionLength = chk-1;
                                             continue rivercheck;
@@ -156,7 +180,7 @@ public class WaterGenerator extends Generator {
                            case 1://check east
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
-                                       if(w.getTile(next[0]+chk, next[1])==t){
+                                       if(w.getTile(next[0]+chk, next[1],layer)>-1){
                                        //Set the section length to chk-1 and try again
                                        sectionLength = chk-1;
                                        continue rivercheck;
@@ -170,7 +194,7 @@ public class WaterGenerator extends Generator {
                            case 2://check south
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
-                                       if(w.getTile(next[0], next[1]-chk)==t){
+                                       if(w.getTile(next[0], next[1]-chk,layer)>-1){
                                             //Set the section length to chk-1 and try again
                                             sectionLength = chk-1;
                                             continue rivercheck;
@@ -183,7 +207,7 @@ public class WaterGenerator extends Generator {
                            case 3://check west
                                for(int chk = 1; chk<=sectionLength; chk++){
                                    try{
-                                        if(w.getTile(next[0]-chk, next[1])==t){
+                                        if(w.getTile(next[0]-chk, next[1],layer)>-1){
                                             //Set the section length to chk-1 and try again
                                             sectionLength = chk-1;
                                             continue rivercheck;
@@ -221,7 +245,6 @@ public class WaterGenerator extends Generator {
                         case 3://west
                             next[0]-=1;
                     }
-                    
                     /* Now make sure we are in still in the world's bounds before
                      * we try to draw a tile, and if we're out of bounds break
                      * out of the riverloop
