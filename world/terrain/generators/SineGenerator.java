@@ -5,7 +5,6 @@
  */
 package world.terrain.generators;
 
-import misc.MiscMath;
 import world.World;
 import world.terrain.Generator;
 import java.util.*;
@@ -18,66 +17,86 @@ public class SineGenerator extends Generator {
     
     public SineGenerator() {
         super();
-        this.setParameter("waves", "1");
+        // One string parameter with an array of parameters
+        this.setParameter("waves", "1.0,0.0,0.0,0.4|1.0,0.0,0.6,1.0");
     }
     
     @Override
     public void generate(World w, int layer) {
         
         
-        float waves = Float.parseFloat(getParameter("waves"));
+        // Paremeters for a wave
+        // frequency, amplitude, xMin, xMax
+        String waves = getParameter("waves");
+        String[] wavesArray = waves.split("\\|");
+        System.out.println(wavesArray[0]);
+        System.out.println(wavesArray[1]);
         
-        ArrayList<Double> sineFRandom = new ArrayList<>();
-        ArrayList<Double> sineARandom = new ArrayList<>();
+        // Necessary information to store
+        ArrayList<Double> frequencies = new ArrayList<>();
+        ArrayList<Double> amplitudes = new ArrayList<>();
+        ArrayList<Double> xMin = new ArrayList<>();
+        ArrayList<Double> xMax = new ArrayList<>();
+        ArrayList<Double> height = new ArrayList<>();
         
-        // Random numbers to create the sine waves
-        Random random = new Random(System.currentTimeMillis());
-        
-        // Add random numbers to sineFRandom
-        // With define the frequency of its sine wave. Multiplier of [0.7, 4.7]
-        for (int a = 0; a < waves; a++) {
-            sineFRandom.add(((random.nextDouble() * 4) + 0.7));
+        // Parse info from user defined string
+        for (int a = 0; a < wavesArray.length; a++) {
+            
+            String[] waveValues = wavesArray[a].split(",");
+            System.out.println(waveValues[0]);
+            // Ensure frequency is not zero, as entry should not be <0
+            frequencies.add( Double.parseDouble(waveValues[0]) + 0.001 );
+            amplitudes.add( Double.parseDouble(waveValues[1]) );
+            xMin.add( Double.parseDouble(waveValues[2]) );
+            xMax.add( Double.parseDouble(waveValues[3]) );
         }
         
-        // Add random amplitudes to the waves. Bounded [-1, 1]
-        for (int a = 0; a < waves; a++) {
-            sineARandom.add(((random.nextDouble() * 0.5) - 0.25));
-        }
+        // Need height value at each column
+        for (int a = 0; a < w.columns(); a++) 
+            height.add(0.0);
         
         double h;
-        double total;
-       
-        // For each column determine which tiles to draw for a smooth sine wave
-        for (int i = 0; i < w.columns(); i++){
+        
+        // Have an array that gets modified every loop
+        // Average height array every loop
+        for (int a = 0; a < wavesArray.length; a++) {
             
-            // Reset total for each column pass
-            total = 0;
-            
-            // Number to pass into Math.sin function.
-            double x_sine = (double)i / (double)w.columns();
+            int min = (int)Math.floor(xMin.get(a) * w.columns());
+            int max = (int)Math.floor(xMax.get(a) * w.columns());
             
             
-            // Calculate the average sine wave height for this x position
-            // Normalizes the multiple sine waves into one sine wave.
-            for (int a = 0; a < sineFRandom.size(); a++) {
+            // Determine height for each column of sine wave
+            for (int i = min; i < max; i++) {
+                
+                
+                // Number to pass into Math.sin function.
+                double x_sine = (double)i / (double)w.columns();
                 
                 // Change range from [0, 1] -> [0, 2PI] * frequency multiplier
-                x_sine = x_sine * 2 * Math.PI * sineFRandom.get(a);
+                x_sine = x_sine * 2 * Math.PI * frequencies.get(a);
                 
-                // Randomize amplitude of the wave
-                x_sine += sineARandom.get(a);
+                // Change amplitude of the wave
+                x_sine += amplitudes.get(a);
                 
+                // Height value
                 h = ((Math.sin(x_sine) + 1) / 2) * w.rows();
-                h = (h / 1.25) + 0.1;
-                total += h;
+                
+                // Below 0.2 is filled
+                // h = (h / 1.25) + 0.1;
+                
+                // Add height values
+                // Division should effective average out waves for that column
+                height.set(i, (height.get(a) + h) / 2);
             }
+        }
             
-            // Take average height of all waves
-            int yStart = (int)Math.floor(total / sineFRandom.size());
+        
+        for (int i = 0; i < w.columns(); i++) {
             
+            int yStart = (int)Math.floor(height.get(i));
             
             // Print tiles below start tile
-            while (yStart < w.rows()){
+            while (yStart < w.rows() && yStart != 0){
                 
                 // Draw tiles for that column
                 w.setTile(i, yStart, layer, true);
