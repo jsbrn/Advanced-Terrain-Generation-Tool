@@ -22,7 +22,7 @@ public class WaterGenerator extends Generator {
         this.setParameter("lakes", "3");
         this.setParameter("max", "20");
         this.setParameter("min", "10");
-        this.setParameter("rlength", "25");
+        this.setParameter("rlength", "100");
         this.setParameter("elevation", ".7");
     }
     @Override
@@ -57,6 +57,11 @@ public class WaterGenerator extends Generator {
         Random rand = new Random();
         rand.setSeed(getSeed());
         
+        Perlin perlin = new Perlin();
+        
+        //temporary heightmap we will use for river generation
+        float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.width(), w.height(), getSeed()), 5);
+        
         //Now generate our random starting points for the lakes
         for(int i=0;i<lakes;i++){
             points.add(new int[]{rand.nextInt(w.columns()),rand.nextInt(w.rows())});
@@ -72,10 +77,10 @@ public class WaterGenerator extends Generator {
             int rheight = min+rand.nextInt(max-min);
             
             //New: use perlin noise algorithm to make the lakes look more realistic
-            Perlin perlin = new Perlin();
             
-            float[][] whitenoise = perlin.generateWhiteNoise(rwidth, rheight, getSeed());
-            //create a lake "mask"
+            
+            float[][] perlinmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(rwidth, rheight, getSeed()),1);
+            //create a lake "mask", basically a rectangular gradient.
             float[][] lakemask = new float[rwidth][rheight];
              
             for(int i=0;i<rwidth;i++){
@@ -100,178 +105,71 @@ public class WaterGenerator extends Generator {
                 for(int j=0; j<rwidth; j++){
                     if(x[0]+j>w.columns()-1||x[1]+i>w.rows()-1)continue;
                     //w.setTile(x[0]+j,x[1]+i, layer, true);
-                    if (whitenoise[j][i]+lakemask[j][i] > Double.parseDouble(getParameter("elevation"))) w.setTile(x[0]+j, x[1]+i, layer, true);
+                    if (perlinmap[j][i]+lakemask[j][i] > Double.parseDouble(getParameter("elevation"))) w.setTile(x[0]+j, x[1]+i, layer, true);
                     
                 }
             }
             
-            /* River Generation
-             * ================
-             * Define the starting direction of the river, which is
-             * represented by an integer from 0 to 3:
-             * 0 being North, 1 being East, 2 being South, and 3 being West
-             */
-            int direction = rand.nextInt(4); //Sets the random direction
-            
-            /* Define two more int variables,
-             * newDir: will temporarily hold the river's next direction (0-3)
-             * next[]: holds the next river tile corridinate, initilizated by the
-             * x and y coordinates of the last lake generated
-             * sectionLength: holds the length of the current section of river
-             * being currently generated
-             * rTries: keeps track of how many times we tried to see if we can
-             * draw a river
-            */
-            int newDir; 
             int next[] = x;
-            int sectionLength;
-            int rTries;
             
-            //Randomly set the river starting point somewhere in the lake
-            next[0]+=rand.nextInt(rwidth/2);
-            next[1]+=rand.nextInt(rheight/2);
             
-            /* outer river loop, labeled 'roverloop', which loops for the set
-             * river length by the rlength parameter
-             */
-            riverloop:
+            //river starting point in middle of lake
+            next[0]+=rwidth/2;
+            next[1]+=rheight/2;
+            
             for(int i=0; i<rlength;i++){
-                /* Generate a random length from 5 to 20 tiles for the next
-                 * section of river to be drawn on the world
-                */
+                //determine the next direction by adding the next few
+                //tiles of heightmap
+                float dsum[] = {0,0,0,0};
                 
-                /* if this is the first loop lets make sure we leave the confines
-                 * of the lake, otherwise continue with generating a random length
-                 * and finding a new direction
-                */
-                if(i==0){
-                    sectionLength = max+1;
-                }else{
-                    sectionLength = 5 + rand.nextInt(15);
-                    
-                    /* Now that we know the length of the next section, lets set the
-                    * next direction...
-                    *
-                    * The while loop keeps going forever until we find a new direction
-                    * that isn't backwards so we don't draw a length of river onto
-                    * itself, and also does not cross paths with another body of
-                    * water or river. If it is determined that there will be collision
-                    * using the for loops within the switch statements,
-                    * the section length is reduced
-                   */
-
-                   rivercheck:
-                   while(true){
-                       /* If sectionLength has been widdled down to 0 then just
-                        * give up trying to make a river :(
-                        */
-                       if(sectionLength<=0){System.out.println("Can't make that river!"); break riverloop;}
-                       
-                       newDir = rand.nextInt(4);
-                       if(newDir!=(direction-2)%4||newDir!=(direction+2)%4){
-                           riverswitch:
-                           switch(direction){
-                           case 0://check north
-                               for(int chk = 1; chk<=sectionLength; chk++){
-                                   try{
-                                       if(w.getTile(next[0], next[1]+chk,layer)>-1){
-                                            //Set the section length to chk-1 and try again
-                                            sectionLength = chk-1;
-                                            continue rivercheck;
-                                        }
-                                   }catch(java.lang.ArrayIndexOutOfBoundsException exception){
-                                       break riverloop;
-                                   }
-                               }
-                               break rivercheck;//we went through without issues
-                           case 1://check east
-                               for(int chk = 1; chk<=sectionLength; chk++){
-                                   try{
-                                       if(w.getTile(next[0]+chk, next[1],layer)>-1){
-                                       //Set the section length to chk-1 and try again
-                                       sectionLength = chk-1;
-                                       continue rivercheck;
-                                       }
-                                   //catch if we go outside the world and break riverloop
-                                   }catch(java.lang.ArrayIndexOutOfBoundsException exception){
-                                       break riverloop;
-                                   }
-                               }
-                               break rivercheck;//we went through without issues
-                           case 2://check south
-                               for(int chk = 1; chk<=sectionLength; chk++){
-                                   try{
-                                       if(w.getTile(next[0], next[1]-chk,layer)>-1){
-                                            //Set the section length to chk-1 and try again
-                                            sectionLength = chk-1;
-                                            continue rivercheck;
-                                        }
-                                   }catch(java.lang.ArrayIndexOutOfBoundsException exception){
-                                       break riverloop;
-                                   }
-                               }
-                               break rivercheck;//we went through without issues
-                           case 3://check west
-                               for(int chk = 1; chk<=sectionLength; chk++){
-                                   try{
-                                        if(w.getTile(next[0]-chk, next[1],layer)>-1){
-                                            //Set the section length to chk-1 and try again
-                                            sectionLength = chk-1;
-                                            continue rivercheck;
-                                        }
-                                   }catch(java.lang.ArrayIndexOutOfBoundsException exception){
-                                       break riverloop;
-                                   }
-                               break rivercheck;//we went through without issues
-                               }
-                           }
-                       }
-                   }
-
-                   //New direcion has been found, so set the current diection to it!
-                   direction = newDir;
-                }
-                
-                /* inner river loop, which loops for the size of sectionLength
-                 * drawing a straight line of tiles on the world
-                */
-                for(int j=0; j<sectionLength; j++){
-                    /* Check the current direction and shift the coordinates of the
-                     * next tile to be drawn on accordingly
-                     */
-                    switch(direction){
-                        case 0://north
-                            next[1]+=1;
-                            break;
-                        case 1://east
-                            next[0]+=1;
-                            break;
-                        case 2://south
-                            next[1]-=1;
-                            break;
-                        case 3://west
-                            next[0]-=1;
+                for(int j=0;j<10;j++){
+                    try{
+                    dsum[0]+=hmap[next[0]][next[1]+j];
+                    dsum[1]+=hmap[next[0]+j][next[1]];
+                    dsum[2]+=hmap[next[0]][next[1]-j];
+                    dsum[3]+=hmap[next[0]-j][next[1]];
+                    }catch(java.lang.ArrayIndexOutOfBoundsException e){
+                        //just don't do anything
                     }
-                    /* Now make sure we are in still in the world's bounds before
-                     * we try to draw a tile, and if we're out of bounds break
-                     * out of the riverloop
-                     */
-                    if( next[0]>w.columns()-1||
-                        next[1]+i>w.rows()-1||
-                        next[0]<0||
-                        next[1]<0)
-                        break riverloop;
-                    
-                    //Everything is OK, draw the designated water tile at the next coordinates
-                    w.setTile(next[0], next[1], layer, true);
-                    
-                    //Increment i by one since we used up one of our 'rlength'
-                    i++;
+                }
+                
+                int direction = 0;
+                float lowest = dsum[0];
+                
+                //find the lowest elevation
+                for(int j=1;j<4;j++){
+                    if(dsum[j]<lowest){
+                        lowest=dsum[j];
+                        direction=j;
+                    }
                 }
                 
                 
-                
+                switch(direction){
+                    case 0://north
+                        next[1]+=1;
+                        break;
+                    case 1://east
+                        next[0]+=1;
+                        break;
+                    case 2://south
+                        next[1]-=1;
+                        break;
+                    case 3://west
+                        next[0]-=1;
+                }
+                System.out.println("River tile x: " + next[0] + "y: " + next[1]);
+                try{
+                    w.setTile(next[0], next[1], layer, true);
+                }catch(java.lang.ArrayIndexOutOfBoundsException e){
+                    System.out.println("boop");
+                    break;
+                }
             }
+                
+                
+                
         }
     }
 }
+
