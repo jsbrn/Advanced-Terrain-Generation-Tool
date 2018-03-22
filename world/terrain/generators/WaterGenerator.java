@@ -23,7 +23,7 @@ public class WaterGenerator extends Generator {
         this.setParameter("max", "20");
         this.setParameter("min", "10");
         this.setParameter("rlength", "25");
-        this.setParameter("elevation", "1.8");
+        this.setParameter("elevation", ".7");
     }
     @Override
     /*
@@ -55,7 +55,7 @@ public class WaterGenerator extends Generator {
         
         //Create a new random object rand and get set the seed from the World
         Random rand = new Random();
-        rand.setSeed(w.getSeed());
+        rand.setSeed(getSeed());
         
         //Now generate our random starting points for the lakes
         for(int i=0;i<lakes;i++){
@@ -76,14 +76,21 @@ public class WaterGenerator extends Generator {
             
             float[][] whitenoise = perlin.generateWhiteNoise(rwidth, rheight, getSeed());
             //create a lake "mask"
-            
             float[][] lakemask = new float[rwidth][rheight];
-            
-             for(int i=0;i<rwidth;i++){
+             
+            for(int i=0;i<rwidth;i++){
                 for(int j=0;j<rheight;j++){
-                    lakemask[i][j]= (float)(
-                            ((i<=rwidth/2) ? (float)i/rwidth : (float)(rwidth-i)/rwidth/2) + 
-                            ((j<=rheight/2) ? (float)j/rheight : (float)(rheight-j)/rheight/2));
+                    if(i<=j*rwidth/rheight&&i<=rwidth-j*rwidth/rheight){//top
+                        lakemask[i][j]= ((float)i/rwidth*2);
+                    }else if(i<=j*rwidth/rheight&&i>rwidth-j*rwidth/rheight){//right
+                        lakemask[i][j]=((float)(rheight-j)/rheight*2);
+                    }else if(i>j*rwidth/rheight&&i>rwidth-j*rwidth/rheight){//down
+                        lakemask[i][j]= ((float)(rwidth-i)/rwidth*2);
+                    }else if(i>j*rwidth/rheight&&i<=rwidth-j*rwidth/rheight){//left
+                        lakemask[i][j]=((float)j/rheight*2);
+                    }else{
+                        lakemask[i][j]=0;
+                    }
                 }
             }
             
@@ -93,7 +100,7 @@ public class WaterGenerator extends Generator {
                 for(int j=0; j<rwidth; j++){
                     if(x[0]+j>w.columns()-1||x[1]+i>w.rows()-1)continue;
                     //w.setTile(x[0]+j,x[1]+i, layer, true);
-                    if (whitenoise[j][i]/lakemask[j][i] < Double.parseDouble(getParameter("elevation"))) w.setTile(x[0]+j, x[1]+i, layer, true);
+                    if (whitenoise[j][i]+lakemask[j][i] > Double.parseDouble(getParameter("elevation"))) w.setTile(x[0]+j, x[1]+i, layer, true);
                     
                 }
             }
