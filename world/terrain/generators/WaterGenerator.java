@@ -1,9 +1,14 @@
 package world.terrain.generators;
 
 import gui.Canvas;
+import java.awt.Color;
 import java.awt.List;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.imageio.ImageIO;
 import world.World;
 import world.terrain.Generator;
 import world.terrain.misc.Perlin;
@@ -23,7 +28,7 @@ public class WaterGenerator extends Generator {
         this.setParameter("max", "20");
         this.setParameter("min", "10");
         this.setParameter("rlength", "100");
-        this.setParameter("elevation", ".7");
+        this.setParameter("elevation", ".8");
     }
     @Override
     /*
@@ -59,8 +64,19 @@ public class WaterGenerator extends Generator {
         
         Perlin perlin = new Perlin();
         
-        //temporary heightmap we will use for river generation
-        float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.width(), w.height(), getSeed()), 5);
+        //TEMPORARY heightmap we will use for river generation along with buffered image
+        float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), 5);
+        
+        BufferedImage bi = new BufferedImage(hmap.length,hmap[0].length, BufferedImage.TYPE_INT_RGB);
+        for(int hi = 0; hi < hmap.length; hi++){
+            for(int hj = 0; hj < hmap[0].length; hj++){
+                bi.setRGB(hi, hj, (new Color(hmap[hi][hj],hmap[hi][hj],hmap[hi][hj]).getRGB()));
+            }
+        }
+        
+        
+        
+        
         
         //Now generate our random starting points for the lakes
         for(int i=0;i<lakes;i++){
@@ -169,6 +185,24 @@ public class WaterGenerator extends Generator {
                 
                 
                 
+        }
+        
+        //FOR DEBUGGING PURPOSES, OUTPUTS THE HEIGHTMAP AND WATER
+        //go over the world and draw the water onto the image
+        for(int i = 0; i < w.width()-1; i++){
+            for(int j = 0; j < w.height()-1; j++){
+                if(w.getTile(i, j, layer)==0){
+                    bi.setRGB(i, j, (new Color(0,0,1).getRGB()));
+                }
+                
+            }
+        }
+        
+        try {
+            ImageIO.write(bi, "png", new File("C:/Users/Joe/Documents/heightmap.png")); //Make sure to change the file location.
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
