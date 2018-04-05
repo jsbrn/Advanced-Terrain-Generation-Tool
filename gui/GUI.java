@@ -89,6 +89,9 @@ public final class GUI extends javax.swing.JFrame {
         jLabel36 = new javax.swing.JLabel();
         riverSlider = new javax.swing.JSlider();
         riverSliderlbl = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        maskSlider = new javax.swing.JSlider();
+        masklbl = new javax.swing.JLabel();
         NO_OPTIONS = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         SCATTER_OPTIONS = new javax.swing.JPanel();
@@ -378,6 +381,17 @@ public final class GUI extends javax.swing.JFrame {
 
         riverSliderlbl.setText("100%");
 
+        jLabel37.setText("Lake Mask Curve");
+
+        maskSlider.setValue(0);
+        maskSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                maskSliderStateChanged(evt);
+            }
+        });
+
+        masklbl.setText("1");
+
         javax.swing.GroupLayout WATER_OPTIONSLayout = new javax.swing.GroupLayout(WATER_OPTIONS);
         WATER_OPTIONS.setLayout(WATER_OPTIONSLayout);
         WATER_OPTIONSLayout.setHorizontalGroup(
@@ -390,12 +404,8 @@ public final class GUI extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                        .addComponent(riverSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(riverSliderlbl)
-                        .addGap(43, 43, 43))
-                    .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
                         .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel37)
                             .addComponent(jLabel29)
                             .addComponent(jLabel36)
                             .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
@@ -428,7 +438,16 @@ public final class GUI extends javax.swing.JFrame {
                                             .addComponent(lakestxt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lakenoiselbl)))
-                        .addContainerGap(46, Short.MAX_VALUE))))
+                        .addContainerGap(46, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, WATER_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(riverSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maskSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(masklbl)
+                            .addComponent(riverSliderlbl))
+                        .addGap(43, 43, 43))))
         );
         WATER_OPTIONSLayout.setVerticalGroup(
             WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,9 +489,15 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel36)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(riverSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(riverSliderlbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                    .addComponent(riverSliderlbl, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(riverSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(maskSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(masklbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         NO_OPTIONS.setAutoscrolls(true);
@@ -1746,6 +1771,11 @@ public final class GUI extends javax.swing.JFrame {
         Generator.getGenerator("WaterGenerator").setParameter("lakes", lakestxt.getText());
     }//GEN-LAST:event_lakestxtKeyReleased
 
+    private void maskSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maskSliderStateChanged
+        masklbl.setText(Float.toString((float)(maskSlider.getValue()/10.)));
+        Generator.getGenerator("WaterGenerator").setParameter("maskcurve", Float.toString((float)(maskSlider.getValue()/10.)));
+    }//GEN-LAST:event_maskSliderStateChanged
+
     /**
      * Show (and make modal) a custom dialog popup.
      * @param d The JDialog to show.
@@ -1902,6 +1932,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1937,6 +1968,8 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton layerUpButton;
     private gui.MiniMap mapView;
     private javax.swing.JMenuItem marsSpritesheetButton;
+    private javax.swing.JSlider maskSlider;
+    private javax.swing.JLabel masklbl;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JDialog navigator;
     private javax.swing.JMenuItem newWorldButton;

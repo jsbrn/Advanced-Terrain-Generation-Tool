@@ -50,9 +50,16 @@ public class WaterGenerator extends Generator {
         //rlength: the length of the rivers to be generated
         int rlength = Integer.parseInt(getParameter("rlength"));
         
+        //lakeoctaves: number of octaves to use for lake perlin noise
         int lakeoctaves = Integer.parseInt(getParameter("lakeoctaves"));
         
+        //riverchecklen: number of tiles to check/average in each direction when 
+        //generating rivers
         int riverchecklen = Integer.parseInt(getParameter("riverchecklen"));
+        
+        //modifier for the lake mask
+        float maskcurve = Float.parseFloat(getParameter("maskcurve"));
+        System.out.println(getParameter("maskcurve"));
         
          /*Variables
          ==========*/
@@ -69,7 +76,7 @@ public class WaterGenerator extends Generator {
         Perlin perlin = new Perlin();
         
         //TEMPORARY heightmap we will use for river generation along with buffered image
-        float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), 5);
+        float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), lakeoctaves);
         
         BufferedImage bi = new BufferedImage(hmap.length,hmap[0].length, BufferedImage.TYPE_INT_RGB);
         for(int hi = 0; hi < hmap.length; hi++){
@@ -106,13 +113,13 @@ public class WaterGenerator extends Generator {
             for(int i=0;i<rwidth;i++){
                 for(int j=0;j<rheight;j++){
                     if(i<=j*rwidth/rheight&&i<=rwidth-j*rwidth/rheight){//top
-                        lakemask[i][j]= ((float)i/rwidth*2);
+                        lakemask[i][j]= ((float)i/rwidth*(float)Math.pow(2.,(double)maskcurve));
                     }else if(i<=j*rwidth/rheight&&i>rwidth-j*rwidth/rheight){//right
-                        lakemask[i][j]=((float)(rheight-j)/rheight*2);
+                        lakemask[i][j]=((float)(rheight-j)/rheight*(float)Math.pow(2.,(double)maskcurve));
                     }else if(i>j*rwidth/rheight&&i>rwidth-j*rwidth/rheight){//down
-                        lakemask[i][j]= ((float)(rwidth-i)/rwidth*2);
+                        lakemask[i][j]= ((float)(rwidth-i)/rwidth*(float)Math.pow(2.,(double)maskcurve));
                     }else if(i>j*rwidth/rheight&&i<=rwidth-j*rwidth/rheight){//left
-                        lakemask[i][j]=((float)j/rheight*2);
+                        lakemask[i][j]=((float)j/rheight*(float)Math.pow(2.,(double)maskcurve));
                     }else{
                         lakemask[i][j]=0;
                     }
