@@ -77,13 +77,14 @@ public class WaterGenerator extends Generator {
         
         //TEMPORARY heightmap we will use for river generation along with buffered image
         float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), lakeoctaves);
-        
+        //Bufferedimage output
+        /*
         BufferedImage bi = new BufferedImage(hmap.length,hmap[0].length, BufferedImage.TYPE_INT_RGB);
         for(int hi = 0; hi < hmap.length; hi++){
             for(int hj = 0; hj < hmap[0].length; hj++){
                 bi.setRGB(hi, hj, (new Color(hmap[hi][hj],hmap[hi][hj],hmap[hi][hj]).getRGB()));
             }
-        }
+        }*/
         
         
         
@@ -196,7 +197,7 @@ public class WaterGenerator extends Generator {
                 
                 
         }
-        
+        /*
         //FOR DEBUGGING PURPOSES, OUTPUTS THE HEIGHTMAP AND WATER
         //go over the world and draw the water onto the image
         for(int i = 0; i < w.width()-1; i++){
@@ -213,7 +214,7 @@ public class WaterGenerator extends Generator {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }*/
     }
 }
 
