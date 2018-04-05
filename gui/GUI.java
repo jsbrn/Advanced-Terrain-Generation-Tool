@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,6 +128,7 @@ public final class GUI extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         addTogetherButton = new javax.swing.JButton();
         multiplyTogetherButton = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -794,6 +796,13 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Save as image...");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -808,7 +817,8 @@ public final class GUI extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(addTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(multiplyTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(multiplyTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -820,13 +830,15 @@ public final class GUI extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jLabel25)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(addTogetherButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(multiplyTogetherButton))
+                        .addComponent(multiplyTogetherButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1863,10 +1875,39 @@ public final class GUI extends javax.swing.JFrame {
         refreshHeightmapEditor();
     }//GEN-LAST:event_addTogetherButtonActionPerformed
 
+<<<<<<< HEAD
     private void riverThicknessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_riverThicknessSliderStateChanged
         riverThicknessLbl.setText(Integer.toString(riverThicknessSlider.getValue()));
         Generator.getGenerator("WaterGenerator").setParameter("riverThickness", Integer.toString(riverThicknessSlider.getValue()));
     }//GEN-LAST:event_riverThicknessSliderStateChanged
+=======
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JFileChooser saver = new JFileChooser();
+        saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        
+        int[] indices = heightMapList.getSelectedIndices();
+        if (indices.length <= 0) return;
+  
+        int success = saver.showSaveDialog(gui);
+        if (success == JFileChooser.APPROVE_OPTION) {
+            for (int index: indices) {
+                String name = World.getWorld().getHeightmapName(index);
+                BufferedImage img = World.getWorld().toBufferedImage(name);
+                File outputfile = new File(saver.getSelectedFile().getAbsolutePath()+"/"+name+".png");
+                try {
+                    ImageIO.write(img, "png", outputfile);
+                } catch (IOException ex) {
+                    Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            JOptionPane.showMessageDialog(gui, 
+                    "Exported selected maps as images!", 
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(gui.getIconImage(32)));
+        }
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+>>>>>>> origin/gui
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -2002,6 +2043,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
