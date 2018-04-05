@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
 import misc.Assets;
 import misc.MiscMath;
 import world.terrain.Generator;
+import world.terrain.misc.DiamondSquare;
+import world.terrain.misc.Perlin;
 
 /**
  * Contains the terrain data, the layers, and all associated properties. There can
@@ -85,6 +87,25 @@ public class World {
     
     public String[] getSavedHeightMaps() {
         return saved_heightmaps.keySet().toArray(new String[]{});
+    }
+    
+    public float[][] createHeightMap(String algorithmName, boolean save) {
+        boolean useperlin = algorithmName.equals("Perlin");
+        float[][] map = new float[columns()][rows()];
+        if (!useperlin) {
+            int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
+            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), getSeed());
+            map = ds.getMap();
+        } else {
+            Perlin perlin = new Perlin();
+            // Use PerlinNoise algorithm in other location
+            // 6 is a random value, I don't know what the best value would be
+            float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), getSeed());
+            map = perlin.generatePerlinNoise(whitenoise, 6);
+        }
+        if (save) saveHeightMap(algorithmName+" Height Map ["+columns()+", "+rows()+"] ["
+                +(int)(Math.random()*100000)+"]", map);
+        return map;
     }
     
     public void saveHeightMap(String name, float[][] map) {
