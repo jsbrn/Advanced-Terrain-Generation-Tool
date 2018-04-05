@@ -122,7 +122,7 @@ public final class GUI extends javax.swing.JFrame {
         createHeightMapButton = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         addTogetherButton = new javax.swing.JButton();
-        addTogetherButton1 = new javax.swing.JButton();
+        multiplyTogetherButton = new javax.swing.JButton();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -747,8 +747,20 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         addTogetherButton.setText("Add together");
+        addTogetherButton.setActionCommand("+");
+        addTogetherButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTogetherButtonActionPerformed(evt);
+            }
+        });
 
-        addTogetherButton1.setText("Multiply together");
+        multiplyTogetherButton.setText("Multiply together");
+        multiplyTogetherButton.setActionCommand("*");
+        multiplyTogetherButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTogetherButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -764,7 +776,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(addTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(addTogetherButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(multiplyTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -782,7 +794,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(addTogetherButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addTogetherButton1))
+                        .addComponent(multiplyTogetherButton))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1738,7 +1750,7 @@ public final class GUI extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int[] indices = heightMapList.getSelectedIndices();
         for (int index: indices)
-            World.getWorld().deleteHeightMap(index);
+            World.getWorld().deleteHeightmap(index);
         refreshHeightmapEditor();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -1795,13 +1807,29 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_maskSliderStateChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        heightMapSeedField.setText(World.getWorld().rng().nextInt()+"");
+        heightMapSeedField.setText((World.getWorld().rng().nextInt()+"").replace("-", ""));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void createHeightMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createHeightMapButtonActionPerformed
-        World.getWorld().createHeightMap((String)heightMapAlgorithmChooser.getSelectedItem(), true);
+        if (heightMapSeedField.getText().length() == 0) return;
+        World.getWorld().createHeightmap((String)heightMapAlgorithmChooser.getSelectedItem(), 
+                Long.parseLong(heightMapSeedField.getText()), true);
         refreshHeightmapEditor();
     }//GEN-LAST:event_createHeightMapButtonActionPerformed
+
+    private void addTogetherButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTogetherButtonActionPerformed
+        int[] indices = heightMapList.getSelectedIndices();
+        if (indices.length < 2) return;
+        boolean add = evt.getActionCommand().equals("+");
+        float[][] root = World.getWorld().getHeightmap(indices[0]);
+        String name = World.getWorld().getHeightmapName(0).split("\\] \\[")[0]+"]";
+        for (int index = 1; index < indices.length; index++) {
+            name += (add ? " + " : " * ") + World.getWorld().getHeightmapName(index).split("\\] \\[")[0]+"]";
+            root = World.getWorld().combineHeightmaps(root, World.getWorld().getHeightmap(indices[index]), add);
+        }
+        World.getWorld().saveHeightmap(name, root);
+        refreshHeightmapEditor();
+    }//GEN-LAST:event_addTogetherButtonActionPerformed
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -1864,7 +1892,7 @@ public final class GUI extends javax.swing.JFrame {
     
     public void refreshHeightmapEditor() {
         DefaultListModel<String> m = new DefaultListModel<String>();
-        for (String s: World.getWorld().getSavedHeightMaps())
+        for (String s: World.getWorld().getSavedHeightmaps())
             m.addElement(s);
         heightMapList.setModel(m);
     }
@@ -1909,7 +1937,6 @@ public final class GUI extends javax.swing.JFrame {
     public static javax.swing.JPanel WATER_OPTIONS;
     private javax.swing.JButton addLayerButton;
     private javax.swing.JButton addTogetherButton;
-    private javax.swing.JButton addTogetherButton1;
     private javax.swing.JButton applyLayerChangesButton;
     private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
@@ -2006,6 +2033,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JSlider maskSlider;
     private javax.swing.JLabel masklbl;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton multiplyTogetherButton;
     private javax.swing.JDialog navigator;
     private javax.swing.JMenuItem newWorldButton;
     private javax.swing.JComboBox<String> noiseMapAlgoChooser;

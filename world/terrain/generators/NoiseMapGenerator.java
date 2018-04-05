@@ -25,7 +25,7 @@ public class NoiseMapGenerator extends Generator {
     @Override
     public void generate(World w, int layer) {
         
-        float[][] map = World.getWorld().createHeightMap(getParameter("algo"), true);
+        float[][] map = World.getWorld().createHeightmap(getParameter("algo"), getSeed(), true);
 
         // Create terrain
         for (int i = 0; i < w.columns(); i++) {

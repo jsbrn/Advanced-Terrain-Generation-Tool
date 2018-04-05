@@ -733,7 +733,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jButton1" max="32767" attributes="0"/>
                                   <Component id="addTogetherButton" max="32767" attributes="0"/>
-                                  <Component id="addTogetherButton1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="multiplyTogetherButton" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -757,7 +757,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="addTogetherButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="addTogetherButton1" min="-2" max="-2" attributes="0"/>
+                              <Component id="multiplyTogetherButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane3" min="-2" pref="187" max="-2" attributes="0"/>
                       </Group>
@@ -913,12 +913,20 @@
             <Component class="javax.swing.JButton" name="addTogetherButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Add together"/>
+                <Property name="actionCommand" type="java.lang.String" value="+"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addTogetherButtonActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="addTogetherButton1">
+            <Component class="javax.swing.JButton" name="multiplyTogetherButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Multiply together"/>
+                <Property name="actionCommand" type="java.lang.String" value="*"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addTogetherButtonActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
