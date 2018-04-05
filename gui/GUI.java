@@ -1836,7 +1836,7 @@ public final class GUI extends javax.swing.JFrame {
         float[][] root = World.getWorld().getHeightmap(indices[0]);
         String name = World.getWorld().getHeightmapName(0).split("\\] \\[")[0]+"]";
         for (int index = 1; index < indices.length; index++) {
-            name += (add ? " + " : " * ") + World.getWorld().getHeightmapName(index).split("\\] \\[")[0]+"]";
+            name += (add ? " + " : " x ") + World.getWorld().getHeightmapName(index).split("\\] \\[")[0]+"]";
             root = World.getWorld().combineHeightmaps(root, World.getWorld().getHeightmap(indices[index]), add);
         }
         World.getWorld().saveHeightmap(name, root);

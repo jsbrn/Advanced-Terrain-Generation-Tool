@@ -124,6 +124,7 @@ public class World {
                 sum[i][j] = addOperation ? map1[i][j] + map2[i][j] : map1[i][j] * map2[i][j];
             }
         }
+        normalizeHeightmap(sum);
         return sum;
     }
     
