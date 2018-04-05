@@ -1875,12 +1875,12 @@ public final class GUI extends javax.swing.JFrame {
         refreshHeightmapEditor();
     }//GEN-LAST:event_addTogetherButtonActionPerformed
 
-<<<<<<< HEAD
+
     private void riverThicknessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_riverThicknessSliderStateChanged
         riverThicknessLbl.setText(Integer.toString(riverThicknessSlider.getValue()));
         Generator.getGenerator("WaterGenerator").setParameter("riverThickness", Integer.toString(riverThicknessSlider.getValue()));
     }//GEN-LAST:event_riverThicknessSliderStateChanged
-=======
+
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JFileChooser saver = new JFileChooser();
         saver.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -1907,7 +1907,7 @@ public final class GUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton5ActionPerformed
->>>>>>> origin/gui
+
 
     /**
      * Show (and make modal) a custom dialog popup.

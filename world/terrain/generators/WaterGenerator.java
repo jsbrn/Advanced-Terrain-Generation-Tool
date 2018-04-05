@@ -214,7 +214,7 @@ public class WaterGenerator extends Generator {
                         if(j==0){
                             w.setTile(next[0], next[1], layer, true);
                         }else{
-                            for(int j2=0;j2<j;j2++){ //diamond pattern
+                            for(int j2=0;j2<j;j2++){ //diamond pattern??
                                 w.setTile(next[0]+j2, next[1], layer, true);
                                 w.setTile(next[0]-j2, next[1], layer, true);
                                 w.setTile(next[0], next[1]+j2, layer, true);
