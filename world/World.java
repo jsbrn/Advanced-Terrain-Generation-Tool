@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
 import misc.Assets;
 import misc.MiscMath;
 import world.terrain.Generator;
+import world.terrain.misc.DiamondSquare;
+import world.terrain.misc.Perlin;
 
 /**
  * Contains the terrain data, the layers, and all associated properties. There can
@@ -79,28 +81,91 @@ public class World {
         setSeed(seed);
     }
     
-    public float[][] getHeightMap(String name) {
+    public float[][] getHeightmap(String name) {
         return saved_heightmaps.get(name);
     }
     
-    public String[] getSavedHeightMaps() {
+    public String[] getSavedHeightmaps() {
         return saved_heightmaps.keySet().toArray(new String[]{});
     }
     
-    public void saveHeightMap(String name, float[][] map) {
-        saved_heightmaps.put(name, map);
+    public float[][] createHeightmap(String algorithmName, long seed, boolean save) {
+        boolean useperlin = algorithmName.equals("Perlin");
+        float[][] map = new float[columns()][rows()];
+        if (!useperlin) {
+            int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
+            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), seed);
+            map = ds.getMap();
+        } else {
+            Perlin perlin = new Perlin();
+            // Use PerlinNoise algorithm in other location
+            // 6 is a random value, I don't know what the best value would be
+            float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
+            map = perlin.generatePerlinNoise(whitenoise, 6);
+        }
+        if (save) saveHeightmap(algorithmName+" ["+seed+"]", map);
+        return map;
     }
     
-    public void deleteHeightMap(String name) {
+    public void saveHeightmap(String name, float[][] map) {
+        saved_heightmaps.put(name+" ["+columns()+", "+rows()+"]", map);
+    }
+    
+    public void deleteHeightmap(String name) {
         saved_heightmaps.remove(name);
     }
     
-    public void deleteHeightMap(int i) {
+    public float[][] combineHeightmaps(float[][] map1, float[][] map2, boolean addOperation) {
+        float[][] sum = new float[map1.length][map2.length];
+        if (map1.length == 0 || map2.length == 0) return sum;
+        if (map1.length != map2.length || map1[0].length != map2[0].length) return sum;
+        for (int i = 0; i < map1.length; i++) {
+            for (int j = 0; j < map1[i].length; j++) {
+                sum[i][j] = addOperation ? map1[i][j] + map2[i][j] : map1[i][j] * map2[i][j];
+            }
+        }
+        return sum;
+    }
+    
+    public boolean combineHeightmaps(String newName, float[][] map1, float[][] map2, boolean addOperation) {
+        float[][] result = combineHeightmaps(map1, map2, addOperation);
+        normalizeHeightmap(result);
+        saveHeightmap(newName, result);
+        return true;
+    }
+    
+    public void normalizeHeightmap(float[][] map) {
+        float highest = 0;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] > highest) highest = map[i][j];
+            }
+        }
+        if (highest <= 0) return;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                map[i][j] /= highest;
+            }
+        }
+    }
+    
+    public void deleteHeightmap(int i) {
+        if (getHeightmapName(i) == null) return;
+        saved_heightmaps.remove(getHeightmapName(i));
+    }
+    
+    public float[][] getHeightmap(int i) {
+        if (getHeightmapName(i) == null) return null;
+        return saved_heightmaps.get(getHeightmapName(i));
+    }
+    
+    public String getHeightmapName(int i) {
         int index = 0;
         for (String name: saved_heightmaps.keySet()) {
-            if (index == i) { saved_heightmaps.remove(name);  break; }
+            if (index == i) { return name; }
             index++;
         }
+        return null;
     }
     
     /**

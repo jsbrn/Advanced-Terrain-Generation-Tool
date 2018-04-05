@@ -122,7 +122,8 @@ public final class GUI extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         createHeightMapButton = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        addTogetherButton = new javax.swing.JButton();
+        multiplyTogetherButton = new javax.swing.JButton();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -658,15 +659,13 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         heightmaps.setTitle("Heightmap Editor");
-        heightmaps.setBounds(new java.awt.Rectangle(100, 100, 500, 400));
+        heightmaps.setBounds(new java.awt.Rectangle(100, 100, 530, 400));
         heightmaps.setIconImage(getIconImage());
         heightmaps.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 heightmapsFocusLost(evt);
             }
         });
-
-        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel25.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel25.setText("Stored Heightmaps");
@@ -689,13 +688,23 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel27.setText("Seed:");
 
-        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "DiamondSquare" }));
+        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square" }));
 
         jLabel26.setText("Algorithm:");
 
         createHeightMapButton.setText("Create heightmap");
+        createHeightMapButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createHeightMapButtonActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Random seed");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -713,9 +722,9 @@ public final class GUI extends javax.swing.JFrame {
                             .addComponent(jLabel26))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(heightMapAlgorithmChooser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(heightMapAlgorithmChooser, 0, 425, Short.MAX_VALUE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(heightMapSeedField, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(heightMapSeedField)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton4)))))
                 .addContainerGap())
@@ -737,7 +746,21 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton5.setText("Combine selected");
+        addTogetherButton.setText("Add together");
+        addTogetherButton.setActionCommand("+");
+        addTogetherButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTogetherButtonActionPerformed(evt);
+            }
+        });
+
+        multiplyTogetherButton.setText("Multiply together");
+        multiplyTogetherButton.setActionCommand("*");
+        multiplyTogetherButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addTogetherButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -752,7 +775,8 @@ public final class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(addTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(multiplyTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -768,7 +792,9 @@ public final class GUI extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5))
+                        .addComponent(addTogetherButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(multiplyTogetherButton))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1020,7 +1046,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addComponent(applyLayerChangesButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelLayerChangesButton))
@@ -1089,7 +1115,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(randomSeedButton))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                         .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -1717,11 +1743,15 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_heightmapsFocusLost
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        refreshHeightmapEditor();
         showDialog(heightmaps, true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int[] indices = heightMapList.getSelectedIndices();
+        for (int index: indices)
+            World.getWorld().deleteHeightmap(index);
+        refreshHeightmapEditor();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void maskSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maskSliderStateChanged
@@ -1775,6 +1805,31 @@ public final class GUI extends javax.swing.JFrame {
         lakeelvlbl.setText(Integer.toString(waterSlider1.getValue()));
         Generator.getGenerator("WaterGenerator").setParameter("elevation", Float.toString(waterSlider1.getValue()/(float)100.));
     }//GEN-LAST:event_waterSlider1StateChanged
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        heightMapSeedField.setText((World.getWorld().rng().nextInt()+"").replace("-", ""));
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void createHeightMapButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createHeightMapButtonActionPerformed
+        if (heightMapSeedField.getText().length() == 0) return;
+        World.getWorld().createHeightmap((String)heightMapAlgorithmChooser.getSelectedItem(), 
+                Long.parseLong(heightMapSeedField.getText()), true);
+        refreshHeightmapEditor();
+    }//GEN-LAST:event_createHeightMapButtonActionPerformed
+
+    private void addTogetherButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTogetherButtonActionPerformed
+        int[] indices = heightMapList.getSelectedIndices();
+        if (indices.length < 2) return;
+        boolean add = evt.getActionCommand().equals("+");
+        float[][] root = World.getWorld().getHeightmap(indices[0]);
+        String name = World.getWorld().getHeightmapName(0).split("\\] \\[")[0]+"]";
+        for (int index = 1; index < indices.length; index++) {
+            name += (add ? " + " : " * ") + World.getWorld().getHeightmapName(index).split("\\] \\[")[0]+"]";
+            root = World.getWorld().combineHeightmaps(root, World.getWorld().getHeightmap(indices[index]), add);
+        }
+        World.getWorld().saveHeightmap(name, root);
+        refreshHeightmapEditor();
+    }//GEN-LAST:event_addTogetherButtonActionPerformed
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -1835,6 +1890,13 @@ public final class GUI extends javax.swing.JFrame {
         //layerDownButton.setEnabled(layerList.getSelectedIndex() < m.getSize() - 1);
     }
     
+    public void refreshHeightmapEditor() {
+        DefaultListModel<String> m = new DefaultListModel<String>();
+        for (String s: World.getWorld().getSavedHeightmaps())
+            m.addElement(s);
+        heightMapList.setModel(m);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1874,6 +1936,7 @@ public final class GUI extends javax.swing.JFrame {
     public static javax.swing.JPanel SCATTER_OPTIONS;
     public static javax.swing.JPanel WATER_OPTIONS;
     private javax.swing.JButton addLayerButton;
+    private javax.swing.JButton addTogetherButton;
     private javax.swing.JButton applyLayerChangesButton;
     private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
@@ -1902,7 +1965,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1972,6 +2034,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JSlider maskSlider;
     private javax.swing.JLabel masklbl;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JButton multiplyTogetherButton;
     private javax.swing.JDialog navigator;
     private javax.swing.JMenuItem newWorldButton;
     private javax.swing.JComboBox<String> noiseMapAlgoChooser;
