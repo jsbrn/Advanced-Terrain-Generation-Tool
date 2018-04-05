@@ -78,13 +78,13 @@ public class WaterGenerator extends Generator {
         //TEMPORARY heightmap we will use for river generation along with buffered image
         float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), lakeoctaves);
         //Bufferedimage output
-        /*
+        
         BufferedImage bi = new BufferedImage(hmap.length,hmap[0].length, BufferedImage.TYPE_INT_RGB);
         for(int hi = 0; hi < hmap.length; hi++){
             for(int hj = 0; hj < hmap[0].length; hj++){
                 bi.setRGB(hi, hj, (new Color(hmap[hi][hj],hmap[hi][hj],hmap[hi][hj]).getRGB()));
             }
-        }*/
+        }
         
         
         
@@ -145,32 +145,42 @@ public class WaterGenerator extends Generator {
             next[0]+=rwidth/2;
             next[1]+=rheight/2;
             
+            riverloop:
             for(int i=0; i<rlength;i++){
+                
+                
                 //determine the next direction by adding the next few
                 //tiles of heightmap
-                float dsum[] = {0,0,0,0};
+                float dsum[] = {5,5,5,5};
                 
-                for(int j=0;j<riverchecklen;j++){
-                    try{
-                    dsum[0]+=hmap[next[0]][next[1]+j];
-                    dsum[1]+=hmap[next[0]+j][next[1]];
-                    dsum[2]+=hmap[next[0]][next[1]-j];
-                    dsum[3]+=hmap[next[0]-j][next[1]];
-                    }catch(java.lang.ArrayIndexOutOfBoundsException e){
-                        //just don't do anything
-                    }
+                try{
+                    dsum[0]=hmap[next[0]][next[1]+1];
+                    dsum[1]=hmap[next[0]+1][next[1]];
+                    dsum[2]=hmap[next[0]][next[1]-1];
+                    dsum[3]=hmap[next[0]-1][next[1]];
+                }catch(ArrayIndexOutOfBoundsException e){
+                    //just leave whatever was out of bounds at 5
                 }
-                
                 int direction = 0;
-                float lowest = dsum[0];
+                float lowest = (float)3.;
                 
-                //find the lowest elevation
-                for(int j=1;j<4;j++){
+                //find the lowest elevation direction that ALSO doesn't
+                //intersect with another water tile OR runs off the world
+                for(int j=0;j<4;j++){
                     if(dsum[j]<lowest){
+                        switch(j){ //check for water tile, if yes, then next loop
+                            case 0: if(w.getTile(next[0], next[1]+1, layer)!=-1 || next[1]+1>w.columns()-1)continue;
+                            case 1: if(w.getTile(next[0]+1, next[1], layer)!=-1 || next[0]+1>w.rows()-1)continue;
+                            case 2: if(w.getTile(next[0], next[1]-1, layer)!=-1 || next[1]-1<0)continue;
+                            case 3: if(w.getTile(next[0]-1, next[1], layer)!=-1 || next[0]-1<0)continue;
+                        }
                         lowest=dsum[j];
                         direction=j;
                     }
                 }
+                
+                
+                
                 
                 
                 switch(direction){
@@ -186,10 +196,12 @@ public class WaterGenerator extends Generator {
                     case 3://west
                         next[0]-=1;
                 }
+                
+                
                 try{
                     w.setTile(next[0], next[1], layer, true);
                 }catch(java.lang.ArrayIndexOutOfBoundsException e){
-                    System.out.println("boop");
+                    System.out.println("Out of world bounds");
                     break;
                 }
             }
@@ -197,7 +209,7 @@ public class WaterGenerator extends Generator {
                 
                 
         }
-        /*
+        
         //FOR DEBUGGING PURPOSES, OUTPUTS THE HEIGHTMAP AND WATER
         //go over the world and draw the water onto the image
         for(int i = 0; i < w.width()-1; i++){
@@ -214,7 +226,7 @@ public class WaterGenerator extends Generator {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }*/
+        }
     }
 }
 
