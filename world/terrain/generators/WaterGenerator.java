@@ -50,6 +50,10 @@ public class WaterGenerator extends Generator {
         //rlength: the length of the rivers to be generated
         int rlength = Integer.parseInt(getParameter("rlength"));
         
+        int lakeoctaves = Integer.parseInt(getParameter("lakeoctaves"));
+        
+        int riverchecklen = Integer.parseInt(getParameter("riverchecklen"));
+        
          /*Variables
          ==========*/
          
@@ -95,7 +99,7 @@ public class WaterGenerator extends Generator {
             //New: use perlin noise algorithm to make the lakes look more realistic
             
             
-            float[][] perlinmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(rwidth, rheight, getSeed()),1);
+            float[][] perlinmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(rwidth, rheight, getSeed()),lakeoctaves);
             //create a lake "mask", basically a rectangular gradient.
             float[][] lakemask = new float[rwidth][rheight];
              
@@ -138,7 +142,7 @@ public class WaterGenerator extends Generator {
                 //tiles of heightmap
                 float dsum[] = {0,0,0,0};
                 
-                for(int j=0;j<10;j++){
+                for(int j=0;j<riverchecklen;j++){
                     try{
                     dsum[0]+=hmap[next[0]][next[1]+j];
                     dsum[1]+=hmap[next[0]+j][next[1]];
@@ -174,7 +178,6 @@ public class WaterGenerator extends Generator {
                     case 3://west
                         next[0]-=1;
                 }
-                System.out.println("River tile x: " + next[0] + "y: " + next[1]);
                 try{
                     w.setTile(next[0], next[1], layer, true);
                 }catch(java.lang.ArrayIndexOutOfBoundsException e){

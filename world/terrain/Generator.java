@@ -22,7 +22,7 @@ public abstract class Generator {
      */
     private static final Object[][] generators = new Object[][]{
         {"Fill", new FillGenerator(), GUI.NO_OPTIONS},
-        {"WaterGenerator", new WaterGenerator(), GUI.NO_OPTIONS}, 
+        {"WaterGenerator", new WaterGenerator(), GUI.WATER_OPTIONS}, 
         {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
         {"Sine", new SineGenerator(), GUI.NO_OPTIONS},
