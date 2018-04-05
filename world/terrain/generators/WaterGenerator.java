@@ -24,11 +24,16 @@ public class WaterGenerator extends Generator {
     
     public WaterGenerator(){
         super();
-        this.setParameter("lakes", "3");
-        this.setParameter("max", "20");
-        this.setParameter("min", "10");
+        this.setParameter("maskcurve", "0.1");
+        this.setParameter("lakes", "1");
+        this.setParameter("max", "10");
+        this.setParameter("min", "1");
         this.setParameter("rlength", "100");
         this.setParameter("elevation", ".8");
+        this.setParameter("lakeoctaves", "1");
+        this.setParameter("rlength", "10");
+        this.setParameter("riverThickness", "1");
+        this.setParameter("riverchecklen", "1");
     }
     @Override
     /*
@@ -59,7 +64,9 @@ public class WaterGenerator extends Generator {
         
         //modifier for the lake mask
         float maskcurve = Float.parseFloat(getParameter("maskcurve"));
-        System.out.println(getParameter("maskcurve"));
+       
+        //river thickness
+        int riverThickness = Integer.parseInt(getParameter("riverThickness"));
         
          /*Variables
          ==========*/
@@ -76,7 +83,7 @@ public class WaterGenerator extends Generator {
         Perlin perlin = new Perlin();
         
         //TEMPORARY heightmap we will use for river generation along with buffered image
-        float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), lakeoctaves);
+        float[][] hmap = w.getHeightmap(0);
         //Bufferedimage output
         
         BufferedImage bi = new BufferedImage(hmap.length,hmap[0].length, BufferedImage.TYPE_INT_RGB);
@@ -150,29 +157,32 @@ public class WaterGenerator extends Generator {
                 
                 
                 //determine the next direction by adding the next few
-                //tiles of heightmap
-                float dsum[] = {5,5,5,5};
+                //tiles of heightmap, takes into account riverThickness
+                float dsum[] = {0,0,0,0};
                 
-                try{
-                    dsum[0]=hmap[next[0]][next[1]+1];
-                    dsum[1]=hmap[next[0]+1][next[1]];
-                    dsum[2]=hmap[next[0]][next[1]-1];
-                    dsum[3]=hmap[next[0]-1][next[1]];
-                }catch(ArrayIndexOutOfBoundsException e){
-                    //just leave whatever was out of bounds at 5
+                for(int j=1;j<=riverchecklen+riverThickness;j++){
+                    try{
+                        dsum[0]+=hmap[next[0]][next[1]+j];
+                        dsum[1]+=hmap[next[0]+j][next[1]];
+                        dsum[2]+=hmap[next[0]][next[1]-j];
+                        dsum[3]+=hmap[next[0]-j][next[1]];
+                    }catch(ArrayIndexOutOfBoundsException e){
+                        
+                    }
                 }
-                int direction = 0;
-                float lowest = (float)3.;
+                
+                int direction = 0; //default direction
+                float lowest = (float)100.; //arbitrarily large number
                 
                 //find the lowest elevation direction that ALSO doesn't
                 //intersect with another water tile OR runs off the world
                 for(int j=0;j<4;j++){
                     if(dsum[j]<lowest){
                         switch(j){ //check for water tile, if yes, then next loop
-                            case 0: if(w.getTile(next[0], next[1]+1, layer)!=-1 || next[1]+1>w.columns()-1)continue;
-                            case 1: if(w.getTile(next[0]+1, next[1], layer)!=-1 || next[0]+1>w.rows()-1)continue;
-                            case 2: if(w.getTile(next[0], next[1]-1, layer)!=-1 || next[1]-1<0)continue;
-                            case 3: if(w.getTile(next[0]-1, next[1], layer)!=-1 || next[0]-1<0)continue;
+                            case 0: if(w.getTile(next[0], next[1]+riverThickness, layer)!=-1 || next[1]+1>w.columns()-1)continue;
+                            case 1: if(w.getTile(next[0]+riverThickness, next[1], layer)!=-1 || next[0]+1>w.rows()-1)continue;
+                            case 2: if(w.getTile(next[0], next[1]-riverThickness, layer)!=-1 || next[1]-1<0)continue;
+                            case 3: if(w.getTile(next[0]-riverThickness, next[1], layer)!=-1 || next[0]-1<0)continue;
                         }
                         lowest=dsum[j];
                         direction=j;
@@ -197,12 +207,24 @@ public class WaterGenerator extends Generator {
                         next[0]-=1;
                 }
                 
+                //draw the tiles, now with added river thickness!
                 
-                try{
-                    w.setTile(next[0], next[1], layer, true);
-                }catch(java.lang.ArrayIndexOutOfBoundsException e){
-                    System.out.println("Out of world bounds");
-                    break;
+                for(int j=0;j<riverThickness;j++){
+                    try{
+                        if(j==0){
+                            w.setTile(next[0], next[1], layer, true);
+                        }else{
+                            for(int j2=0;j2<j;j2++){ //diamond pattern
+                                w.setTile(next[0]+j2, next[1], layer, true);
+                                w.setTile(next[0]-j2, next[1], layer, true);
+                                w.setTile(next[0], next[1]+j2, layer, true);
+                                w.setTile(next[0], next[1]-j2, layer, true);
+                            }
+                        }
+                        
+                    }catch(java.lang.ArrayIndexOutOfBoundsException e){
+                        System.out.println("Out of world bounds, continue generation");
+                    }
                 }
             }
                 
