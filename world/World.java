@@ -169,6 +169,35 @@ public class World {
     }
     
     /**
+     * Writes the noise map to a BufferedImage.
+     * @return The buffered image instance created.
+     */
+    public BufferedImage toBufferedImage(String mapName) {
+        float[][] map = getHeightmap(mapName);
+        BufferedImage output = new BufferedImage(map.length, map.length,BufferedImage.TYPE_INT_RGB);
+        float max = map[0][0];
+        float min = map[0][0];
+        for (int y = 0; y < output.getHeight(); y++) {
+            for (int x = 0; x < output.getWidth(); x++) {
+                if (map[x][y] > max) {
+                    max = map[x][y];
+                }
+                else if (map[x][y] < min)
+                {
+                    min = map[x][y];
+                }
+            }
+        }
+        for (int y = 0; y < output.getHeight(); y++) {
+            for (int x = 0; x < output.getWidth(); x++) {
+                float value = 255*map[x][y];
+                output.setRGB(x, y, new Color((int)value,(int)value,(int)value).getRGB());
+            }
+        }
+        return output;
+    }
+    
+    /**
      * Resize the world to the new specified grid dimensions. If shrinking, this method
      * will cut off any tiles that do not fit in the new dimensions (with the fixed origin being at
      * the top-left). If expanding, this method will fill the new space with empty cells.
@@ -672,7 +701,8 @@ public class World {
                             Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
                     //if tile ID is valid, draw. otherwise, indicate.
                     if (getTile(x, y, l) < getTileCount()) {
-                        if (getTile(x, y, l) > -1) g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
+                        if (getTile(x, y, l) > -1) 
+                            g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
                     } else {
                         found_null = true;
                         g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
