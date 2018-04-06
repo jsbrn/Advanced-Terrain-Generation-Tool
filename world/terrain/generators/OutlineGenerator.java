@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package world.terrain.misc;
+package world.terrain.generators;
 
 import java.util.ArrayList;
 import world.World;
@@ -13,9 +13,9 @@ import world.terrain.Generator;
  * Creates an outline of the specified layer, with selected thickness
  * @author Swaggert
  */
-public class TileOutliner extends Generator {
+public class OutlineGenerator extends Generator {
     
-    public TileOutliner() {
+    public OutlineGenerator() {
         super();
         this.setParameter("layerNumber", "0");
     }

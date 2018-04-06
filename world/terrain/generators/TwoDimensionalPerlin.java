@@ -6,7 +6,7 @@
 package world.terrain.generators;
 
 import java.util.Random;
-import world.terrain.misc.Perlin;
+import world.terrain.misc.PerlinNoise;
 import world.World;
 import world.terrain.Generator;
 /**
@@ -23,7 +23,7 @@ public class TwoDimensionalPerlin extends Generator {
     @Override
    public void generate(World w, int layer) {
        
-        Perlin perlin = new Perlin();
+        PerlinNoise perlin = new PerlinNoise();
         // Use PerlinNoise algorithm in other location
         // 6 is a random value, I don't know what the best value would be
         float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows(), w.getSeed());

@@ -160,7 +160,6 @@ public final class GUI extends javax.swing.JFrame {
         seedField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         randomSeedButton = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
         generatorBottomPanel = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -1102,7 +1101,7 @@ public final class GUI extends javax.swing.JFrame {
         );
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Generate");
+        jLabel6.setText("Generate terrain");
 
         generatorChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<no generators found>" }));
         generatorChooser.addItemListener(new java.awt.event.ItemListener() {
@@ -1145,8 +1144,6 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "terrain", "elevation" }));
-
         javax.swing.GroupLayout generatorTitlePanelLayout = new javax.swing.GroupLayout(generatorTitlePanel);
         generatorTitlePanel.setLayout(generatorTitlePanelLayout);
         generatorTitlePanelLayout.setHorizontalGroup(
@@ -1166,8 +1163,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         generatorTitlePanelLayout.setVerticalGroup(
@@ -1176,9 +1172,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
-                        .addGroup(generatorTitlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2077,7 +2071,6 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

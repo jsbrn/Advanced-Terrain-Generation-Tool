@@ -25,8 +25,9 @@ public abstract class Generator {
         {"WaterGenerator", new WaterGenerator(), GUI.WATER_OPTIONS}, 
         {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
-        {"Sine", new SineGenerator(), GUI.NO_OPTIONS},
-        {"2dPerlin", new TwoDimensionalPerlin(), GUI.NO_OPTIONS},
+        {"2DPerlin", new TwoDimensionalPerlin(), GUI.NO_OPTIONS},
+        {"SidescrollerLakes", new TwoDimensionalLakeGenerator(), GUI.NO_OPTIONS},
+        {"Outline", new OutlineGenerator(), GUI.NO_OPTIONS}
     };
     
     public Generator() {

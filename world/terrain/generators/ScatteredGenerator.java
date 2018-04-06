@@ -4,7 +4,7 @@ import misc.MiscMath;
 import world.World;
 import world.terrain.Generator;
 import world.terrain.misc.DiamondSquare;
-import world.terrain.misc.Perlin;
+import world.terrain.misc.PerlinNoise;
 
 /**
  * Creates a scattered plot of tiles using the DiamondSquare algorithm.
@@ -27,7 +27,7 @@ public class ScatteredGenerator extends Generator {
         float min = Float.parseFloat(getParameter("min"));
         float max = Float.parseFloat(getParameter("max"));
        
-        Perlin perlin = new Perlin();
+        PerlinNoise perlin = new PerlinNoise();
         // Use PerlinNoise algorithm in other location
         // 6 is a random value, I don't know what the best value would be
         float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed());
