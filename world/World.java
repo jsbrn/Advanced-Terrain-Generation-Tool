@@ -215,6 +215,8 @@ public class World {
         return elevationMap[x][y];
     }
     
+    public float[][] getElevationMap() { return elevationMap; }
+    
     /**
      * Writes the noise map to a BufferedImage.
      * @return The buffered image instance created.
@@ -782,7 +784,7 @@ public class World {
                     if (getTile(x, y, l) < getTileCount()) {
                         if (getTile(x, y, l) > -1){ 
                             //draw the tiles using the heightmap to determine the shade
-                            g.drawImage(textures.get(getTile(x,y,l))[showHeightmap ? Math.abs((int)Math.floor(this.getHeightmap(0)[x][y]*100)-1) : 99], osc[0], osc[1], null);
+                            g.drawImage(textures.get(getTile(x,y,l))[showHeightmap ? Math.abs((int)Math.floor(getElevation(x, y)*100)-1) : 99], osc[0], osc[1], null);
                            // there is currently no heightmap selection and it defaults to the heightmap at the index 0
                             
                         }

@@ -26,7 +26,7 @@ public class NoiseMapGenerator extends Generator {
     public void generate(World w, int layer) {
         
         float[][] map = World.getWorld().getHeightmap(getParameter("heightmap"));
-
+        if (map == null) { System.err.println("No map by name '"+getParameter("heightmap")+"'"); return; }
         // Create terrain
         for (int i = 0; i < w.columns(); i++) {
             for (int j = 0; j < w.rows(); j++) {
