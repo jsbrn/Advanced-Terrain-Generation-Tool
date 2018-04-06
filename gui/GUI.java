@@ -93,6 +93,10 @@ public final class GUI extends javax.swing.JFrame {
         jLabel37 = new javax.swing.JLabel();
         maskSlider = new javax.swing.JSlider();
         masklbl = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
+        jLabel38 = new javax.swing.JLabel();
+        riverThicknessSlider = new javax.swing.JSlider();
+        riverThicknessLbl = new javax.swing.JLabel();
         NO_OPTIONS = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         SCATTER_OPTIONS = new javax.swing.JPanel();
@@ -188,6 +192,7 @@ public final class GUI extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         drawElevationMapCheckBox = new javax.swing.JCheckBoxMenuItem();
+        showHeightmapCheck = new javax.swing.JCheckBoxMenuItem();
 
         navigator.setTitle("Navigator");
         navigator.setAlwaysOnTop(true);
@@ -321,16 +326,18 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel29.setText("Lake Mask Noise Elevation");
 
+        waterSlider1.setMinimum(1);
         waterSlider1.setPaintLabels(true);
-        waterSlider1.setValue(0);
+        waterSlider1.setValue(1);
         waterSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 waterSlider1StateChanged(evt);
             }
         });
 
-        lakeelvlbl.setText("100%");
+        lakeelvlbl.setText("1");
 
+        lakestxt.setText("1");
         lakestxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 lakestxtKeyReleased(evt);
@@ -342,6 +349,7 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel32.setText("Lakes");
 
+        riverlen.setText("10");
         riverlen.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 riverlenKeyReleased(evt);
@@ -353,20 +361,22 @@ public final class GUI extends javax.swing.JFrame {
         jLabel35.setText("Lake Noise Octaves");
 
         waterSlider2.setMaximum(10);
+        waterSlider2.setMinimum(1);
         waterSlider2.setPaintLabels(true);
-        waterSlider2.setValue(0);
+        waterSlider2.setValue(1);
         waterSlider2.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 waterSlider2StateChanged(evt);
             }
         });
 
-        lakenoiselbl.setText("10");
+        lakenoiselbl.setText("1");
 
         jLabel30.setText("Lake Min Dimension");
 
         jLabel31.setText("Lake Max Dimension");
 
+        lakemin.setText("1");
         lakemin.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 lakeminKeyReleased(evt);
@@ -376,6 +386,7 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        lakemax.setText("10");
         lakemax.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 lakemaxKeyReleased(evt);
@@ -387,27 +398,43 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel36.setText("River Elevation Check Distance");
 
-        riverSlider.setMaximum(25);
+        riverSlider.setMaximum(50);
+        riverSlider.setMinimum(1);
         riverSlider.setPaintLabels(true);
-        riverSlider.setValue(0);
+        riverSlider.setValue(2);
         riverSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 riverSliderStateChanged(evt);
             }
         });
 
-        riverSliderlbl.setText("100%");
+        riverSliderlbl.setText("1");
 
         jLabel37.setText("Lake Mask Curve");
 
-        maskSlider.setValue(0);
+        maskSlider.setMinimum(1);
+        maskSlider.setValue(1);
         maskSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 maskSliderStateChanged(evt);
             }
         });
 
-        masklbl.setText("1");
+        masklbl.setText("0.1");
+
+        jLabel38.setText("River Thickness");
+
+        riverThicknessSlider.setMaximum(10);
+        riverThicknessSlider.setMinimum(1);
+        riverThicknessSlider.setPaintLabels(true);
+        riverThicknessSlider.setValue(1);
+        riverThicknessSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                riverThicknessSliderStateChanged(evt);
+            }
+        });
+
+        riverThicknessLbl.setText("1");
 
         javax.swing.GroupLayout WATER_OPTIONSLayout = new javax.swing.GroupLayout(WATER_OPTIONS);
         WATER_OPTIONS.setLayout(WATER_OPTIONSLayout);
@@ -415,63 +442,71 @@ public final class GUI extends javax.swing.JFrame {
             WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel28)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
                         .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel37)
-                            .addComponent(jLabel29)
-                            .addComponent(jLabel36)
-                            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                                .addComponent(waterSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lakeelvlbl))
                             .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
                                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(waterSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel35)
-                                        .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                                            .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                                                    .addGap(83, 83, 83)
-                                                    .addComponent(jLabel34)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(riverlen, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                                                    .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel30)
-                                                        .addComponent(jLabel31))
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(lakemin, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-                                                        .addComponent(lakemax))
-                                                    .addGap(26, 26, 26)
-                                                    .addComponent(jLabel32)))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(lakestxt, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lakenoiselbl)))
-                        .addContainerGap(46, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, WATER_OPTIONSLayout.createSequentialGroup()
+                                    .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(waterSlider1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                                    .addComponent(waterSlider2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lakeelvlbl)
+                                    .addComponent(lakenoiselbl)))
+                            .addComponent(jLabel29)
+                            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel30)
+                                    .addComponent(jLabel31))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lakemin)
+                                    .addComponent(lakemax, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel32)
+                                    .addComponent(jLabel34))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lakestxt)
+                                    .addComponent(riverlen, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel38)
+                            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                                .addComponent(riverThicknessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(riverThicknessLbl)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
                         .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(riverSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(maskSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(masklbl)
-                            .addComponent(riverSliderlbl))
-                        .addGap(43, 43, 43))))
+                            .addComponent(jLabel28)
+                            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                                .addComponent(jLabel36)
+                                .addGap(36, 36, 36)
+                                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel37)
+                            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                                .addComponent(maskSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(masklbl))
+                            .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                                .addComponent(riverSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(riverSliderlbl)))
+                        .addContainerGap(31, Short.MAX_VALUE))))
         );
         WATER_OPTIONSLayout.setVerticalGroup(
             WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel28)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(maskSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(masklbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel29)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -483,38 +518,36 @@ public final class GUI extends javax.swing.JFrame {
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(waterSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lakenoiselbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel30)
-                            .addComponent(lakemin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel31)
-                            .addComponent(lakemax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lakestxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel32))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel30)
+                    .addComponent(lakemin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lakestxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(lakemax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(riverlen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel34))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel36)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(riverSliderlbl, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(riverSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel37)
+                .addComponent(jLabel38)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(maskSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(masklbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(riverThicknessLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(riverThicknessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(WATER_OPTIONSLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel36)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(WATER_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(riverSliderlbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(riverSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30))
         );
 
         NO_OPTIONS.setAutoscrolls(true);
@@ -1258,7 +1291,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                     .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(generatorTitlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addComponent(editLayerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1275,7 +1308,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(generatorBottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                    .addComponent(layerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                     .addComponent(editLayerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1403,6 +1436,20 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
         worldMenu.add(jMenuItem5);
+
+        showHeightmapCheck.setSelected(true);
+        showHeightmapCheck.setText("Show Heightmap Shading");
+        showHeightmapCheck.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                showHeightmapCheckStateChanged(evt);
+            }
+        });
+        showHeightmapCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showHeightmapCheckActionPerformed(evt);
+            }
+        });
+        worldMenu.add(showHeightmapCheck);
 
         menuBar.add(worldMenu);
 
@@ -1807,17 +1854,10 @@ public final class GUI extends javax.swing.JFrame {
         refreshHeightmapEditor();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void waterSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_waterSlider1StateChanged
-        // TODO add your handling code here:
-        lakeelvlbl.setText(Integer.toString(waterSlider1.getValue()));
-        Generator.getGenerator("WaterGenerator").setParameter("elevation", Float.toString(waterSlider1.getValue()/(float)100.));
-    }//GEN-LAST:event_waterSlider1StateChanged
-
-    private void waterSlider2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_waterSlider2StateChanged
-        // TODO add your handling code here:
-        lakenoiselbl.setText(Integer.toString(waterSlider2.getValue()));
-        Generator.getGenerator("WaterGenerator").setParameter("lakeoctaves", Integer.toString(waterSlider2.getValue()));
-    }//GEN-LAST:event_waterSlider2StateChanged
+    private void maskSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maskSliderStateChanged
+        masklbl.setText(Float.toString((float)(maskSlider.getValue()/10.)));
+        Generator.getGenerator("WaterGenerator").setParameter("maskcurve", Float.toString((float)(maskSlider.getValue()/10.)));
+    }//GEN-LAST:event_maskSliderStateChanged
 
     private void riverSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_riverSliderStateChanged
         // TODO add your handling code here:
@@ -1825,39 +1865,46 @@ public final class GUI extends javax.swing.JFrame {
         Generator.getGenerator("WaterGenerator").setParameter("riverchecklen", Integer.toString(riverSlider.getValue()));
     }//GEN-LAST:event_riverSliderStateChanged
 
-    private void lakeminKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakeminKeyTyped
-        
-    }//GEN-LAST:event_lakeminKeyTyped
-
     private void lakemaxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakemaxKeyTyped
-        
+
     }//GEN-LAST:event_lakemaxKeyTyped
 
-    private void lakestxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakestxtKeyTyped
-        
-    }//GEN-LAST:event_lakestxtKeyTyped
+    private void lakemaxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakemaxKeyReleased
+        Generator.getGenerator("WaterGenerator").setParameter("max", lakemax.getText());
+    }//GEN-LAST:event_lakemaxKeyReleased
 
-    private void riverlenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_riverlenKeyReleased
-        Generator.getGenerator("WaterGenerator").setParameter("rlength", riverlen.getText());
-    }//GEN-LAST:event_riverlenKeyReleased
+    private void lakeminKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakeminKeyTyped
+
+    }//GEN-LAST:event_lakeminKeyTyped
 
     private void lakeminKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakeminKeyReleased
         // TODO add your handling code here:
         Generator.getGenerator("WaterGenerator").setParameter("min", lakemin.getText());
     }//GEN-LAST:event_lakeminKeyReleased
 
-    private void lakemaxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakemaxKeyReleased
-        Generator.getGenerator("WaterGenerator").setParameter("max", lakemax.getText());
-    }//GEN-LAST:event_lakemaxKeyReleased
+    private void waterSlider2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_waterSlider2StateChanged
+        // TODO add your handling code here:
+        lakenoiselbl.setText(Integer.toString(waterSlider2.getValue()));
+        Generator.getGenerator("WaterGenerator").setParameter("lakeoctaves", Integer.toString(waterSlider2.getValue()));
+    }//GEN-LAST:event_waterSlider2StateChanged
+
+    private void riverlenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_riverlenKeyReleased
+        Generator.getGenerator("WaterGenerator").setParameter("rlength", riverlen.getText());
+    }//GEN-LAST:event_riverlenKeyReleased
+
+    private void lakestxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakestxtKeyTyped
+
+    }//GEN-LAST:event_lakestxtKeyTyped
 
     private void lakestxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lakestxtKeyReleased
         Generator.getGenerator("WaterGenerator").setParameter("lakes", lakestxt.getText());
     }//GEN-LAST:event_lakestxtKeyReleased
 
-    private void maskSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_maskSliderStateChanged
-        masklbl.setText(Float.toString((float)(maskSlider.getValue()/10.)));
-        Generator.getGenerator("WaterGenerator").setParameter("maskcurve", Float.toString((float)(maskSlider.getValue()/10.)));
-    }//GEN-LAST:event_maskSliderStateChanged
+    private void waterSlider1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_waterSlider1StateChanged
+        // TODO add your handling code here:
+        lakeelvlbl.setText(Integer.toString(waterSlider1.getValue()));
+        Generator.getGenerator("WaterGenerator").setParameter("elevation", Float.toString(waterSlider1.getValue()/(float)100.));
+    }//GEN-LAST:event_waterSlider1StateChanged
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         heightMapSeedField.setText((World.getWorld().rng().nextInt()+"").replace("-", ""));
@@ -1883,6 +1930,12 @@ public final class GUI extends javax.swing.JFrame {
         World.getWorld().saveHeightmap(name, root);
         refreshHeightmapEditor();
     }//GEN-LAST:event_addTogetherButtonActionPerformed
+
+
+    private void riverThicknessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_riverThicknessSliderStateChanged
+        riverThicknessLbl.setText(Integer.toString(riverThicknessSlider.getValue()));
+        Generator.getGenerator("WaterGenerator").setParameter("riverThickness", Integer.toString(riverThicknessSlider.getValue()));
+    }//GEN-LAST:event_riverThicknessSliderStateChanged
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JFileChooser saver = new JFileChooser();
@@ -1933,6 +1986,21 @@ public final class GUI extends javax.swing.JFrame {
             md.addElement(s);
         noiseMapAlgoChooser.setModel(md);
     }//GEN-LAST:event_NOISEMAP_OPTIONSAncestorAdded
+
+    private void showHeightmapCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showHeightmapCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_showHeightmapCheckActionPerformed
+
+    private void showHeightmapCheckStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_showHeightmapCheckStateChanged
+        if(showHeightmapCheck.isSelected()){
+            World.getWorld().heightmapShow();
+            
+        }else{
+            World.getWorld().heightmapHide();
+        }
+        canvas.repaint();
+    }//GEN-LAST:event_showHeightmapCheckStateChanged
+
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -2055,6 +2123,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitButton;
     private javax.swing.JMenuItem exportTerrainButton;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JScrollPane genOptionsScrollPane;
     private javax.swing.JPanel generatorBodyPanel;
     private javax.swing.JPanel generatorBottomPanel;
@@ -2101,6 +2170,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2152,12 +2222,15 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> restrictionModeChooser;
     private javax.swing.JSlider riverSlider;
     private javax.swing.JLabel riverSliderlbl;
+    private javax.swing.JLabel riverThicknessLbl;
+    private javax.swing.JSlider riverThicknessSlider;
     private javax.swing.JTextField riverlen;
     private javax.swing.JSlider scatterAmountSlider;
     private javax.swing.JSlider scatterMaxSlider;
     private javax.swing.JSlider scatterMinSlider;
     private javax.swing.JTextField seedField;
     private javax.swing.JMenuItem setSeedButton;
+    private javax.swing.JCheckBoxMenuItem showHeightmapCheck;
     private javax.swing.JMenuItem showNavigatorButton;
     private javax.swing.JList<String> tileRestrictionList;
     private javax.swing.JSlider waterSlider1;

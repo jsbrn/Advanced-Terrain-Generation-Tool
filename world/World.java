@@ -4,8 +4,10 @@ import gui.Canvas;
 import gui.GUI;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -43,13 +45,20 @@ public class World {
     private int[] tile_dims, dims;
     private BufferedImage spritesheet;
     private String spritesheet_uri;
-    private ArrayList<Image> textures;
+    private ArrayList<Image[]> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
     private HashMap<String, float[][]> saved_heightmaps;
     private float[][] elevationMap;
     
     private Random rng;
     private long seed;
+    
+    private BufferedImage hmapTile;
+    private RescaleOp op;
+    private Graphics2D bGr;
+    
+    private Boolean showHeightmap;
+    
     
     /**
      * Creates a new world as a static instance. Replaces the existing world.
@@ -63,6 +72,7 @@ public class World {
      */
     public static World getWorld() { return world; }
     
+    
     private World(int w, int h) {
         this.elevationMap = new float[w][h];
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
@@ -74,10 +84,11 @@ public class World {
         setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
         clearTiles();
-        this.textures = new ArrayList<Image>();
+        this.textures = new ArrayList<Image[]>();
         this.setSpritesheet("resources/samples/terrain/earth.png");
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
         this.saved_heightmaps = new HashMap<String, float[][]>();
+        this.showHeightmap = false;
     }
     
     private World(int w, int h, long seed) {
@@ -501,19 +512,44 @@ public class World {
      */
     public void setSpritesheet(String uri) {
         boolean internal = uri.indexOf("resources/") == 0;
-        textures = new ArrayList<Image>();
+        textures = new ArrayList<Image[]>();
+        
+        Image shadesTemp[] = new Image[100];
+        
         BufferedImage img = null;
         try {
             img = internal 
                     ? ImageIO.read(getClass().getResourceAsStream("/"+uri))
                     : ImageIO.read(new File(uri));
             spritesheet = img;
-            for (int i = 0; i < img.getWidth() / tile_dims[0]; i++) //split the spritesheet into preloaded images
-                textures.add(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]));
+            for (int i = 0; i < img.getWidth() / tile_dims[0]; i++){
+                //split the spritesheet into preloaded images
+                //create levels of shading
+                for(int j = 0; j < 100; j++){
+                    
+                    //new buffered image based on the tile size
+                    hmapTile = new BufferedImage(tile_dims[0],tile_dims[1],BufferedImage.TYPE_INT_RGB);
+                    
+                    //draw the tile from the source onto the bufferedimage
+                    bGr = hmapTile.createGraphics();
+                    bGr.drawImage(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]), 0, 0, null);
+                    bGr.dispose();
+
+                    //assign the brightness value out of 100
+                    op = new RescaleOp(j/100f,0,null);
+
+                    hmapTile = op.filter(hmapTile, null);
+
+                    shadesTemp[j] = hmapTile;
+                }
+                //clone the array of shades into the textures
+                textures.add(shadesTemp.clone());
+            }
             spritesheet_uri = uri; //keep track of the uri for saving/loading
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
     
     /**
@@ -744,8 +780,12 @@ public class World {
                             Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
                     //if tile ID is valid, draw. otherwise, indicate.
                     if (getTile(x, y, l) < getTileCount()) {
-                        if (getTile(x, y, l) > -1) 
-                            g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
+                        if (getTile(x, y, l) > -1){ 
+                            //draw the tiles using the heightmap to determine the shade
+                            g.drawImage(textures.get(getTile(x,y,l))[showHeightmap ? Math.abs((int)Math.floor(this.getHeightmap(0)[x][y]*100)-1) : 99], osc[0], osc[1], null);
+                           // there is currently no heightmap selection and it defaults to the heightmap at the index 0
+                            
+                        }
                     } else {
                         found_null = true;
                         g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
@@ -777,6 +817,16 @@ public class World {
             }
         }
         if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 40);
+    }
+    
+    public void heightmapShow(){
+        showHeightmap=true;
+        System.out.println("show");
+    }
+    
+    public void heightmapHide(){
+        showHeightmap=false;
+        System.out.println("HIDE");
     }
     
 }
