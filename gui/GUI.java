@@ -189,6 +189,7 @@ public final class GUI extends javax.swing.JFrame {
         customSpritesheetButton = new javax.swing.JMenuItem();
         setSeedButton = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        showHeightmapCheck = new javax.swing.JCheckBoxMenuItem();
 
         navigator.setTitle("Navigator");
         navigator.setAlwaysOnTop(true);
@@ -1407,6 +1408,20 @@ public final class GUI extends javax.swing.JFrame {
         });
         worldMenu.add(jMenuItem5);
 
+        showHeightmapCheck.setSelected(true);
+        showHeightmapCheck.setText("Show Heightmap Shading");
+        showHeightmapCheck.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                showHeightmapCheckStateChanged(evt);
+            }
+        });
+        showHeightmapCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showHeightmapCheckActionPerformed(evt);
+            }
+        });
+        worldMenu.add(showHeightmapCheck);
+
         menuBar.add(worldMenu);
 
         setJMenuBar(menuBar);
@@ -1908,6 +1923,20 @@ public final class GUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void showHeightmapCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showHeightmapCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_showHeightmapCheckActionPerformed
+
+    private void showHeightmapCheckStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_showHeightmapCheckStateChanged
+        if(showHeightmapCheck.isSelected()){
+            World.getWorld().heightmapShow();
+            
+        }else{
+            World.getWorld().heightmapHide();
+        }
+        canvas.repaint();
+    }//GEN-LAST:event_showHeightmapCheckStateChanged
+
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -2134,6 +2163,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JSlider scatterMinSlider;
     private javax.swing.JTextField seedField;
     private javax.swing.JMenuItem setSeedButton;
+    private javax.swing.JCheckBoxMenuItem showHeightmapCheck;
     private javax.swing.JMenuItem showNavigatorButton;
     private javax.swing.JList<String> tileRestrictionList;
     private javax.swing.JSlider waterSlider1;

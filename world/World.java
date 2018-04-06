@@ -54,6 +54,9 @@ public class World {
     private RescaleOp op;
     private Graphics2D bGr;
     
+    private Boolean showHeightmap;
+    
+    
     /**
      * Creates a new world as a static instance. Replaces the existing world.
      * @param w The width of the world cell grid.
@@ -65,6 +68,7 @@ public class World {
      * @return The World instance being edited.
      */
     public static World getWorld() { return world; }
+    
     
     private World(int w, int h) {
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
@@ -80,6 +84,7 @@ public class World {
         this.setSpritesheet("resources/samples/terrain/earth.png");
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
         this.saved_heightmaps = new HashMap<String, float[][]>();
+        this.showHeightmap = false;
     }
     
     private World(int w, int h, long seed) {
@@ -734,8 +739,7 @@ public class World {
                     if (getTile(x, y, l) < getTileCount()) {
                         if (getTile(x, y, l) > -1){ 
                             //draw the tiles using the heightmap to determine the shade
-                            g.drawImage(textures.get(getTile(x,y,l))[(int)Math.floor(this.getHeightmap(0)[x][y]*100)], osc[0], osc[1], null);
-                           // add a ternary operator here to turn shading off or on, false just calls image 99-----/
+                            g.drawImage(textures.get(getTile(x,y,l))[showHeightmap ? Math.abs((int)Math.floor(this.getHeightmap(0)[x][y]*100)-1) : 99], osc[0], osc[1], null);
                            // there is currently no heightmap selection and it defaults to the heightmap at the index 0
                             
                         }
@@ -761,6 +765,16 @@ public class World {
             }
         }
         if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 40);
+    }
+    
+    public void heightmapShow(){
+        showHeightmap=true;
+        System.out.println("show");
+    }
+    
+    public void heightmapHide(){
+        showHeightmap=false;
+        System.out.println("HIDE");
     }
     
 }
