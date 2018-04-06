@@ -4,8 +4,10 @@ import gui.Canvas;
 import gui.GUI;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -701,8 +703,28 @@ public class World {
                             Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
                     //if tile ID is valid, draw. otherwise, indicate.
                     if (getTile(x, y, l) < getTileCount()) {
-                        if (getTile(x, y, l) > -1) 
-                            g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
+                        if (getTile(x, y, l) > -1){ 
+                            //CODE FOR SHADING STARTS HERE
+                            //=========================================================
+                            BufferedImage hmapTile = new BufferedImage(textures.get(getTile(x, y, l)).getWidth(null),
+                                                                        textures.get(getTile(x, y, l)).getHeight(null),
+                                                                         BufferedImage.TYPE_INT_RGB);
+                            
+                            Graphics2D bGr = hmapTile.createGraphics();
+                            bGr.drawImage(textures.get(getTile(x, y, l)), 0, 0, null);
+                            bGr.dispose();
+                            
+                            RescaleOp op = new RescaleOp((float)Math.pow(this.getHeightmap(0)[x][y]+.5f, 2f)-.5f,0,null);
+                            
+                            hmapTile = op.filter(hmapTile, null);
+                            
+                            //CODE FOR SHADING ENDS HERE
+                            //=================================================================
+                            
+                            g.drawImage(hmapTile, osc[0], osc[1], null);
+                            
+                            
+                        }
                     } else {
                         found_null = true;
                         g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
