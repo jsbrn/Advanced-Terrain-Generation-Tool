@@ -6,6 +6,7 @@
 package world.terrain.generators;
 
 import gui.Canvas;
+import java.util.LinkedList;
 import world.World;
 import world.terrain.Generator;
 
@@ -20,45 +21,63 @@ public class TwoDimensionalLakeGenerator extends Generator {
     }
     
     
-    /**
-     * Draws a lake below passed in x, y coordinate contained by the layer below. 
-     * Does this through recursive calls.
-     * @param w Current generator world.
-     * @param layer Current layer being generated.
-     * @param x Current x-coordinate on map.
-     * @param y Current y-coordinate on map.
-     */
-    public void recursiveDraw(World w, int layer, int x, int y) {
-        
-        // Draw tile at current position
-        w.setTile(x, y, layer, true);
-        
-        
-        // Recursive calls, function call stored on the memory stack
-        // until function returns to this function call
-        // Try to draw tile to the right
-        if (x+1 < w.columns())
-            if (w.getTile(x+1, y) == -1)
-                recursiveDraw(w, layer, x+1, y);
-        
-        // Try to draw tile to the bottom
-        if (y+1 < w.rows())
-            if (w.getTile(x, y+1) == -1)
-                recursiveDraw(w, layer, x, y+1);
-        
-        // Try to draw tile to the left
-        if (x-1 >= 0)
-            if (w.getTile(x-1, y) == -1)
-                recursiveDraw(w, layer, x-1, y);
-        
-    }
-    
     @Override
     public void generate(World w, int layer) {
+        
+        // Data structures
+        LinkedList<Integer> tilePositionX = new LinkedList();
+        LinkedList<Integer> tilePositionY = new LinkedList();
         
         int sLakeX = Canvas.getCamera()[0];
         int sLakeY = Canvas.getCamera()[1];
         
-        recursiveDraw(w, layer, sLakeX, sLakeY);
+        tilePositionX.add(sLakeX/16);
+        tilePositionY.add(sLakeY/16);
+        
+        System.out.println(tilePositionX.getLast());
+        System.out.println(tilePositionY.getLast());
+        
+        while (!tilePositionX.isEmpty() && !tilePositionY.isEmpty()) {
+            
+            int x = tilePositionX.getLast();
+            int y = tilePositionY.getLast();
+            
+            System.out.println(tilePositionX.getLast());
+            System.out.println(tilePositionY.getLast());
+            
+            // Draw tile at current position
+            w.setTile(x, y, layer, true);
+        
+            // Recursive calls, function call stored on the memory stack
+            // until function returns to this function call
+            // Try to draw tile to the right
+            if (x+1 < w.columns())
+                if (w.getTile(x+1, y) == -1) {
+                    tilePositionX.addLast(x+1);
+                    tilePositionY.addLast(y);
+                    continue;
+                }
+                
+        
+            // Try to draw tile to the bottom
+            if (y+1 < w.rows())
+                if (w.getTile(x, y+1) == -1) {
+                    tilePositionX.addLast(x);
+                    tilePositionY.addLast(y+1);
+                    continue;
+                }
+        
+            // Try to draw tile to the left
+            if (x-1 >= 0)
+                if (w.getTile(x-1, y) == -1) {
+                    tilePositionX.addLast(x-1);
+                    tilePositionY.addLast(y);
+                    continue;
+                }
+        
+            tilePositionX.removeLast();
+            tilePositionY.removeLast();
+            
+        }
     }
 }
