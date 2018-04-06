@@ -27,7 +27,8 @@ public abstract class Generator {
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
         {"2DPerlin", new TwoDimensionalPerlin(), GUI.NO_OPTIONS},
         {"SidescrollerLakes", new TwoDimensionalLakeGenerator(), GUI.NO_OPTIONS},
-        {"Outline", new OutlineGenerator(), GUI.NO_OPTIONS}
+        {"Outline", new OutlineGenerator(), GUI.NO_OPTIONS},
+        {"Cave", new CaveGenerator(), GUI.NO_OPTIONS}
     };
     
     public Generator() {
