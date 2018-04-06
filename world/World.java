@@ -152,6 +152,14 @@ public class World {
         }
     }
     
+    public void smoothHeightmap(int levels, float[][] map) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                map[i][j] = (float)Math.floor(map[i][j] * levels) / levels;
+            }
+        }
+    }
+    
     public void deleteHeightmap(int i) {
         if (getHeightmapName(i) == null) return;
         saved_heightmaps.remove(getHeightmapName(i));
