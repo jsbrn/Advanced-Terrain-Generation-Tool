@@ -215,6 +215,8 @@ public class World {
         return elevationMap[x][y];
     }
     
+    public float[][] getElevationMap() { return elevationMap; }
+    
     /**
      * Writes the noise map to a BufferedImage.
      * @return The buffered image instance created.

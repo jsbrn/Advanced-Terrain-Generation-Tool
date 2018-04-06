@@ -82,7 +82,7 @@ public class WaterGenerator extends Generator {
         
         PerlinNoise perlin = new PerlinNoise();
         
-        float[][] hmap = w.getHeightmap(0);
+        float[][] hmap = w.getElevationMap();
         
         //Now generate our random starting points for the lakes
         for(int i=0;i<lakes;i++){
