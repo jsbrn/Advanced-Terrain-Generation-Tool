@@ -66,6 +66,9 @@
       </Properties>
     </Component>
     <Container class="javax.swing.JPanel" name="NOISEMAP_OPTIONS">
+      <Events>
+        <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="NOISEMAP_OPTIONSAncestorAdded"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
@@ -123,7 +126,7 @@
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="noiseMapAlgoChooser" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,7 +152,8 @@
         </Component>
         <Component class="javax.swing.JSlider" name="noiseMapElevationSlider">
           <Properties>
-            <Property name="paintLabels" type="boolean" value="true"/>
+            <Property name="majorTickSpacing" type="int" value="10"/>
+            <Property name="paintTicks" type="boolean" value="true"/>
             <Property name="value" type="int" value="0"/>
           </Properties>
           <Events>
@@ -164,9 +168,8 @@
         <Component class="javax.swing.JComboBox" name="noiseMapAlgoChooser">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="Perlin"/>
-                <StringItem index="1" value="Diamond Square"/>
+              <StringArray count="1">
+                <StringItem index="0" value="Choose a heightmap..."/>
               </StringArray>
             </Property>
           </Properties>
@@ -179,7 +182,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Style"/>
+            <Property name="text" type="java.lang.String" value="Heightmap"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -1464,7 +1467,7 @@
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="layerTileChooser" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="42" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="applyLayerChangesButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="cancelLayerChangesButton" min="-2" max="-2" attributes="0"/>
@@ -1605,7 +1608,7 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="generatorChooser" min="-2" pref="219" max="-2" attributes="0"/>
-                              <EmptySpace pref="10" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="openCommandLineButton" min="-2" pref="49" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">

@@ -233,6 +233,16 @@ public final class GUI extends javax.swing.JFrame {
 
         jMenuItem2.setText("jMenuItem2");
 
+        NOISEMAP_OPTIONS.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                NOISEMAP_OPTIONSAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         jLabel10.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel10.setText("Create natural, flowing terrain shapes.");
 
@@ -240,7 +250,8 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel12.setText("0%");
 
-        noiseMapElevationSlider.setPaintLabels(true);
+        noiseMapElevationSlider.setMajorTickSpacing(10);
+        noiseMapElevationSlider.setPaintTicks(true);
         noiseMapElevationSlider.setValue(0);
         noiseMapElevationSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -250,14 +261,14 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel13.setText("100%");
 
-        noiseMapAlgoChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square" }));
+        noiseMapAlgoChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose a heightmap..." }));
         noiseMapAlgoChooser.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 noiseMapAlgoChooserItemStateChanged(evt);
             }
         });
 
-        jLabel7.setText("Style");
+        jLabel7.setText("Heightmap");
 
         javax.swing.GroupLayout NOISEMAP_OPTIONSLayout = new javax.swing.GroupLayout(NOISEMAP_OPTIONS);
         NOISEMAP_OPTIONS.setLayout(NOISEMAP_OPTIONSLayout);
@@ -303,7 +314,7 @@ public final class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(noiseMapAlgoChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jLabel28.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
@@ -1758,8 +1769,8 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_scatterMaxSliderStateChanged
 
     private void noiseMapAlgoChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_noiseMapAlgoChooserItemStateChanged
-        String[] algos = new String[]{"Perlin", "DiamondSquare"};
-        Generator.getGenerator("NoiseMap").setParameter("algo", algos[noiseMapAlgoChooser.getSelectedIndex()]);
+
+        Generator.getGenerator("NoiseMap").setParameter("heightmap", (String)noiseMapAlgoChooser.getSelectedItem());
     }//GEN-LAST:event_noiseMapAlgoChooserItemStateChanged
 
     private void layerElevationSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_layerElevationSpinnerStateChanged
@@ -1918,9 +1929,16 @@ public final class GUI extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         int[] indices = heightMapList.getSelectedIndices();
         for (int index: indices)
-            World.getWorld().smoothHeightmap(5, World.getWorld().getHeightmap(index));
+            World.getWorld().smoothHeightmap(10, World.getWorld().getHeightmap(index));
         refreshHeightmapEditor();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void NOISEMAP_OPTIONSAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_NOISEMAP_OPTIONSAncestorAdded
+        DefaultComboBoxModel<String> md = new DefaultComboBoxModel<String>();
+        for (String s: World.getWorld().getSavedHeightmaps())
+            md.addElement(s);
+        noiseMapAlgoChooser.setModel(md);
+    }//GEN-LAST:event_NOISEMAP_OPTIONSAncestorAdded
 
     /**
      * Show (and make modal) a custom dialog popup.
