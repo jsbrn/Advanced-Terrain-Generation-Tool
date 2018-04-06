@@ -26,6 +26,7 @@ public abstract class Generator {
         {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
         {"Sine", new SineGenerator(), GUI.NO_OPTIONS},
+        {"2dPerlin", new TwoDimensionalPerlin(), GUI.NO_OPTIONS},
     };
     
     public Generator() {
