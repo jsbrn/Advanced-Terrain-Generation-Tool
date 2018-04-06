@@ -82,20 +82,7 @@ public class WaterGenerator extends Generator {
         
         Perlin perlin = new Perlin();
         
-        //TEMPORARY heightmap we will use for river generation along with buffered image
         float[][] hmap = w.getHeightmap(0);
-        //Bufferedimage output
-        
-        BufferedImage bi = new BufferedImage(hmap.length,hmap[0].length, BufferedImage.TYPE_INT_RGB);
-        for(int hi = 0; hi < hmap.length; hi++){
-            for(int hj = 0; hj < hmap[0].length; hj++){
-                bi.setRGB(hi, hj, (new Color(hmap[hi][hj],hmap[hi][hj],hmap[hi][hj]).getRGB()));
-            }
-        }
-        
-        
-        
-        
         
         //Now generate our random starting points for the lakes
         for(int i=0;i<lakes;i++){
@@ -230,24 +217,6 @@ public class WaterGenerator extends Generator {
                 
                 
                 
-        }
-        
-        //FOR DEBUGGING PURPOSES, OUTPUTS THE HEIGHTMAP AND WATER
-        //go over the world and draw the water onto the image
-        for(int i = 0; i < w.width()-1; i++){
-            for(int j = 0; j < w.height()-1; j++){
-                if(w.getTile(i, j, layer)==0){
-                    bi.setRGB(i, j, (new Color(0,0,1).getRGB()));
-                }
-                
-            }
-        }
-        
-        try {
-            ImageIO.write(bi, "png", new File("C:/Users/Joe/Documents/heightmap.png")); //Make sure to change the file location.
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 }

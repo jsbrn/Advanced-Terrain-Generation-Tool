@@ -735,6 +735,9 @@ public class World {
                         if (getTile(x, y, l) > -1){ 
                             //draw the tiles using the heightmap to determine the shade
                             g.drawImage(textures.get(getTile(x,y,l))[(int)Math.floor(this.getHeightmap(0)[x][y]*100)], osc[0], osc[1], null);
+                           // add a ternary operator here to turn shading off or on, false just calls image 99-----/
+                           // there is currently no heightmap selection and it defaults to the heightmap at the index 0
+                            
                         }
                     } else {
                         found_null = true;
