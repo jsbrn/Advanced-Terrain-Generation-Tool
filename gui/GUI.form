@@ -1118,7 +1118,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="drawElevationMapCheckBox">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Draw elevation map"/>
               </Properties>
               <Events>

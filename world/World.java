@@ -176,7 +176,7 @@ public class World {
     }
     
     public float getElevation(int x, int y) {
-        if (x > elevationMap.length || x < 0 || elevationMap.length == 0) return 0;
+        if (x > elevationMap.length - 1 || x < 0 || elevationMap.length == 0) return 0;
         if (y < 0 || y > elevationMap[0].length - 1) return 0;
         return elevationMap[x][y];
     }

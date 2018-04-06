@@ -1392,7 +1392,6 @@ public final class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("Canvas");
 
-        drawElevationMapCheckBox.setSelected(true);
         drawElevationMapCheckBox.setText("Draw elevation map");
         drawElevationMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
