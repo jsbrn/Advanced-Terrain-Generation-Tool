@@ -7,7 +7,7 @@ import java.util.Random;
  * Source code credit: http://devmag.org.za/2009/04/25/perlin-noise/
  */
 
-public class Perlin {
+public class PerlinNoise {
 
     /**
      * Returns a 2D array of random values [0, 1] for Perlin Noise algorithm.
