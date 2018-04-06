@@ -16,8 +16,8 @@ public class TwoDimensionalLakeGenerator extends Generator {
     
     public TwoDimensionalLakeGenerator() {
         super();
-        this.setParameter("sLakeX", "0.5");
-        this.setParameter("sLakeY", "0.3");
+        this.setParameter("sLakeX", "32");
+        this.setParameter("sLakeY", "32");
     }
     
     
@@ -57,9 +57,8 @@ public class TwoDimensionalLakeGenerator extends Generator {
     @Override
     public void generate(World w, int layer) {
         
-        
-        int sLakeX = (int)Math.floor(Float.parseFloat(getParameter("sLakeX")) * w.columns());
-        int sLakeY = (int)Math.floor(Float.parseFloat(getParameter("sLakeY")) * w.rows());
+        int sLakeX = Integer.parseInt(getParameter("sLakeX"));
+        int sLakeY = Integer.parseInt(getParameter("sLakeY"));
         
         recursiveDraw(w, layer, sLakeX, sLakeY);
     }
