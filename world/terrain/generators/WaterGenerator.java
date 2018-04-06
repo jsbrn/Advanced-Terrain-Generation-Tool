@@ -11,7 +11,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import world.World;
 import world.terrain.Generator;
-import world.terrain.misc.Perlin;
+import world.terrain.misc.PerlinNoise;
 
 /**
 * This is a basic Water Generator that generates "lakes" that are simply
@@ -73,7 +73,7 @@ public class WaterGenerator extends Generator {
         Random rand = new Random();
         rand.setSeed(getSeed());
         
-        Perlin perlin = new Perlin();
+        PerlinNoise perlin = new PerlinNoise();
         
         //TEMPORARY heightmap we will use for river generation along with buffered image
         float[][] hmap = perlin.generatePerlinNoise(perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed()), lakeoctaves);

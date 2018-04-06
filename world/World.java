@@ -25,7 +25,7 @@ import misc.MiscMath;
 import world.terrain.Generator;
 import world.terrain.misc.DiamondSquare;
 import world.terrain.misc.LinearGradient;
-import world.terrain.misc.Perlin;
+import world.terrain.misc.PerlinNoise;
 import world.terrain.misc.RadialGradient;
 
 /**
@@ -102,7 +102,7 @@ public class World {
                 map = ds.getMap();
                 break;
             case "Perlin":
-                Perlin perlin = new Perlin();
+                PerlinNoise perlin = new PerlinNoise();
                 // Use PerlinNoise algorithm in other location
                 // 6 is a random value, I don't know what the best value would be
                 float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
