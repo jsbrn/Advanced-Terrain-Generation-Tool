@@ -1125,7 +1125,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(layerTileChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                         .addComponent(applyLayerChangesButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelLayerChangesButton))
@@ -1192,7 +1192,7 @@ public final class GUI extends javax.swing.JFrame {
                         .addComponent(randomSeedButton))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(generatorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                         .addComponent(openCommandLineButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(generatorTitlePanelLayout.createSequentialGroup()
                         .addComponent(jLabel6)
@@ -1437,8 +1437,19 @@ public final class GUI extends javax.swing.JFrame {
         });
         worldMenu.add(jMenuItem5);
 
-        showHeightmapCheck.setSelected(true);
-        showHeightmapCheck.setText("Show Heightmap Shading");
+        menuBar.add(worldMenu);
+
+        jMenu1.setText("Canvas");
+
+        drawElevationMapCheckBox.setText("Show elevation shadows");
+        drawElevationMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drawElevationMapCheckBoxActionPerformed(evt);
+            }
+        });
+        jMenu1.add(drawElevationMapCheckBox);
+
+        showHeightmapCheck.setText("Show heightmap shading");
         showHeightmapCheck.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 showHeightmapCheckStateChanged(evt);
@@ -1449,19 +1460,7 @@ public final class GUI extends javax.swing.JFrame {
                 showHeightmapCheckActionPerformed(evt);
             }
         });
-        worldMenu.add(showHeightmapCheck);
-
-        menuBar.add(worldMenu);
-
-        jMenu1.setText("Canvas");
-
-        drawElevationMapCheckBox.setText("Draw elevation map");
-        drawElevationMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                drawElevationMapCheckBoxActionPerformed(evt);
-            }
-        });
-        jMenu1.add(drawElevationMapCheckBox);
+        jMenu1.add(showHeightmapCheck);
 
         menuBar.add(jMenu1);
 
