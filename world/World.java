@@ -24,7 +24,9 @@ import misc.Assets;
 import misc.MiscMath;
 import world.terrain.Generator;
 import world.terrain.misc.DiamondSquare;
+import world.terrain.misc.LinearGradient;
 import world.terrain.misc.Perlin;
+import world.terrain.misc.RadialGradient;
 
 /**
  * Contains the terrain data, the layers, and all associated properties. There can
@@ -44,7 +46,6 @@ public class World {
     private ArrayList<Image> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
     private HashMap<String, float[][]> saved_heightmaps;
-    private float[][] elevationMap;
     
     private Random rng;
     private long seed;
@@ -62,7 +63,6 @@ public class World {
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
-        this.elevationMap = new float[w][h];
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
         this.layers = new ArrayList<boolean[][]>();
         this.dims = new int[]{w, h};
@@ -92,18 +92,31 @@ public class World {
     }
     
     public float[][] createHeightmap(String algorithmName, long seed, boolean save) {
-        boolean useperlin = algorithmName.equals("Perlin");
         float[][] map = new float[columns()][rows()];
-        if (!useperlin) {
-            int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
-            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), seed);
-            map = ds.getMap();
-        } else {
-            Perlin perlin = new Perlin();
-            // Use PerlinNoise algorithm in other location
-            // 6 is a random value, I don't know what the best value would be
-            float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
-            map = perlin.generatePerlinNoise(whitenoise, 6);
+        switch (algorithmName) {
+            case "Diamond Square":
+                int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
+                DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), seed);
+                map = ds.getMap();
+                break;
+            case "Perlin":
+                Perlin perlin = new Perlin();
+                // Use PerlinNoise algorithm in other location
+                // 6 is a random value, I don't know what the best value would be
+                float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
+                map = perlin.generatePerlinNoise(whitenoise, 6);
+                break;
+            case "Radial Gradient":
+                RadialGradient rg = new RadialGradient(Math.max(columns(), rows()));
+                map = rg.getMap();
+                break;
+            case "Linear Gradient":
+                LinearGradient lg = new LinearGradient(columns(), rows());
+                map = lg.getMap();
+                break;
+            default:
+                System.out.println("Error");
+                break;
         }
         if (save) saveHeightmap(algorithmName+" ["+seed+"]", map);
         return map;
@@ -169,16 +182,6 @@ public class World {
             index++;
         }
         return null;
-    }
-    
-    public void setElevationHeightmap(String name) {
-        elevationMap = getHeightmap(name);
-    }
-    
-    public float getElevation(int x, int y) {
-        if (x > elevationMap.length || x < 0 || elevationMap.length == 0) return 0;
-        if (y < 0 || y > elevationMap[0].length - 1) return 0;
-        return elevationMap[x][y];
     }
     
     /**
@@ -700,7 +703,7 @@ public class World {
      * @param g The Graphics instance to draw to.
      * @see gui.Canvas#paintComponent(java.awt.Graphics)
      */
-    public void draw(Graphics g, boolean showElevationMap) {
+    public void draw(Graphics g) {
         g.setColor(Color.red);
         boolean found_null = false;
         for (int l = layers.size() - 1; l > -1; l--) {
@@ -723,19 +726,10 @@ public class World {
                     
                     if (l == 0) { //if working in the topmost layer
                         for (int i = 0; i < 9; i++) {
-                            int x2 = x - 1 + (i % 3);
-                            int y2 = y - 1 + (i / 3);
-                            if (!showElevationMap) {
-                                int topmost = getTopmostLayer(x, y);
-                                int topmost2 = getTopmostLayer(x2, y2);
-                                if (topmost > -1 && topmost2 > -1) {
-                                    if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
-                                        g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
-                                                osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
-                                    }
-                                }
-                            } else {
-                                if (getElevation(x, y) > getElevation(x2, y2)) {
+                            int topmost = getTopmostLayer(x, y);
+                            int topmost2 = getTopmostLayer(x - 1 + (i % 3), y - 1 + (i / 3));
+                            if (topmost > -1 && topmost2 > -1) {
+                                if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
                                     g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
                                             osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
                                 }
