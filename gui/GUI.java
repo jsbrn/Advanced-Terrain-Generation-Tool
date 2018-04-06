@@ -2099,6 +2099,7 @@ public final class GUI extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         if (heightMapList.getSelectedIndex() > -1) 
             World.getWorld().setElevationHeightmap(heightMapList.getSelectedValue());
+        Canvas.refresh();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -2106,6 +2107,7 @@ public final class GUI extends javax.swing.JFrame {
         for (int index: indices)
             World.getWorld().smoothHeightmap(10, World.getWorld().getHeightmap(index));
         refreshHeightmapEditor();
+        Canvas.refresh();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void NOISEMAP_OPTIONSAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_NOISEMAP_OPTIONSAncestorAdded
