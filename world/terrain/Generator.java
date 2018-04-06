@@ -25,10 +25,10 @@ public abstract class Generator {
         {"WaterGenerator", new WaterGenerator(), GUI.WATER_OPTIONS}, 
         {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
         {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
-        {"2DPerlin", new TwoDimensionalPerlin(), GUI.NO_OPTIONS},
+        {"2DPerlin", new TwoDimensionalPerlin(), GUI.TWODIMPERLIN_OPTIONS},
         {"SidescrollerLakes", new TwoDimensionalLakeGenerator(), GUI.NO_OPTIONS},
         {"Outline", new OutlineGenerator(), GUI.NO_OPTIONS},
-        {"Cave", new CaveGenerator(), GUI.NO_OPTIONS}
+        {"Cave", new CaveGenerator(), GUI.CAVE_OPTIONS}
     };
     
     public Generator() {
