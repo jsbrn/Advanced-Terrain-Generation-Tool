@@ -131,6 +131,16 @@ public final class GUI extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        CAVE_OPTIONS = new javax.swing.JPanel();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        caveThicknessSlider = new javax.swing.JSlider();
+        jLabel40 = new javax.swing.JLabel();
+        windinessSlider = new javax.swing.JSlider();
+        TWODIMPERLIN_OPTIONS = new javax.swing.JPanel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        twoDPerlinHeightSlider = new javax.swing.JSlider();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -167,6 +177,7 @@ public final class GUI extends javax.swing.JFrame {
         generatorBottomPanel = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        clearLayerCheckBox = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         genOptionsScrollPane = new javax.swing.JScrollPane();
         generatorBodyPanel = new javax.swing.JPanel();
@@ -891,6 +902,119 @@ public final class GUI extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        CAVE_OPTIONS.setAutoscrolls(true);
+
+        jLabel33.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel33.setText("Create vast underground cave systems.");
+
+        jLabel39.setText("Thickness");
+
+        caveThicknessSlider.setMaximum(25);
+        caveThicknessSlider.setMinimum(1);
+        caveThicknessSlider.setMinorTickSpacing(1);
+        caveThicknessSlider.setPaintTicks(true);
+        caveThicknessSlider.setSnapToTicks(true);
+        caveThicknessSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                caveThicknessSliderStateChanged(evt);
+            }
+        });
+
+        jLabel40.setText("Sway");
+
+        windinessSlider.setMaximum(25);
+        windinessSlider.setMinimum(1);
+        windinessSlider.setMinorTickSpacing(1);
+        windinessSlider.setPaintTicks(true);
+        windinessSlider.setValue(4);
+        windinessSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                windinessSliderStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout CAVE_OPTIONSLayout = new javax.swing.GroupLayout(CAVE_OPTIONS);
+        CAVE_OPTIONS.setLayout(CAVE_OPTIONSLayout);
+        CAVE_OPTIONSLayout.setHorizontalGroup(
+            CAVE_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CAVE_OPTIONSLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(CAVE_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(caveThicknessSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(CAVE_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(CAVE_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel33)
+                            .addComponent(jLabel39))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(15, 15, 15))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CAVE_OPTIONSLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(CAVE_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(windinessSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                    .addGroup(CAVE_OPTIONSLayout.createSequentialGroup()
+                        .addComponent(jLabel40)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(15, 15, 15))
+        );
+        CAVE_OPTIONSLayout.setVerticalGroup(
+            CAVE_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(CAVE_OPTIONSLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(caveThicknessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(windinessSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(320, Short.MAX_VALUE))
+        );
+
+        TWODIMPERLIN_OPTIONS.setAutoscrolls(true);
+
+        jLabel41.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel41.setText("Create natural-looking sidescroller terrain");
+
+        jLabel42.setText("Height multiplier");
+
+        twoDPerlinHeightSlider.setMinimum(40);
+        twoDPerlinHeightSlider.setMinorTickSpacing(10);
+        twoDPerlinHeightSlider.setPaintTicks(true);
+        twoDPerlinHeightSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                twoDPerlinHeightSliderStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout TWODIMPERLIN_OPTIONSLayout = new javax.swing.GroupLayout(TWODIMPERLIN_OPTIONS);
+        TWODIMPERLIN_OPTIONS.setLayout(TWODIMPERLIN_OPTIONSLayout);
+        TWODIMPERLIN_OPTIONSLayout.setHorizontalGroup(
+            TWODIMPERLIN_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TWODIMPERLIN_OPTIONSLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(TWODIMPERLIN_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(twoDPerlinHeightSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                    .addGroup(TWODIMPERLIN_OPTIONSLayout.createSequentialGroup()
+                        .addGroup(TWODIMPERLIN_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel41)
+                            .addComponent(jLabel42))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(15, 15, 15))
+        );
+        TWODIMPERLIN_OPTIONSLayout.setVerticalGroup(
+            TWODIMPERLIN_OPTIONSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TWODIMPERLIN_OPTIONSLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel41)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(twoDPerlinHeightSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(377, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advanced Terrain Generation Tool (1.0.3-alpha)");
         setBounds(new java.awt.Rectangle(100, 100, 550, 900));
@@ -1231,6 +1355,8 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        clearLayerCheckBox.setText("Clear layer");
+
         javax.swing.GroupLayout generatorBottomPanelLayout = new javax.swing.GroupLayout(generatorBottomPanel);
         generatorBottomPanel.setLayout(generatorBottomPanelLayout);
         generatorBottomPanelLayout.setHorizontalGroup(
@@ -1238,8 +1364,10 @@ public final class GUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generatorBottomPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(clearLayerCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
                 .addContainerGap())
         );
         generatorBottomPanelLayout.setVerticalGroup(
@@ -1248,7 +1376,8 @@ public final class GUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(generatorBottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(clearLayerCheckBox))
                 .addContainerGap())
         );
 
@@ -1786,7 +1915,7 @@ public final class GUI extends javax.swing.JFrame {
         g.reset();
         int[] selected = layerList.getSelectedIndices();
         for (int l = selected.length - 1; l > -1; l--) {
-            World.getWorld().clearTiles(selected[l]);
+            if (clearLayerCheckBox.isSelected()) World.getWorld().clearTiles(selected[l]);
             g.generate(World.getWorld(), selected[l]);
         }
         canvas.repaint();
@@ -2000,6 +2129,18 @@ public final class GUI extends javax.swing.JFrame {
         canvas.repaint();
     }//GEN-LAST:event_showHeightmapCheckStateChanged
 
+    private void caveThicknessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_caveThicknessSliderStateChanged
+        Generator.getGenerator("Cave").setParameter("thiccness", ""+caveThicknessSlider.getValue());
+    }//GEN-LAST:event_caveThicknessSliderStateChanged
+
+    private void windinessSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_windinessSliderStateChanged
+        Generator.getGenerator("Cave").setParameter("windyness", ""+windinessSlider.getValue());
+    }//GEN-LAST:event_windinessSliderStateChanged
+
+    private void twoDPerlinHeightSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_twoDPerlinHeightSliderStateChanged
+        Generator.getGenerator("2DPerlin").setParameter("heightMultiplier", ""+(float)twoDPerlinHeightSlider.getValue()/20f);
+    }//GEN-LAST:event_twoDPerlinHeightSliderStateChanged
+
 
     /**
      * Show (and make modal) a custom dialog popup.
@@ -2101,16 +2242,20 @@ public final class GUI extends javax.swing.JFrame {
     protected static JList getLayerList() { return layerList; }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JPanel CAVE_OPTIONS;
     public static javax.swing.JPanel NOISEMAP_OPTIONS;
     public static javax.swing.JPanel NO_OPTIONS;
     public static javax.swing.JPanel SCATTER_OPTIONS;
+    public static javax.swing.JPanel TWODIMPERLIN_OPTIONS;
     public static javax.swing.JPanel WATER_OPTIONS;
     private javax.swing.JButton addLayerButton;
     private javax.swing.JButton addTogetherButton;
     private javax.swing.JButton applyLayerChangesButton;
     private javax.swing.JButton cancelLayerChangesButton;
     private gui.Canvas canvas;
+    private javax.swing.JSlider caveThicknessSlider;
     private javax.swing.JMenu chooseSpriteSheetMenu;
+    private javax.swing.JCheckBox clearLayerCheckBox;
     private javax.swing.JButton createHeightMapButton;
     private javax.swing.JMenuItem customSpritesheetButton;
     private javax.swing.JButton deleteLayerButton;
@@ -2165,12 +2310,17 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -2232,8 +2382,10 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem showHeightmapCheck;
     private javax.swing.JMenuItem showNavigatorButton;
     private javax.swing.JList<String> tileRestrictionList;
+    private javax.swing.JSlider twoDPerlinHeightSlider;
     private javax.swing.JSlider waterSlider1;
     private javax.swing.JSlider waterSlider2;
+    private javax.swing.JSlider windinessSlider;
     private javax.swing.JMenu worldMenu;
     // End of variables declaration//GEN-END:variables
 }
