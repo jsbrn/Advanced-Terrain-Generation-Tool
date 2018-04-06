@@ -23,6 +23,10 @@ import javax.swing.JOptionPane;
 import misc.Assets;
 import misc.MiscMath;
 import world.terrain.Generator;
+import world.terrain.misc.DiamondSquare;
+import world.terrain.misc.LinearGradient;
+import world.terrain.misc.Perlin;
+import world.terrain.misc.RadialGradient;
 
 /**
  * Contains the terrain data, the layers, and all associated properties. There can
@@ -42,6 +46,7 @@ public class World {
     private ArrayList<Image> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
     private HashMap<String, float[][]> saved_heightmaps;
+    private float[][] elevationMap;
     
     private Random rng;
     private long seed;
@@ -59,6 +64,7 @@ public class World {
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
+        this.elevationMap = new float[w][h];
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
         this.layers = new ArrayList<boolean[][]>();
         this.dims = new int[]{w, h};
@@ -79,28 +85,152 @@ public class World {
         setSeed(seed);
     }
     
-    public float[][] getHeightMap(String name) {
+    public float[][] getHeightmap(String name) {
         return saved_heightmaps.get(name);
     }
     
-    public String[] getSavedHeightMaps() {
+    public String[] getSavedHeightmaps() {
         return saved_heightmaps.keySet().toArray(new String[]{});
     }
     
-    public void saveHeightMap(String name, float[][] map) {
-        saved_heightmaps.put(name, map);
+    public float[][] createHeightmap(String algorithmName, long seed, boolean save) {
+        float[][] map = new float[columns()][rows()];
+        switch (algorithmName) {
+            case "Diamond Square":
+                int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
+                DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), seed);
+                map = ds.getMap();
+                break;
+            case "Perlin":
+                Perlin perlin = new Perlin();
+                // Use PerlinNoise algorithm in other location
+                // 6 is a random value, I don't know what the best value would be
+                float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
+                map = perlin.generatePerlinNoise(whitenoise, 6);
+                break;
+            case "Radial Gradient":
+                RadialGradient rg = new RadialGradient(Math.max(columns(), rows()));
+                map = rg.getMap();
+                break;
+            case "Linear Gradient":
+                LinearGradient lg = new LinearGradient(columns(), rows());
+                map = lg.getMap();
+                break;
+            default:
+                System.out.println("Error");
+                break;
+        }
+        if (save) saveHeightmap(algorithmName+" ["+seed+"]", map);
+        return map;
     }
     
-    public void deleteHeightMap(String name) {
+    public void saveHeightmap(String name, float[][] map) {
+        saved_heightmaps.put(name+" ["+columns()+", "+rows()+"]", map);
+    }
+    
+    public void deleteHeightmap(String name) {
         saved_heightmaps.remove(name);
     }
     
-    public void deleteHeightMap(int i) {
+    public float[][] combineHeightmaps(float[][] map1, float[][] map2, boolean addOperation) {
+        float[][] sum = new float[map1.length][map2.length];
+        if (map1.length == 0 || map2.length == 0) return sum;
+        if (map1.length != map2.length || map1[0].length != map2[0].length) return sum;
+        for (int i = 0; i < map1.length; i++) {
+            for (int j = 0; j < map1[i].length; j++) {
+                sum[i][j] = addOperation ? map1[i][j] + map2[i][j] : map1[i][j] * map2[i][j];
+            }
+        }
+        normalizeHeightmap(sum);
+        return sum;
+    }
+    
+    public boolean combineHeightmaps(String newName, float[][] map1, float[][] map2, boolean addOperation) {
+        float[][] result = combineHeightmaps(map1, map2, addOperation);
+        normalizeHeightmap(result);
+        saveHeightmap(newName, result);
+        return true;
+    }
+    
+    public void normalizeHeightmap(float[][] map) {
+        float highest = 0;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] > highest) highest = map[i][j];
+            }
+        }
+        if (highest <= 0) return;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                map[i][j] /= highest;
+            }
+        }
+    }
+    
+    public void smoothHeightmap(int levels, float[][] map) {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                map[i][j] = (float)Math.floor(map[i][j] * levels) / levels;
+            }
+        }
+    }
+    
+    public void deleteHeightmap(int i) {
+        if (getHeightmapName(i) == null) return;
+        saved_heightmaps.remove(getHeightmapName(i));
+    }
+    
+    public float[][] getHeightmap(int i) {
+        if (getHeightmapName(i) == null) return null;
+        return saved_heightmaps.get(getHeightmapName(i));
+    }
+    
+    public String getHeightmapName(int i) {
         int index = 0;
         for (String name: saved_heightmaps.keySet()) {
-            if (index == i) { saved_heightmaps.remove(name);  break; }
+            if (index == i) { return name; }
             index++;
         }
+        return null;
+    }
+    
+    public void setElevationHeightmap(String name) {
+        elevationMap = getHeightmap(name);
+    }
+    
+    public float getElevation(int x, int y) {
+        if (x > elevationMap.length - 1 || x < 0 || elevationMap.length == 0) return 0;
+        if (y < 0 || y > elevationMap[0].length - 1) return 0;
+        return elevationMap[x][y];
+    }
+    
+    /**
+     * Writes the noise map to a BufferedImage.
+     * @return The buffered image instance created.
+     */
+    public BufferedImage toBufferedImage(String mapName) {
+        float[][] map = getHeightmap(mapName);
+        BufferedImage output = new BufferedImage(map.length, map.length,BufferedImage.TYPE_INT_RGB);
+        float max = map[0][0];
+        float min = map[0][0];
+        for (int y = 0; y < output.getHeight(); y++) {
+            for (int x = 0; x < output.getWidth(); x++) {
+                if (map[x][y] > max) {
+                    max = map[x][y];
+                }
+                else if (map[x][y] < min)
+                {
+                    min = map[x][y];
+                }
+            }
+        }
+        for (int y = 0; y < output.getHeight(); y++) {
+            for (int x = 0; x < output.getWidth(); x++) {
+                float value = 255*map[x][y];
+                output.setRGB(x, y, new Color((int)value,(int)value,(int)value).getRGB());
+            }
+        }
+        return output;
     }
     
     /**
@@ -593,7 +723,7 @@ public class World {
      * @param g The Graphics instance to draw to.
      * @see gui.Canvas#paintComponent(java.awt.Graphics)
      */
-    public void draw(Graphics g) {
+    public void draw(Graphics g, boolean showElevationMap) {
         g.setColor(Color.red);
         boolean found_null = false;
         for (int l = layers.size() - 1; l > -1; l--) {
@@ -607,7 +737,8 @@ public class World {
                             Canvas.getDimensions()[0] + tile_dims[0], Canvas.getDimensions()[1] + tile_dims[1])) continue;
                     //if tile ID is valid, draw. otherwise, indicate.
                     if (getTile(x, y, l) < getTileCount()) {
-                        if (getTile(x, y, l) > -1) g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
+                        if (getTile(x, y, l) > -1) 
+                            g.drawImage(textures.get(getTile(x, y, l)), osc[0], osc[1], null);
                     } else {
                         found_null = true;
                         g.drawLine(osc[0], osc[1], osc[0] + tile_dims[0], osc[1]+tile_dims[1]);
@@ -615,10 +746,19 @@ public class World {
                     
                     if (l == 0) { //if working in the topmost layer
                         for (int i = 0; i < 9; i++) {
-                            int topmost = getTopmostLayer(x, y);
-                            int topmost2 = getTopmostLayer(x - 1 + (i % 3), y - 1 + (i / 3));
-                            if (topmost > -1 && topmost2 > -1) {
-                                if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
+                            int x2 = x - 1 + (i % 3);
+                            int y2 = y - 1 + (i / 3);
+                            if (!showElevationMap) {
+                                int topmost = getTopmostLayer(x, y);
+                                int topmost2 = getTopmostLayer(x2, y2);
+                                if (topmost > -1 && topmost2 > -1) {
+                                    if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
+                                        g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
+                                                osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
+                                    }
+                                }
+                            } else {
+                                if (getElevation(x, y) > getElevation(x2, y2)) {
                                     g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
                                             osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
                                 }

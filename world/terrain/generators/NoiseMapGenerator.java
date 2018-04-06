@@ -25,25 +25,14 @@ public class NoiseMapGenerator extends Generator {
     @Override
     public void generate(World w, int layer) {
         
-        boolean useperlin = getParameter("algo").equals("Perlin");
-        float[][] map = new float[w.columns()][w.rows()];
-        if (!useperlin) {
-            int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
-            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), getSeed());
-            map = ds.getMap();
-        } else {
-            Perlin perlin = new Perlin();
-            // Use PerlinNoise algorithm in other location
-            // 6 is a random value, I don't know what the best value would be
-            float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows(), getSeed());
-            map = perlin.generatePerlinNoise(whitenoise, 6);
-        }
+        float[][] map = World.getWorld().createHeightmap(getParameter("algo"), getSeed(), true);
 
         // Create terrain
         for (int i = 0; i < w.columns(); i++) {
             for (int j = 0; j < w.rows(); j++) {
                 if (i >= map.length || j >= map.length) continue;
-                if (map[i][j] < Double.parseDouble(getParameter("elevation"))) w.setTile(i, j, layer, true);
+                if (map[i][j] < Double.parseDouble(getParameter("elevation"))) 
+                    w.setTile(i, j, layer, true);
             }
         }
     }
