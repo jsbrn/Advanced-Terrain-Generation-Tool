@@ -889,8 +889,8 @@
                       <StringArray count="4">
                         <StringItem index="0" value="Perlin"/>
                         <StringItem index="1" value="Diamond Square"/>
-                        <StringItem index="2" value="Linear"/>
-                        <StringItem index="3" value="Radial"/>
+                        <StringItem index="2" value="Linear Gradient"/>
+                        <StringItem index="3" value="Radial Gradient"/>
                       </StringArray>
                     </Property>
                   </Properties>

@@ -694,7 +694,7 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel27.setText("Seed:");
 
-        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square", "Linear", "Radial" }));
+        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square", "Linear Gradient", "Radial Gradient" }));
 
         jLabel26.setText("Algorithm:");
 

@@ -24,7 +24,9 @@ import misc.Assets;
 import misc.MiscMath;
 import world.terrain.Generator;
 import world.terrain.misc.DiamondSquare;
+import world.terrain.misc.LinearGradient;
 import world.terrain.misc.Perlin;
+import world.terrain.misc.RadialGradient;
 
 /**
  * Contains the terrain data, the layers, and all associated properties. There can
@@ -92,18 +94,31 @@ public class World {
     }
     
     public float[][] createHeightmap(String algorithmName, long seed, boolean save) {
-        boolean useperlin = algorithmName.equals("Perlin");
         float[][] map = new float[columns()][rows()];
-        if (!useperlin) {
-            int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
-            DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), seed);
-            map = ds.getMap();
-        } else {
-            Perlin perlin = new Perlin();
-            // Use PerlinNoise algorithm in other location
-            // 6 is a random value, I don't know what the best value would be
-            float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
-            map = perlin.generatePerlinNoise(whitenoise, 6);
+        switch (algorithmName) {
+            case "Diamond Square":
+                int s = (int)MiscMath.max(World.getWorld().columns(), World.getWorld().rows());
+                DiamondSquare ds = new DiamondSquare(s == 0 ? 0 : 32 - Integer.numberOfLeadingZeros(s - 1), seed);
+                map = ds.getMap();
+                break;
+            case "Perlin":
+                Perlin perlin = new Perlin();
+                // Use PerlinNoise algorithm in other location
+                // 6 is a random value, I don't know what the best value would be
+                float[][] whitenoise = perlin.generateWhiteNoise(columns(), rows(), seed);
+                map = perlin.generatePerlinNoise(whitenoise, 6);
+                break;
+            case "Radial Gradient":
+                RadialGradient rg = new RadialGradient(Math.max(columns(), rows()));
+                map = rg.getMap();
+                break;
+            case "Linear Gradient":
+                LinearGradient lg = new LinearGradient(columns(), rows());
+                map = lg.getMap();
+                break;
+            default:
+                System.out.println("Error");
+                break;
         }
         if (save) saveHeightmap(algorithmName+" ["+seed+"]", map);
         return map;
