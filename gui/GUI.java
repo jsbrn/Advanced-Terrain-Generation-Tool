@@ -2113,6 +2113,7 @@ public final class GUI extends javax.swing.JFrame {
         for (String s: World.getWorld().getSavedHeightmaps())
             md.addElement(s);
         noiseMapAlgoChooser.setModel(md);
+        noiseMapAlgoChooser.setSelectedIndex(-1);
     }//GEN-LAST:event_NOISEMAP_OPTIONSAncestorAdded
 
     private void showHeightmapCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showHeightmapCheckActionPerformed
