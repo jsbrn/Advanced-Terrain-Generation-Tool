@@ -43,12 +43,16 @@ public class World {
     private int[] tile_dims, dims;
     private BufferedImage spritesheet;
     private String spritesheet_uri;
-    private ArrayList<Image> textures;
+    private ArrayList<Image[]> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
     private HashMap<String, float[][]> saved_heightmaps;
     
     private Random rng;
     private long seed;
+    
+    private BufferedImage hmapTile;
+    private RescaleOp op;
+    private Graphics2D bGr;
     
     /**
      * Creates a new world as a static instance. Replaces the existing world.
@@ -72,7 +76,7 @@ public class World {
         setSeed(rng.nextLong());
         this.tile_dims = new int[]{16, 16};
         clearTiles();
-        this.textures = new ArrayList<Image>();
+        this.textures = new ArrayList<Image[]>();
         this.setSpritesheet("resources/samples/terrain/earth.png");
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
         this.saved_heightmaps = new HashMap<String, float[][]>();
@@ -460,19 +464,44 @@ public class World {
      */
     public void setSpritesheet(String uri) {
         boolean internal = uri.indexOf("resources/") == 0;
-        textures = new ArrayList<Image>();
+        textures = new ArrayList<Image[]>();
+        
+        Image shadesTemp[] = new Image[100];
+        
         BufferedImage img = null;
         try {
             img = internal 
                     ? ImageIO.read(getClass().getResourceAsStream("/"+uri))
                     : ImageIO.read(new File(uri));
             spritesheet = img;
-            for (int i = 0; i < img.getWidth() / tile_dims[0]; i++) //split the spritesheet into preloaded images
-                textures.add(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]));
+            for (int i = 0; i < img.getWidth() / tile_dims[0]; i++){
+                //split the spritesheet into preloaded images
+                //create levels of shading
+                for(int j = 0; j < 100; j++){
+                    
+                    //new buffered image based on the tile size
+                    hmapTile = new BufferedImage(tile_dims[0],tile_dims[1],BufferedImage.TYPE_INT_RGB);
+                    
+                    //draw the tile from the source onto the bufferedimage
+                    bGr = hmapTile.createGraphics();
+                    bGr.drawImage(spritesheet.getSubimage(i*tile_dims[0], 0, tile_dims[0], tile_dims[1]), 0, 0, null);
+                    bGr.dispose();
+
+                    //assign the brightness value out of 100
+                    op = new RescaleOp(j/100f,0,null);
+
+                    hmapTile = op.filter(hmapTile, null);
+
+                    shadesTemp[j] = hmapTile;
+                }
+                //clone the array of shades into the textures
+                textures.add(shadesTemp.clone());
+            }
             spritesheet_uri = uri; //keep track of the uri for saving/loading
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
     
     /**
@@ -704,26 +733,8 @@ public class World {
                     //if tile ID is valid, draw. otherwise, indicate.
                     if (getTile(x, y, l) < getTileCount()) {
                         if (getTile(x, y, l) > -1){ 
-                            //CODE FOR SHADING STARTS HERE
-                            //=========================================================
-                            BufferedImage hmapTile = new BufferedImage(textures.get(getTile(x, y, l)).getWidth(null),
-                                                                        textures.get(getTile(x, y, l)).getHeight(null),
-                                                                         BufferedImage.TYPE_INT_RGB);
-                            
-                            Graphics2D bGr = hmapTile.createGraphics();
-                            bGr.drawImage(textures.get(getTile(x, y, l)), 0, 0, null);
-                            bGr.dispose();
-                            
-                            RescaleOp op = new RescaleOp((float)Math.pow(this.getHeightmap(0)[x][y]+.5f, 2f)-.5f,0,null);
-                            
-                            hmapTile = op.filter(hmapTile, null);
-                            
-                            //CODE FOR SHADING ENDS HERE
-                            //=================================================================
-                            
-                            g.drawImage(hmapTile, osc[0], osc[1], null);
-                            
-                            
+                            //draw the tiles using the heightmap to determine the shade
+                            g.drawImage(textures.get(getTile(x,y,l))[(int)Math.floor(this.getHeightmap(0)[x][y]*100)], osc[0], osc[1], null);
                         }
                     } else {
                         found_null = true;
