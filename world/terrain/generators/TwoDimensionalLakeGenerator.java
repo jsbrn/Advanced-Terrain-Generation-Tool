@@ -5,6 +5,7 @@
  */
 package world.terrain.generators;
 
+import gui.Canvas;
 import world.World;
 import world.terrain.Generator;
 
@@ -16,8 +17,6 @@ public class TwoDimensionalLakeGenerator extends Generator {
     
     public TwoDimensionalLakeGenerator() {
         super();
-        this.setParameter("sLakeX", "32");
-        this.setParameter("sLakeY", "32");
     }
     
     
@@ -57,8 +56,8 @@ public class TwoDimensionalLakeGenerator extends Generator {
     @Override
     public void generate(World w, int layer) {
         
-        int sLakeX = Integer.parseInt(getParameter("sLakeX"));
-        int sLakeY = Integer.parseInt(getParameter("sLakeY"));
+        int sLakeX = Canvas.getCamera()[0];
+        int sLakeY = Canvas.getCamera()[1];
         
         recursiveDraw(w, layer, sLakeX, sLakeY);
     }

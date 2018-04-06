@@ -372,7 +372,13 @@ public class World {
      * @see #getLayerProperty(java.lang.String, int)
      * @see #getTerrain(int)
      */
-    public void setTile(int x, int y, int layer, boolean set) { if (isTileAllowed(x, y, layer)) getTerrain(layer)[x][y] = set; }
+    public boolean setTile(int x, int y, int layer, boolean set) { 
+        if (x < 0 || x >= columns() || y < 0 || y >= rows()) return false;
+        if (isTileAllowed(x, y, layer)) {
+            getTerrain(layer)[x][y] = set;
+            return true;
+        } else { return false; }
+    }
     
     /**
      * Get the topmost visible tile at the {x, y} coordinate specified.
@@ -419,6 +425,7 @@ public class World {
      * @see #getTile(int, int, int)
      */
     public int getTileBelow(int x, int y, int layer) {
+        if (x < 0 || x >= columns() || y < 0 || y >= rows()) return -1;
         for (int l = layer+1; l < layers.size(); l++) {
             if (!layers.get(l)[x][y]) continue;
             return getTile(x, y, l);

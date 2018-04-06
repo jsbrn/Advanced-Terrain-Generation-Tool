@@ -26,12 +26,11 @@ public class TwoDimensionalPerlin extends Generator {
         PerlinNoise perlin = new PerlinNoise();
         // Use PerlinNoise algorithm in other location
         // 6 is a random value, I don't know what the best value would be
-        float[][] whitenoise = perlin.generateWhiteNoise(w.columns(), w.rows(), w.getSeed());
-        float[][] map = perlin.generatePerlinNoise(whitenoise, 6);
+        float[][] map = World.getWorld().createHeightmap("Perlin", getSeed(), false);
         
         // Pick random row from Perlin map
         // Absolute value function prevent array out of bounds exceptions
-        Random random = new Random(System.currentTimeMillis());
+        Random random = World.getWorld().rng();
         int pRow = Math.abs(random.nextInt() % map[0].length);
             
         
