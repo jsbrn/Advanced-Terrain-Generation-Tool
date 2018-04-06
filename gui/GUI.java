@@ -125,6 +125,7 @@ public final class GUI extends javax.swing.JFrame {
         addTogetherButton = new javax.swing.JButton();
         multiplyTogetherButton = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         canvas = new gui.Canvas();
         layerPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -185,6 +186,8 @@ public final class GUI extends javax.swing.JFrame {
         customSpritesheetButton = new javax.swing.JMenuItem();
         setSeedButton = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        drawElevationMapCheckBox = new javax.swing.JCheckBoxMenuItem();
 
         navigator.setTitle("Navigator");
         navigator.setAlwaysOnTop(true);
@@ -690,7 +693,7 @@ public final class GUI extends javax.swing.JFrame {
 
         jLabel27.setText("Seed:");
 
-        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square" }));
+        heightMapAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perlin", "Diamond Square", "Linear", "Radial" }));
 
         jLabel26.setText("Algorithm:");
 
@@ -771,6 +774,13 @@ public final class GUI extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setText("Use as elevation");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -786,7 +796,8 @@ public final class GUI extends javax.swing.JFrame {
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(addTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(multiplyTogetherButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel25)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -806,6 +817,8 @@ public final class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(multiplyTogetherButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton5))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1377,6 +1390,19 @@ public final class GUI extends javax.swing.JFrame {
 
         menuBar.add(worldMenu);
 
+        jMenu1.setText("Canvas");
+
+        drawElevationMapCheckBox.setSelected(true);
+        drawElevationMapCheckBox.setText("Draw elevation map");
+        drawElevationMapCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drawElevationMapCheckBoxActionPerformed(evt);
+            }
+        });
+        jMenu1.add(drawElevationMapCheckBox);
+
+        menuBar.add(jMenu1);
+
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1870,6 +1896,15 @@ public final class GUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void drawElevationMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawElevationMapCheckBoxActionPerformed
+        getCanvas().setShowElevationMap(drawElevationMapCheckBox.isSelected());
+    }//GEN-LAST:event_drawElevationMapCheckBoxActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if (heightMapList.getSelectedIndex() > -1) 
+            World.getWorld().setElevationHeightmap(heightMapList.getSelectedValue());
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * Show (and make modal) a custom dialog popup.
      * @param d The JDialog to show.
@@ -1983,6 +2018,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton createHeightMapButton;
     private javax.swing.JMenuItem customSpritesheetButton;
     private javax.swing.JButton deleteLayerButton;
+    private javax.swing.JCheckBoxMenuItem drawElevationMapCheckBox;
     private javax.swing.JMenuItem earthSpritesheetButton;
     private javax.swing.JButton editLayerButton;
     private javax.swing.JPanel editLayerPanel;
@@ -2004,6 +2040,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -2041,6 +2078,7 @@ public final class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;

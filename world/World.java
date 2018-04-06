@@ -44,6 +44,7 @@ public class World {
     private ArrayList<Image> textures;
     private ArrayList<HashMap<String, Object>> layer_properties;
     private HashMap<String, float[][]> saved_heightmaps;
+    private float[][] elevationMap;
     
     private Random rng;
     private long seed;
@@ -61,6 +62,7 @@ public class World {
     public static World getWorld() { return world; }
     
     private World(int w, int h) {
+        this.elevationMap = new float[w][h];
         this.layer_properties = new ArrayList<HashMap<String, Object>>();
         this.layers = new ArrayList<boolean[][]>();
         this.dims = new int[]{w, h};
@@ -167,6 +169,16 @@ public class World {
             index++;
         }
         return null;
+    }
+    
+    public void setElevationHeightmap(String name) {
+        elevationMap = getHeightmap(name);
+    }
+    
+    public float getElevation(int x, int y) {
+        if (x > elevationMap.length || x < 0 || elevationMap.length == 0) return 0;
+        if (y < 0 || y > elevationMap[0].length - 1) return 0;
+        return elevationMap[x][y];
     }
     
     /**
@@ -688,7 +700,7 @@ public class World {
      * @param g The Graphics instance to draw to.
      * @see gui.Canvas#paintComponent(java.awt.Graphics)
      */
-    public void draw(Graphics g) {
+    public void draw(Graphics g, boolean showElevationMap) {
         g.setColor(Color.red);
         boolean found_null = false;
         for (int l = layers.size() - 1; l > -1; l--) {
@@ -711,10 +723,19 @@ public class World {
                     
                     if (l == 0) { //if working in the topmost layer
                         for (int i = 0; i < 9; i++) {
-                            int topmost = getTopmostLayer(x, y);
-                            int topmost2 = getTopmostLayer(x - 1 + (i % 3), y - 1 + (i / 3));
-                            if (topmost > -1 && topmost2 > -1) {
-                                if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
+                            int x2 = x - 1 + (i % 3);
+                            int y2 = y - 1 + (i / 3);
+                            if (!showElevationMap) {
+                                int topmost = getTopmostLayer(x, y);
+                                int topmost2 = getTopmostLayer(x2, y2);
+                                if (topmost > -1 && topmost2 > -1) {
+                                    if ((Integer)getLayerProperty("elevation", topmost) > (Integer)getLayerProperty("elevation", topmost2)) {
+                                        g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
+                                                osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
+                                    }
+                                }
+                            } else {
+                                if (getElevation(x, y) > getElevation(x2, y2)) {
                                     g.drawImage(Assets.getShadow(i), osc[0] - tile_dims[0] + ((i % 3)*tile_dims[0]),
                                             osc[1] - tile_dims[1] + ((i/3)*tile_dims[1]), null);
                                 }
