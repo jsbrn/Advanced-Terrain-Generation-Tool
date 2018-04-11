@@ -15,6 +15,8 @@ public final class Canvas extends JPanel {
     
     private int[] camera;
     
+    private boolean showElevationMap;
+
     public Canvas() {
         this.camera = new int[2];
         this.addMouseMotionListener(new MouseMotionListener(){
@@ -67,6 +69,14 @@ public final class Canvas extends JPanel {
      */
     public static int layer() { return GUI.getLayerList().getSelectedIndex(); }
     
+    public void setShowElevationMap(boolean showElevationMap) {
+        this.showElevationMap = showElevationMap;
+    }
+
+    public boolean getShowElevationMap() {
+        return showElevationMap;
+    }
+    
     /**
      * Draw the world, and other visual elements like the axis lines.
      * @param g The Graphics instance used by Swing.
@@ -84,7 +94,7 @@ public final class Canvas extends JPanel {
 
         World world = World.getWorld();
         
-        if (world == null) { g.drawString("No world loaded!", 15, 10); return; } else { world.draw(g); }
+        if (world == null) { g.drawString("No world loaded!", 15, 10); return; } else { world.draw(g, showElevationMap); }
 
         int[] origin = World.getWorld().getOnscreenCoordinates(0, 0);
         

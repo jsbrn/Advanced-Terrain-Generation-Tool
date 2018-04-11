@@ -103,38 +103,7 @@ public class DiamondSquare {
         
     }
     
-    /**
-     * Writes the noise map to a BufferedImage.
-     * @return The buffered image instance created.
-     */
-    public BufferedImage toBufferedImage() {
-        BufferedImage output = new BufferedImage(map.length, map.length,BufferedImage.TYPE_INT_RGB);
-        float max = map[0][0];
-        float min = map[0][0];
-        for (int y = 0; y < output.getHeight(); y++)
-        {
-            for (int x = 0; x < output.getWidth(); x++)
-            {
-                if (map[x][y] > max)
-                {
-                    max = map[x][y];
-                }
-                else if (map[x][y] < min)
-                {
-                    min = map[x][y];
-                }
-            }
-        }
-        
-        for (int y = 0; y < output.getHeight(); y++) {
-            for (int x = 0; x < output.getWidth(); x++) {
-                float value = 255*map[x][y];
-                output.setRGB(x, y, new Color((int)value,(int)value,(int)value).getRGB());
-            }
-        }
-        
-        return output;
-    }
+    
     
     /**
      * Get the noise map. Each value in the map can be a value between 0 and 1.0, inclusive.
