@@ -11,8 +11,8 @@ import world.World;
 import world.terrain.Generator;
 
 /**
- * Create lakes on 2D landscapes, and even in 2D caves
- * @author Swaggert
+ * Create lakes on 2D landscapes, and even in 2D caves where no layers exist
+ * @author Ryan Swaggert
  */
 public class TwoDimensionalLakeGenerator extends Generator {
     
@@ -24,32 +24,29 @@ public class TwoDimensionalLakeGenerator extends Generator {
     @Override
     public void generate(World w, int layer) {
         
-        // Data structures
+        // Data structures to store coordinates to draw
         LinkedList<Integer> tilePositionX = new LinkedList();
         LinkedList<Integer> tilePositionY = new LinkedList();
         
+        // Use camera position to get start x and y position
         int sLakeX = Canvas.getCamera()[0];
         int sLakeY = Canvas.getCamera()[1];
         
+        // Divide to get into the world bounds
+        // Convert from pixel coordinates to tile coordinates
         tilePositionX.add(sLakeX/16);
         tilePositionY.add(sLakeY/16);
         
-        System.out.println(tilePositionX.getLast());
-        System.out.println(tilePositionY.getLast());
-        
+        // While there are tiles in draw lists
         while (!tilePositionX.isEmpty() && !tilePositionY.isEmpty()) {
             
+            // Get coordinate at the end of the lists
             int x = tilePositionX.getLast();
             int y = tilePositionY.getLast();
-            
-            System.out.println(tilePositionX.getLast());
-            System.out.println(tilePositionY.getLast());
             
             // Draw tile at current position
             w.setTile(x, y, layer, true);
         
-            // Recursive calls, function call stored on the memory stack
-            // until function returns to this function call
             // Try to draw tile to the right
             if (x+1 < w.columns())
                 if (w.getTile(x+1, y) == -1) {
@@ -75,6 +72,7 @@ public class TwoDimensionalLakeGenerator extends Generator {
                     continue;
                 }
         
+            // Remove tile position from the list if there are no adjacent tiles to draw
             tilePositionX.removeLast();
             tilePositionY.removeLast();
             

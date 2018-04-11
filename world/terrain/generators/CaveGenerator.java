@@ -10,8 +10,8 @@ import world.World;
 import world.terrain.Generator;
 
 /**
- *
- * @author Swaggert
+ * Creates random vertical caves from the existing 2D landscape
+ * @author Ryan Swaggert
  */
 // Source: http://roguebasin.roguelikedevelopment.org/index.php?title=Basic_directional_dungeon_generation
 public class CaveGenerator extends Generator {
@@ -34,9 +34,12 @@ public class CaveGenerator extends Generator {
         int[] diceRoll = {-2, -1, 1};
         int[] diceRoll2 = { -2, -1, 1, 2 };
         Random random = new Random(getSeed());
+        
+        // Number of caves to create
         int maxIteration = 5;
         
         
+        // For each cave
         for (int a = 0; a < maxIteration; a++) 
         {
             int width = Integer.parseInt(getParameter("thiccness"));

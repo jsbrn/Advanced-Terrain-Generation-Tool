@@ -6,12 +6,12 @@
 package world.terrain.generators;
 
 import java.util.Random;
-import world.terrain.misc.PerlinNoise;
 import world.World;
 import world.terrain.Generator;
 /**
  * Creates side scrolling terrain based on the interference of Perlin Noise algorithm.
- * @author Swaggert
+ * Use a single row of the returned value of Perlin Noise.
+ * @author Ryan Swaggert
  */
 public class TwoDimensionalPerlin extends Generator {
     
