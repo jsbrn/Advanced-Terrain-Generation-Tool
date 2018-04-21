@@ -88,7 +88,7 @@ public final class Canvas extends JPanel {
     /**
      * Draw the world, and other visual elements like the axis lines.
      * @param g The Graphics instance used by Swing.
-     * @see World#draw(java.awt.Graphics) 
+     * @see World#draw(java.awt.Graphics, boolean, boolean) 
      * @see World#getOnscreenCoordinates(double, double) 
      */
     @Override

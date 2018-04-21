@@ -33,7 +33,7 @@ import world.terrain.misc.RadialGradient;
 /**
  * Contains the terrain data, the layers, and all associated properties. There can
  * only be one instance of World at any time. Creating a new world will destroy the existing
- * world. The world is drawn to the Canvas via {@link world.World#draw(java.awt.Graphics) World.draw(Graphics)}.
+ * world. The world is drawn to the Canvas via {@link world.World#draw(java.awt.Graphics, boolean, boolean) World.draw(Graphics)}.
  * @author Jeremy
  * @see gui.Canvas
  */
