@@ -12,8 +12,8 @@ import world.terrain.Generator;
 /**
  * Creates random vertical caves from the existing 2D landscape
  * @author Ryan Swaggert
+ * @see http://roguebasin.roguelikedevelopment.org/index.php?title=Basic_directional_dungeon_generation
  */
-// Source: http://roguebasin.roguelikedevelopment.org/index.php?title=Basic_directional_dungeon_generation
 public class CaveGenerator extends Generator {
     
     public CaveGenerator() {

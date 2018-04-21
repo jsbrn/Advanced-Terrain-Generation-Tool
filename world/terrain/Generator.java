@@ -43,6 +43,12 @@ public abstract class Generator {
      */
     public static final int generatorCount() { return generators.length; }
     
+    /**
+     * Get the GUI panel associated with the generator.
+     * @param generator
+     * @see #generators
+     * @return A JPanel that is shown in the terrain generation options panel.
+     */
     public static final JPanel getOptionsPanel(int generator) {
         return (JPanel)generators[generator][2];
     }
@@ -67,13 +73,27 @@ public abstract class Generator {
         return (String)generators[index][0];
     }
     
+    /**
+     * Set the generator seed.
+     * @param seed 
+     */
     public void setSeed(long seed) { 
         this.seed = seed; 
         this.rng = new Random(seed);
     }
     public long getSeed() { return seed; }
+    /**
+     * Set the seed to a random seed and start again.
+     */
     public void randomSeed() { setSeed(new Random().nextLong()); }
+    /**
+     * Get the Random instance used by this generator.
+     * @return The Random instance.
+     */
     public Random rng() { return rng; }
+    /**
+     * Reset the Random instance back to the start of the seed.
+     */
     public void reset() { setSeed(seed); }
     
     /**

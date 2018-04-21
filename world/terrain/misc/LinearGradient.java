@@ -13,6 +13,10 @@ public class LinearGradient {
 
     float map[][];
     
+    /**
+     * Create a linear gradient map of specified width.
+     * @param width Width of map (in pixels).
+     */
     public LinearGradient(int width, int height) {
         map = new float[width][height];
 

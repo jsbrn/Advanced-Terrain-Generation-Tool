@@ -15,7 +15,7 @@ public final class Canvas extends JPanel {
     
     private int[] camera;
     
-    private boolean showElevationMap;
+    private boolean showElevationShadows, showTerrainShaders;
 
     public Canvas() {
         this.camera = new int[2];
@@ -69,12 +69,20 @@ public final class Canvas extends JPanel {
      */
     public static int layer() { return GUI.getLayerList().getSelectedIndex(); }
     
-    public void setShowElevationMap(boolean showElevationMap) {
-        this.showElevationMap = showElevationMap;
+    /**
+     * Toggles the canvas option to show the elevation map.
+     * @param showElevationShadows 
+     */
+    public void showElevationShadows(boolean showElevationShadows) {
+        this.showElevationShadows = showElevationShadows;
     }
-
-    public boolean getShowElevationMap() {
-        return showElevationMap;
+    
+    /**
+     * Toggles showing the terrain elevation as shaded tiles.
+     * @param show Show shading or not.
+     */
+    public void showTerrainShading(boolean show) {
+        this.showTerrainShaders = show;
     }
     
     /**
@@ -94,7 +102,8 @@ public final class Canvas extends JPanel {
 
         World world = World.getWorld();
         
-        if (world == null) { g.drawString("No world loaded!", 15, 10); return; } else { world.draw(g, showElevationMap); }
+        if (world == null) { g.drawString("No world loaded!", 15, 10); return; } 
+            else { world.draw(g, showElevationShadows, showTerrainShaders); }
 
         int[] origin = World.getWorld().getOnscreenCoordinates(0, 0);
         

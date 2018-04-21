@@ -13,6 +13,10 @@ public class RadialGradient {
 
     float map[][];
     
+    /**
+     * Create a radial gradient map of specified width.
+     * @param width Width of map (in pixels).
+     */
     public RadialGradient(int width) {
         map = new float[width][width];
         float center = (float) (width/2.0);

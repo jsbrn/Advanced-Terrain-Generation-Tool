@@ -57,8 +57,6 @@ public class World {
     private RescaleOp op;
     private Graphics2D bGr;
     
-    private Boolean showHeightmap;
-    
     
     /**
      * Creates a new world as a static instance. Replaces the existing world.
@@ -88,7 +86,6 @@ public class World {
         this.setSpritesheet("resources/samples/terrain/earth.png");
         this.setTileNames(new String[]{"Stone", "Lava", "Sand", "Dirt", "Grass", "Snow", "Ice", "Water", "Tree", "Rocks", "Chest"});
         this.saved_heightmaps = new HashMap<String, float[][]>();
-        this.showHeightmap = false;
     }
     
     private World(int w, int h, long seed) {
@@ -96,6 +93,11 @@ public class World {
         setSeed(seed);
     }
     
+    /**
+     * Get a heightmap by the name of the map.
+     * @param name The name.
+     * @return A heightmap, float[][].
+     */
     public float[][] getHeightmap(String name) {
         return saved_heightmaps.get(name);
     }
@@ -104,6 +106,13 @@ public class World {
         return saved_heightmaps.keySet().toArray(new String[]{});
     }
     
+    /**
+     * Create a heightmap from the specified algorithm type, seed.
+     * @param algorithmName The name of the Algorithm.
+     * @param seed The seed to use.
+     * @param save Save to the heightmap list?
+     * @return The resulting heightmap, a float[][].
+     */
     public float[][] createHeightmap(String algorithmName, long seed, boolean save) {
         float[][] map = new float[columns()][rows()];
         switch (algorithmName) {
@@ -143,6 +152,13 @@ public class World {
         saved_heightmaps.remove(name);
     }
     
+    /**
+     * Combine two heightmaps through adding OR multiplying. Normalizes the result.
+     * @param map1 The first map.
+     * @param map2 The second map.
+     * @param addOperation True if you want to add, false if multiply.
+     * @return 
+     */
     public float[][] combineHeightmaps(float[][] map1, float[][] map2, boolean addOperation) {
         float[][] sum = new float[map1.length][map2.length];
         if (map1.length == 0 || map2.length == 0) return sum;
@@ -156,13 +172,24 @@ public class World {
         return sum;
     }
     
+    /**
+     * Combine two heightmaps together. Normalizes the result. Saves the heightmap to the list of heightmaps.
+     * @param newName New heightmap name.
+     * @param map1 The first map.
+     * @param map2 The second map.
+     * @param addOperation True if adding, false if multiplyng.
+     * @return 
+     */
     public boolean combineHeightmaps(String newName, float[][] map1, float[][] map2, boolean addOperation) {
         float[][] result = combineHeightmaps(map1, map2, addOperation);
-        normalizeHeightmap(result);
         saveHeightmap(newName, result);
         return true;
     }
     
+    /**
+     * Normalizes all values relatively so they are within the range of 0 and 1.0.
+     * @param map The heightmap.
+     */
     public void normalizeHeightmap(float[][] map) {
         float highest = 0;
         for (int i = 0; i < map.length; i++) {
@@ -178,6 +205,13 @@ public class World {
         }
     }
     
+    /**
+     * Round up or down all values so that there are only a handful of unique values.
+     * This has the effect of creating smooth layers of terrain that gradually increase or decrease,
+     * removing the detail in the terrain elevation.
+     * @param levels The number of values to keep.
+     * @param map The heightmap.
+     */
     public void smoothHeightmap(int levels, float[][] map) {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -191,6 +225,11 @@ public class World {
         saved_heightmaps.remove(getHeightmapName(i));
     }
     
+    /**
+     * Gets the heightmap at the specified index in the list of saved heightmaps.
+     * @param i the index
+     * @return A float[][] with height values.
+     */
     public float[][] getHeightmap(int i) {
         if (getHeightmapName(i) == null) return null;
         return saved_heightmaps.get(getHeightmapName(i));
@@ -209,12 +248,22 @@ public class World {
         elevationMap = getHeightmap(name);
     }
     
+    /**
+     * Using the elevation map, get the value at x, y.
+     * @param x x-coordinate, in tiles
+     * @param y y-coordinate
+     * @return A value from 0 to 1.0 indicating height.
+     */
     public float getElevation(int x, int y) {
         if (x > elevationMap.length - 1 || x < 0 || elevationMap.length == 0) return 0;
         if (y < 0 || y > elevationMap[0].length - 1) return 0;
         return elevationMap[x][y];
     }
     
+    /**
+     * Get the global elevation map of the world. This can be set in the heightmap properties window.
+     * @return A float[][] containing world elevation data.
+     */
     public float[][] getElevationMap() { return elevationMap; }
     
     /**
@@ -421,6 +470,12 @@ public class World {
         return -1;
     }
     
+    /**
+     * Get the topmost non-empty layer on the specified grid location.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return The layer index with 0 being the topmost layer.
+     */
     public int getTopmostLayer(int x, int y) {
         for (int l = 0; l < layers.size(); l++) {
             if (getTile(x, y, l) > -1) return l;
@@ -766,9 +821,11 @@ public class World {
     /**
      * Draw the world to the specified Graphics instance. For example, the instance used by the Canvas.
      * @param g The Graphics instance to draw to.
+     * @param showElevationMap Show the elevation through shadows.
+     * @param showTerrainShading Show the elevation as shaded tiles.
      * @see gui.Canvas#paintComponent(java.awt.Graphics)
      */
-    public void draw(Graphics g, boolean showElevationMap) {
+    public void draw(Graphics g, boolean showElevationMap, boolean showTerrainShading) {
         g.setColor(Color.red);
         boolean found_null = false;
         for (int l = layers.size() - 1; l > -1; l--) {
@@ -784,7 +841,7 @@ public class World {
                     if (getTile(x, y, l) < getTileCount()) {
                         if (getTile(x, y, l) > -1){ 
                             //draw the tiles using the heightmap to determine the shade
-                            g.drawImage(textures.get(getTile(x,y,l))[showHeightmap ? Math.abs((int)Math.floor(getElevation(x, y)*100)-1) : 99], osc[0], osc[1], null);
+                            g.drawImage(textures.get(getTile(x,y,l))[showTerrainShading ? Math.abs((int)Math.floor(getElevation(x, y)*100)-1) : 99], osc[0], osc[1], null);
                            // there is currently no heightmap selection and it defaults to the heightmap at the index 0
                             
                         }
@@ -819,16 +876,6 @@ public class World {
             }
         }
         if (found_null) g.drawString("Null tiles found in your map. Check your tile spritesheet.", 15, 40);
-    }
-    
-    public void heightmapShow(){
-        showHeightmap=true;
-        System.out.println("show");
-    }
-    
-    public void heightmapHide(){
-        showHeightmap=false;
-        System.out.println("HIDE");
     }
     
 }

@@ -2093,7 +2093,7 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void drawElevationMapCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawElevationMapCheckBoxActionPerformed
-        getCanvas().setShowElevationMap(drawElevationMapCheckBox.isSelected());
+        getCanvas().showElevationShadows(drawElevationMapCheckBox.isSelected());
     }//GEN-LAST:event_drawElevationMapCheckBoxActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -2123,12 +2123,7 @@ public final class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_showHeightmapCheckActionPerformed
 
     private void showHeightmapCheckStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_showHeightmapCheckStateChanged
-        if(showHeightmapCheck.isSelected()){
-            World.getWorld().heightmapShow();
-            
-        }else{
-            World.getWorld().heightmapHide();
-        }
+        canvas.showTerrainShading(showHeightmapCheck.isSelected());
         canvas.repaint();
     }//GEN-LAST:event_showHeightmapCheckStateChanged
 
