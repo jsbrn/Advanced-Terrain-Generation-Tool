@@ -2,6 +2,7 @@ package world.terrain.misc;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 /**
  * Creates a noise map using the diamond square algorithm.
@@ -14,9 +15,10 @@ public class DiamondSquare {
     
     private static final float SCALAR = (float) (1/Math.sqrt(2));
     private float map[][];
+    private Random rng;
     
-    public DiamondSquare(int logWidth) {
-        
+    public DiamondSquare(int logWidth, long seed) {
+        this.rng = new Random(seed);
         map = new float[1<<logWidth][1<<logWidth];
         map[0][0] = 0;
         
@@ -77,7 +79,7 @@ public class DiamondSquare {
         average += map[x1][y1];
         average /= 4;
         
-        map[xMid][yMid] = average + (float)((Math.random()*2-1)*magnitude);
+        map[xMid][yMid] = average + (float)((rng.nextDouble()*2-1)*magnitude);
     }
     
     private void Square(int x0, int y0, int w, int h, float magnitude)
@@ -96,43 +98,12 @@ public class DiamondSquare {
         average += map[xMid][y1];
         average /= 4;
         
-        map[xMid][yMid] = average + (float)((Math.random()*2-1)*magnitude);
+        map[xMid][yMid] = average + (float)((rng.nextDouble()*2-1)*magnitude);
         
         
     }
     
-    /**
-     * Writes the noise map to a BufferedImage.
-     * @return The buffered image instance created.
-     */
-    public BufferedImage toBufferedImage() {
-        BufferedImage output = new BufferedImage(map.length, map.length,BufferedImage.TYPE_INT_RGB);
-        float max = map[0][0];
-        float min = map[0][0];
-        for (int y = 0; y < output.getHeight(); y++)
-        {
-            for (int x = 0; x < output.getWidth(); x++)
-            {
-                if (map[x][y] > max)
-                {
-                    max = map[x][y];
-                }
-                else if (map[x][y] < min)
-                {
-                    min = map[x][y];
-                }
-            }
-        }
-        
-        for (int y = 0; y < output.getHeight(); y++) {
-            for (int x = 0; x < output.getWidth(); x++) {
-                float value = 255*map[x][y];
-                output.setRGB(x, y, new Color((int)value,(int)value,(int)value).getRGB());
-            }
-        }
-        
-        return output;
-    }
+    
     
     /**
      * Get the noise map. Each value in the map can be a value between 0 and 1.0, inclusive.

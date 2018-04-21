@@ -1,7 +1,10 @@
 package world.terrain;
 
+import gui.GUI;
 import world.terrain.generators.*;
 import java.util.HashMap;
+import java.util.Random;
+import javax.swing.JPanel;
 import world.World;
 
 /**
@@ -10,23 +13,39 @@ import world.World;
  */
 public abstract class Generator {
 
+    private long seed;
+    private Random rng;
+    
     /**
      * This is a static list of generators that the GUI/CLI uses when you specify the name of the generator.
      * Put all Generator instances in this list and use getGenerator(name) to access them.
      */
     private static final Object[][] generators = new Object[][]{
-        {"Fill", new FillGenerator()},
-        {"WaterGenerator", new WaterGenerator()}, 
-        {"NoiseMap", new NoiseMapGenerator()},
-        {"Scattered", new ScatteredGenerator()}
+        {"Fill", new FillGenerator(), GUI.NO_OPTIONS},
+        {"WaterGenerator", new WaterGenerator(), GUI.WATER_OPTIONS}, 
+        {"NoiseMap", new NoiseMapGenerator(), GUI.NOISEMAP_OPTIONS},
+        {"Scattered", new ScatteredGenerator(), GUI.SCATTER_OPTIONS},
+        {"2DPerlin", new TwoDimensionalPerlin(), GUI.TWODIMPERLIN_OPTIONS},
+        {"SidescrollerLakes", new TwoDimensionalLakeGenerator(), GUI.NO_OPTIONS},
+        {"Outline", new OutlineGenerator(), GUI.NO_OPTIONS},
+        {"Cave", new CaveGenerator(), GUI.CAVE_OPTIONS}
     };
+    
+    public Generator() {
+        this.seed = new Random().nextInt();
+        this.rng = new Random(seed);
+    }
     
     /**
      * Get the number of available generators.
      * @return An integer.
      * @see #generators
      */
-    public static int generatorCount() { return generators.length; }
+    public static final int generatorCount() { return generators.length; }
+    
+    public static final JPanel getOptionsPanel(int generator) {
+        return (JPanel)generators[generator][2];
+    }
     
     /**
      * Get the Generator instance at the specified index.
@@ -34,7 +53,7 @@ public abstract class Generator {
      * @return The desired Generator.
      * @see #generators
      */
-    public static Generator getGenerator(int index) {
+    public static final Generator getGenerator(int index) {
         return (Generator)generators[index][1];
     }
     
@@ -47,6 +66,15 @@ public abstract class Generator {
     public static String getGeneratorName(int index) {
         return (String)generators[index][0];
     }
+    
+    public void setSeed(long seed) { 
+        this.seed = seed; 
+        this.rng = new Random(seed);
+    }
+    public long getSeed() { return seed; }
+    public void randomSeed() { setSeed(new Random().nextLong()); }
+    public Random rng() { return rng; }
+    public void reset() { setSeed(seed); }
     
     /**
      * Returns the specified generator from the list of terrain generators.
